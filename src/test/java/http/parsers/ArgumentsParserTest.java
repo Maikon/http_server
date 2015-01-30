@@ -1,5 +1,6 @@
 package http.parsers;
 
+import http.Exceptions.InvalidArgumentsException;
 import http.Exceptions.WrongArgumentsNumberException;
 import org.junit.Test;
 
@@ -23,6 +24,12 @@ public class ArgumentsParserTest {
   @Test(expected = WrongArgumentsNumberException.class)
   public void raisesExceptionIfIncorrectNumberOfArguments() {
     ArgumentsParser parser = new ArgumentsParser(new String[] {"-p", "5000", "-d"});
+    parser.getArguments();
+  }
+
+  @Test(expected = InvalidArgumentsException.class)
+  public void raisesExceptionIfInvalidArguments() {
+    ArgumentsParser parser = new ArgumentsParser(new String[] {"-p", "5000", "directory-path", "-d"});
     parser.getArguments();
   }
 }
