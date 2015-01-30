@@ -9,6 +9,7 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 public class ArgumentsParserTest {
 
@@ -31,6 +32,14 @@ public class ArgumentsParserTest {
   public void raisesExceptionIfInvalidArguments() {
     ArgumentsParser parser = createParserWith("-p", "5000", "directory-path", "-d");
     parser.getArguments();
+  }
+
+  @Test
+  public void gettingValueForAnArgument() {
+    ArgumentsParser parser = createParserWith("-p", "5000");
+    Map<String, String> arguments = new HashMap<>();
+    arguments.put("-p", "5000");
+    assertThat(parser.getArgument("-p"), is("5000"));
   }
 
   private ArgumentsParser createParserWith(String ... args) {

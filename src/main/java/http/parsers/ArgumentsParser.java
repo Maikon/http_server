@@ -42,4 +42,8 @@ public class ArgumentsParser {
   private boolean wrongArgumentsNumber() {
     return !(args.length % 2 == 0);
   }
+
+  public String getArgument(String argument) {
+    return getArguments().get(argument);
+  }
 }
