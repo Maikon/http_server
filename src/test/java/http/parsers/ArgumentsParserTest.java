@@ -1,5 +1,6 @@
 package http.parsers;
 
+import http.Exceptions.WrongArgumentsNumberException;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -17,5 +18,11 @@ public class ArgumentsParserTest {
     arguments.put("-p", "5000");
     arguments.put("-d", "directory-path");
     assertThat(parser.getArguments(), equalTo(arguments));
+  }
+
+  @Test(expected = WrongArgumentsNumberException.class)
+  public void raisesExceptionIfIncorrectNumberOfArguments() {
+    ArgumentsParser parser = new ArgumentsParser(new String[] {"-p", "5000", "-d"});
+    parser.getArguments();
   }
 }
