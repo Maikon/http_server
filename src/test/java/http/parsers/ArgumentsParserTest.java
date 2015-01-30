@@ -13,33 +13,38 @@ import static org.hamcrest.core.Is.is;
 
 public class ArgumentsParserTest {
 
+  private final String DIRECTORY_PATH = "directory-path";
+  private final String DIRECTORY_FLAG = "-d";
+  private final String PORT_FLAG = "-p";
+  private final String PORT_NUMBER = "5000";
+
   @Test
   public void associatesFlagsWithValues() {
-    ArgumentsParser parser = createParserWith("-p", "5000", "-d", "directory-path");
+    ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER, DIRECTORY_FLAG, DIRECTORY_PATH);
     Map<String, String> arguments = new HashMap<>();
-    arguments.put("-p", "5000");
-    arguments.put("-d", "directory-path");
+    arguments.put(PORT_FLAG, PORT_NUMBER);
+    arguments.put(DIRECTORY_FLAG, DIRECTORY_PATH);
     assertThat(parser.getArguments(), equalTo(arguments));
   }
 
   @Test(expected = WrongArgumentsNumberException.class)
   public void raisesExceptionIfIncorrectNumberOfArguments() {
-    ArgumentsParser parser = createParserWith("-p", "5000", "-d");
+    ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER, DIRECTORY_FLAG);
     parser.getArguments();
   }
 
   @Test(expected = InvalidArgumentsException.class)
   public void raisesExceptionIfInvalidArguments() {
-    ArgumentsParser parser = createParserWith("-p", "5000", "directory-path", "-d");
+    ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER, DIRECTORY_PATH, DIRECTORY_FLAG);
     parser.getArguments();
   }
 
   @Test
   public void gettingValueForAnArgument() {
-    ArgumentsParser parser = createParserWith("-p", "5000");
+    ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER);
     Map<String, String> arguments = new HashMap<>();
-    arguments.put("-p", "5000");
-    assertThat(parser.getArgument("-p"), is("5000"));
+    arguments.put(PORT_FLAG, PORT_NUMBER);
+    assertThat(parser.getArgument(PORT_FLAG), is(PORT_NUMBER));
   }
 
   private ArgumentsParser createParserWith(String ... args) {
