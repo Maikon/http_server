@@ -14,7 +14,7 @@ public class ArgumentsParserTest {
 
   @Test
   public void associatesFlagsWithValues() {
-    ArgumentsParser parser = new ArgumentsParser(new String[] {"-p", "5000", "-d", "directory-path"});
+    ArgumentsParser parser = createParserWith("-p", "5000", "-d", "directory-path");
     Map<String, String> arguments = new HashMap<>();
     arguments.put("-p", "5000");
     arguments.put("-d", "directory-path");
@@ -23,13 +23,17 @@ public class ArgumentsParserTest {
 
   @Test(expected = WrongArgumentsNumberException.class)
   public void raisesExceptionIfIncorrectNumberOfArguments() {
-    ArgumentsParser parser = new ArgumentsParser(new String[] {"-p", "5000", "-d"});
+    ArgumentsParser parser = createParserWith("-p", "5000", "-d");
     parser.getArguments();
   }
 
   @Test(expected = InvalidArgumentsException.class)
   public void raisesExceptionIfInvalidArguments() {
-    ArgumentsParser parser = new ArgumentsParser(new String[] {"-p", "5000", "directory-path", "-d"});
+    ArgumentsParser parser = createParserWith("-p", "5000", "directory-path", "-d");
     parser.getArguments();
+  }
+
+  private ArgumentsParser createParserWith(String ... args) {
+    return new ArgumentsParser(args);
   }
 }

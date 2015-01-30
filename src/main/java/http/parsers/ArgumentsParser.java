@@ -10,7 +10,7 @@ import java.util.Optional;
 public class ArgumentsParser {
   private final String[] args;
 
-  public ArgumentsParser(String[] args) {
+  public ArgumentsParser(String ... args) {
     this.args = args;
   }
 
