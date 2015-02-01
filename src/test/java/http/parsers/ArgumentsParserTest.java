@@ -1,6 +1,7 @@
 package http.parsers;
 
 import http.Exceptions.InvalidArgumentsException;
+import http.Exceptions.InvalidPortException;
 import http.Exceptions.WrongArgumentsNumberException;
 import org.junit.Test;
 
@@ -39,12 +40,22 @@ public class ArgumentsParserTest {
     parser.getArguments();
   }
 
+  @Test(expected = InvalidPortException.class)
+  public void raisesExceptionIfInvalidPort() {
+    ArgumentsParser parser = createParserWith(PORT_FLAG, "invalidPort", DIRECTORY_FLAG, DIRECTORY_PATH);
+    parser.integerValueFor("-p");
+  }
+
   @Test
-  public void gettingValueForAnArgument() {
+  public void gettingIntegerValueForAnArgument() {
     ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER);
-    Map<String, String> arguments = new HashMap<>();
-    arguments.put(PORT_FLAG, PORT_NUMBER);
-    assertThat(parser.getArgument(PORT_FLAG), is(PORT_NUMBER));
+    assertThat(parser.integerValueFor(PORT_FLAG), is(5000));
+  }
+
+  @Test
+  public void gettingStringValueForAnArgument() {
+    ArgumentsParser parser = createParserWith(DIRECTORY_FLAG, DIRECTORY_PATH);
+    assertThat(parser.stringValueFor(DIRECTORY_FLAG), is(DIRECTORY_PATH));
   }
 
   private ArgumentsParser createParserWith(String ... args) {
