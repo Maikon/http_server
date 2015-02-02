@@ -1,4 +1,4 @@
-package http.parsers;
+package http.Parsers;
 
 import http.Exceptions.InvalidRequestMethodException;
 import org.junit.Before;
