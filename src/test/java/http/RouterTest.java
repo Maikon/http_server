@@ -16,7 +16,7 @@ public class RouterTest {
     Router router = new Router();
     FakeOutput output = new FakeOutput();
     PrintStream out = new PrintStream(output);
-    router.dispatch("/", out);
+    router.dispatch("GET /", out);
     assertThat(output.wasWritten, is(true));
   }
 
@@ -25,7 +25,7 @@ public class RouterTest {
     Router router = new Router();
     FakeOutput output = new FakeOutput();
     PrintStream out = new PrintStream(output);
-    router.dispatch("/unknown-path", out);
+    router.dispatch("GET /unknown-path", out);
     assertThat(router.lastResponse(), is("404"));
   }
 

@@ -23,15 +23,21 @@ public class Worker implements Runnable {
       output = new PrintStream(socket.getOutputStream());
       InputStreamReader input = new InputStreamReader(socket.getInputStream());
       BufferedReader reader = new BufferedReader(input);
-      RequestParser parser = new RequestParser();
       String request = reader.readLine();
-      String path = parser.requestURI(request);
+      String identifier = methodWithURI(request);
       Router router = new Router();
-      router.dispatch(path, output);
+      router.dispatch(identifier, output);
     } catch (IOException | RuntimeException e) {
       stop();
     }
     stop();
+  }
+
+  private String methodWithURI(String request) {
+    RequestParser parser = new RequestParser();
+    String method = parser.requestMethod(request);
+    String path = parser.requestURI(request);
+    return method + " " + path;
   }
 
   private void stop() {

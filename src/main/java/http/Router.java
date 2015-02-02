@@ -15,8 +15,8 @@ public class Router {
     this.responders = generateResponders();
   }
 
-  public void dispatch(String uri, PrintStream output) throws IOException {
-    Response res = responders.get(uri);
+  public void dispatch(String identifier, PrintStream output) throws IOException {
+    Response res = responders.get(identifier);
     if (res == null) {
       lastResponse = "404";
       Response notFound = new NotFoundResponder();
@@ -28,13 +28,15 @@ public class Router {
 
   private Map<String, Response> generateResponders() {
     Map<String, Response> responders = new HashMap<>();
-    responders.put("/", new RootResponder());
-    responders.put("/form", new SuccessResponder());
-    responders.put("/redirect", new RedirectResponder());
-    responders.put("/foobar", new NotFoundResponder());
-    responders.put("/method_options", new MethodOptionsResponder());
-    responders.put("/text-file.txt", new MethodNotAllowedResponder());
-    responders.put("/file1", new MethodNotAllowedResponder());
+    responders.put("GET /", new RootResponder());
+    responders.put("GET /redirect", new RedirectResponder());
+    responders.put("GET /foobar", new NotFoundResponder());
+    responders.put("GET /file1", new FileContentsResponder());
+    responders.put("POST /form", new SuccessResponder());
+    responders.put("POST /text-file.txt", new MethodNotAllowedResponder());
+    responders.put("PUT /form", new SuccessResponder());
+    responders.put("PUT /file1", new MethodNotAllowedResponder());
+    responders.put("OPTIONS /method_options", new MethodOptionsResponder());
     return responders;
   }
 
