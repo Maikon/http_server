@@ -22,17 +22,19 @@ public class Router {
       Response notFound = new NotFoundResponder();
       output.write(notFound.response().getBytes());
     } else {
-
       output.write(res.response().getBytes());
     }
   }
 
   private Map<String, Response> generateResponders() {
     Map<String, Response> responders = new HashMap<>();
-    responders.put("/", new RootResponder());
+    responders.put("/", new SuccessResponder());
+    responders.put("/form", new SuccessResponder());
     responders.put("/redirect", new RedirectResponder());
     responders.put("/foobar", new NotFoundResponder());
     responders.put("/method_options", new MethodOptionsResponder());
+    responders.put("/text-file.txt", new MethodNotAllowedResponder());
+    responders.put("/file1", new MethodNotAllowedResponder());
     return responders;
   }
 

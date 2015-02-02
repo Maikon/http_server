@@ -29,7 +29,7 @@ public class RouterTest {
     assertThat(router.lastResponse(), is("404"));
   }
 
-  private class FakeOutput extends OutputStream{
+  private class FakeOutput extends OutputStream {
     private boolean wasWritten;
 
     public FakeOutput() {
