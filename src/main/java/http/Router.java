@@ -32,6 +32,7 @@ public class Router {
     responders.put("/", new RootResponder());
     responders.put("/redirect", new RedirectResponder());
     responders.put("/foobar", new NotFoundResponder());
+    responders.put("/method_options", new MethodOptionsResponder());
     return responders;
   }
 
