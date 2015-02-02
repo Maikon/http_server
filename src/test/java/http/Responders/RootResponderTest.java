@@ -18,6 +18,9 @@ public class RootResponderTest {
                                   "<a href='image.gif'>image.gif</a>"+
                                   "<a href='image.jpeg'>image.jpeg</a>"+
                                   "<a href='image.png'>image.png</a>"+
-                                  "<a href='text-file.txt'>text-file.txt</a>"));
+                                  "<a href='text-file.txt'>text-file.txt</a>" +
+                                  "<p>partial_content.txt</p>" +
+                                  "<p>patch-content.txt</p>" +
+                                  "</body></html>"));
   }
 }
