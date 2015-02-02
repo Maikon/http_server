@@ -30,6 +30,8 @@ public class Router {
   private Map<String, Response> generateResponders() {
     Map<String, Response> responders = new HashMap<>();
     responders.put("/", new RootResponder());
+    responders.put("/redirect", new RedirectResponder());
+    responders.put("/foobar", new NotFoundResponder());
     return responders;
   }
 
