@@ -23,12 +23,13 @@ public class Worker implements Runnable {
       output = new PrintStream(socket.getOutputStream());
       InputStreamReader input = new InputStreamReader(socket.getInputStream());
       BufferedReader reader = new BufferedReader(input);
-      String request;
       RequestParser parser = new RequestParser();
-      byte[] res = "HTTP/1.1 200 OK\r\n\r\n".getBytes();
-      output.write(res);
-    } catch (IOException e) {
-      System.out.println("Closing server...");
+      String request = reader.readLine();
+      String path = parser.requestURI(request);
+      Router router = new Router();
+      router.dispatch(path, output);
+    } catch (IOException | RuntimeException e) {
+      stop();
     }
     stop();
   }
