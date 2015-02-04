@@ -10,7 +10,8 @@ public class Main {
     int port = parser.integerValueFor("-p");
     String directory = parser.stringValueFor("-d");
     try {
-      new Server(port, directory);
+      Server server = new Server(port, directory);
+      server.start();
     } catch (IOException e) {
       e.printStackTrace();
     }

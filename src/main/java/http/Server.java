@@ -21,7 +21,6 @@ public class Server {
     running = false;
     executor = Executors.newFixedThreadPool(20);
     System.out.println("Starting server at port: " + port);
-    start();
   }
 
   public void start() {
