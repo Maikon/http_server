@@ -2,9 +2,7 @@ package http;
 
 import http.Sockets.ClientSocket;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class WorkerRedux {
   private ClientSocket client;
@@ -13,7 +11,7 @@ public class WorkerRedux {
     this.client = client;
   }
 
-  public String readInput() throws IOException {
+  public String read() throws IOException {
     InputStreamReader input = new InputStreamReader(client.getInputStream());
     BufferedReader reader = new BufferedReader(input);
     String result = "";
@@ -22,5 +20,15 @@ public class WorkerRedux {
       result += line + "\n";
     }
     return result;
+  }
+
+  public void write(String response) {
+    OutputStream output = client.getOutputStream();
+    PrintStream writer = new PrintStream(output);
+    try {
+      writer.write(response.getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
