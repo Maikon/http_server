@@ -1,23 +1,27 @@
 package http;
 
+import http.Sockets.ClientSocket;
+import http.Sockets.RealSocket;
+
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
   private final int port;
   private final String directory;
+  private final Router router;
   private boolean running;
   private ServerSocket socket;
-  private Socket clientSocket;
+  private ClientSocket clientSocket;
   private ExecutorService executor;
 
   public Server(int port, String directory) throws IOException {
     this.port = port;
     this.directory = directory;
     socket = new ServerSocket(port);
+    this.router = new Router();
     running = false;
     executor = Executors.newFixedThreadPool(20);
     System.out.println("Starting server at port: " + port);
@@ -27,8 +31,8 @@ public class Server {
     running = true;
     try {
       while (true) {
-        clientSocket = socket.accept();
-        executor.submit(new Worker(clientSocket));
+        clientSocket = new RealSocket(socket.accept());
+        executor.submit(new Worker(router, clientSocket));
       }
     } catch (IOException e) {
       System.out.println("Closing server...");

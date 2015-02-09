@@ -1,47 +1,35 @@
 package http;
 
+import http.Parsers.Reader;
 import http.Parsers.RequestParser;
+import http.Sockets.ClientSocket;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.Socket;
 
 public class Worker implements Runnable {
+  private final Router router;
+  private final Reader reader;
+  private final RequestParser reqParser;
+  private final ClientSocket client;
 
-  private final Socket socket;
-  private PrintStream output;
-
-  public Worker(Socket socket) {
-    this.socket = socket;
+  public Worker(Router router, ClientSocket client) {
+    this.client = client;
+    this.router = router;
+    this.reader = new Reader(client);
+    this.reqParser = new RequestParser();
   }
 
-  @Override
   public void run() {
+    String methodUri = reqParser.getUriAndMethod(reader.getInput());
     try {
-      output = new PrintStream(socket.getOutputStream());
-      BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      String identifier = methodWithURI(reader);
-      Router router = new Router();
-      router.dispatch(identifier, output);
-    } catch (IOException | RuntimeException e) {
+      router.dispatch(methodUri, reader.getOutput());
+    } catch (IOException e) {
       stop();
     }
     stop();
   }
 
-  private String methodWithURI(BufferedReader reader) {
-    RequestParser parser = new RequestParser();
-    return parser.getUriAndMethod(reader);
-  }
-
-  private void stop() {
-    try {
-      output.close();
-      socket.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public void stop() {
+    client.close();
   }
 }
