@@ -21,10 +21,8 @@ public class Worker implements Runnable {
   public void run() {
     try {
       output = new PrintStream(socket.getOutputStream());
-      InputStreamReader input = new InputStreamReader(socket.getInputStream());
-      BufferedReader reader = new BufferedReader(input);
-      String request = reader.readLine();
-      String identifier = methodWithURI(request);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      String identifier = methodWithURI(reader);
       Router router = new Router();
       router.dispatch(identifier, output);
     } catch (IOException | RuntimeException e) {
@@ -33,11 +31,9 @@ public class Worker implements Runnable {
     stop();
   }
 
-  private String methodWithURI(String request) {
+  private String methodWithURI(BufferedReader reader) {
     RequestParser parser = new RequestParser();
-    String method = parser.requestMethod(request);
-    String path = parser.requestURI(request);
-    return method + " " + path;
+    return parser.getUriAndMethod(reader);
   }
 
   private void stop() {

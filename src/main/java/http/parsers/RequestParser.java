@@ -2,17 +2,27 @@ package http.Parsers;
 
 import http.Exceptions.InvalidRequestMethodException;
 
+import java.io.BufferedReader;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 public class RequestParser {
-  public String getRequestLine(String request) {
-    String[] lines = separateRequestLines(request);
-    return lines[0];
+  private final RequestLineParser reqLineParser;
+  private final HeadersParser reqHeadersParser;
+  private final BodyParser reqBodyParser;
+
+  public RequestParser() {
+    this.reqLineParser = new RequestLineParser();
+    this.reqHeadersParser = new HeadersParser();
+    this.reqBodyParser = new BodyParser();
   }
 
-  public String requestMethod(String requestLine) {
+  public String getRequestLine(BufferedReader reader) {
+    return reqLineParser.read(reader);
+  }
+
+  public String requestMethod(BufferedReader reader) {
+    String requestLine = reqLineParser.read(reader);
     String method = getLineContents(requestLine)[0];
     if (invalidMethod(method)) {
       throw new InvalidRequestMethodException();
@@ -20,32 +30,24 @@ public class RequestParser {
     return method;
   }
 
-  public String requestURI(String requestLine) {
+  public String requestURI(BufferedReader reader) {
+    String requestLine = reqLineParser.read(reader);
     return getLineContents(requestLine)[1];
   }
 
-  public Map<String, String> requestHeaders(String request) {
-    Map<String, String> headers = new HashMap<>();
-    addHeaderNameWithValue(headers, separateRequestLines(request));
-    return headers;
+  public Map<String, String> requestHeaders(BufferedReader reader) {
+    return reqHeadersParser.read(reader);
   }
 
-  public String requestBody(String request) {
-    String[] lines = separateRequestLines(request);
-    return lines[lastLine(lines)];
+  public String requestBody(BufferedReader reader) {
+    return reqBodyParser.read(reader);
   }
 
-  private void addHeaderNameWithValue(Map<String, String> headers, String[] lines) {
-    for (int i = 1; i < lastLine(lines); i++) {
-      String[] header = lines[i].split(":\\s");
-      String headerName = header[0];
-      String headerValue = header[1];
-      headers.put(headerName, headerValue);
-    }
-  }
-
-  private String[] separateRequestLines(String request) {
-    return request.split("\r\n");
+  public String getUriAndMethod(BufferedReader reader) {
+    String requestLine = reqLineParser.read(reader);
+    String method = getLineContents(requestLine)[0];
+    String uri = getLineContents(requestLine)[1];
+    return method + " " + uri;
   }
 
   private String[] getLineContents(String requestLine) {
@@ -55,9 +57,5 @@ public class RequestParser {
   private boolean invalidMethod(String method) {
     String[] validMethods = {"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD", "CONNECT", "TRACE"};
     return !Arrays.asList(validMethods).contains(method);
-  }
-
-  private int lastLine(String[] lines) {
-    return lines.length - 1;
   }
 }
