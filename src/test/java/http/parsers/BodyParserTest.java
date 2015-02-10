@@ -13,24 +13,26 @@ public class BodyParserTest {
   @Test
   public void parsesBodyWithOneLine() {
     BodyParser parser = new BodyParser();
-    StringReader request = new StringReader("GET / HTTP/1.1\r\n" +
-                                            "Header-1: content\r\n" +
-                                            "Header-2: content\r\n\r\n" +
-                                            "Body of the Request");
-    BufferedReader reader = new BufferedReader(request);
-    assertThat(parser.read(reader), is("Body of the Request\n"));
+    BufferedReader reader = createReader("Body of the Request\r\n");
+    assertThat(parser.read(reader, 19), is("Body of the Request"));
   }
 
   @Test
-  public void parsesBodyWithMultipleLines() {
+  public void readsUpToSpecifiedAmountOfCharacters() {
     BodyParser parser = new BodyParser();
-    StringReader request = new StringReader("GET / HTTP/1.1\r\n" +
-                                            "Header-1: content\r\n" +
-                                            "Header-2: content\r\n\r\n" +
-                                            "First Line\n" +
-                                            "Second Line\n" +
-                                            "Third Line");
-    BufferedReader reader = new BufferedReader(request);
-    assertThat(parser.read(reader), is("First Line\nSecond Line\nThird Line\n"));
+    BufferedReader reader = createReader("First Line\nSecond Line\nThird Line");
+    assertThat(parser.read(reader, 22), is("First Line\nSecond Line"));
+  }
+
+  @Test
+  public void ignoresBodyIfContentLengthIsNotPresent() {
+    BodyParser parser = new BodyParser();
+    BufferedReader reader = createReader("First Line\nSecond Line\nThird Line");
+    assertThat(parser.read(reader, 0), is(""));
+  }
+
+  private BufferedReader createReader(String body) {
+    StringReader request = new StringReader(body);
+    return new BufferedReader(request);
   }
 }

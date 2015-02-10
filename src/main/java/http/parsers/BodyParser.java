@@ -1,30 +1,21 @@
 package http.Parsers;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 
 public class BodyParser {
-  public String read(BufferedReader reader) {
-    Object[] lines = reader.lines().toArray();
-    return getBodyLines(lines);
-  }
-
-  private String getBodyLines(Object[] lines) {
-    int emptyLineIndex = findEmptyLine(lines);
+  public String read(BufferedReader reader, int contentLength) {
     String body = "";
-    for (int i = emptyLineIndex; i < lines.length; i++) {
-      body += lines[i] + "\n";
-    }
-    return body;
-  }
-
-  private int findEmptyLine(Object[] lines) {
-    int emptyLineIndex = 0;
-    for (int i = 0; i < lines.length; i++) {
-      if(lines[i].equals("")) {
-        emptyLineIndex = i + 1;
+    char[] buffer = new char[contentLength];
+    try {
+      reader.read(buffer);
+      for (char s : buffer) {
+        body += s;
       }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    return emptyLineIndex;
+    return body.trim();
   }
 }
 
