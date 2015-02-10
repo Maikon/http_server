@@ -3,6 +3,7 @@ package http.Parsers;
 import org.junit.Test;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,42 +16,36 @@ public class HeadersParserTest {
   @Test
   public void parsesHeaders() {
     HeadersParser parser = new HeadersParser();
-    StringReader input = new StringReader("GET / HTTP/1.1\r\n" +
-                                          "Host: localhost\r\n\r\n" +
-                                          "Body of the Request");
-    BufferedReader reader = new BufferedReader(input);
     Map<String, String> headers = new HashMap<>();
-    headers.put("Host", "localhost");
-    assertThat(parser.read(reader), is(headers));
-  }
-
-  @Test
-  public void parsesHeadersEvenIfBodyContainsColons() {
-    HeadersParser parser = new HeadersParser();
-    StringReader input = new StringReader("GET / HTTP/1.1\r\n" +
-                                          "Accept-Language: en-us\r\n" +
-                                          "Host: localhost\r\n\r\n" +
-                                          "Body of Request contains : ");
-    BufferedReader reader = new BufferedReader(input);
-    Map<String, String> headers = new HashMap<>();
-    headers.put("Host", "localhost");
-    headers.put("Accept-Language", "en-us");
+    headers.put("Header1", "content");
+    headers.put("Header2", "more content");
+    BufferedReader reader = createReader("Header1: content\r\n" +
+                                         "Header2: more content");
     assertThat(parser.read(reader), is(headers));
   }
 
   @Test
   public void parsesHeadersThatContainMultipleColons() {
     HeadersParser parser = new HeadersParser();
-    StringReader input = new StringReader("GET / HTTP/1.1\r\n" +
-                                          "Accept-Language: en-us\r\n" +
-                                          "Host: localhost\r\n" +
-                                          "Date: Wed, 04 Feb 2015 08:12:31 GMT\r\n\r\n" +
-                                          "Body of Request");
-    BufferedReader reader = new BufferedReader(input);
     Map<String, String> headers = new HashMap<>();
-    headers.put("Host", "localhost");
-    headers.put("Accept-Language", "en-us");
-    headers.put("Date", "Wed, 04 Feb 2015 08:12:31 GMT");
+    headers.put("Date", "Day, 00 Month Year 00:00:00 GMT");
+    BufferedReader reader = createReader("Date: Day, 00 Month Year 00:00:00 GMT\r\n");
     assertThat(parser.read(reader), is(headers));
+  }
+
+  @Test
+  public void ignoresIrrelevantPartsOfTheRequest() throws IOException {
+    HeadersParser parser = new HeadersParser();
+    BufferedReader reader = createReader("Request Line to be ignored\r\n" +
+                                         "Header: content\r\n" +
+                                         "\r\n" +
+                                         "Should-Not-Read: here\r\n");
+    parser.read(reader);
+    assertThat(reader.readLine(), is("Should-Not-Read: here"));
+  }
+
+  private BufferedReader createReader(String input) {
+    StringReader content = new StringReader(input);
+    return new BufferedReader(content);
   }
 }
