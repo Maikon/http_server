@@ -2,18 +2,16 @@ package http.Parsers;
 
 import http.Sockets.ClientSocket;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Reader {
-  private ClientSocket client;
+  private InputStreamReader input;
 
   public Reader(ClientSocket client) {
-    this.client = client;
+    input = new InputStreamReader(client.getInputStream());
   }
 
-  public BufferedReader getInput() {
-    InputStreamReader input = new InputStreamReader(client.getInputStream());
+  public BufferedReader invoke() {
     return new BufferedReader(input);
   }
 }

@@ -2,48 +2,24 @@ package http.Parsers;
 
 import http.Exceptions.InvalidRequestMethodException;
 import http.Fakes.FakeClientSocket;
+import http.Request;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RequestParserTest {
-  private final String FULL_REQUEST = "GET / HTTP/1.1\r\n" +
-                                      "Accept-Language: en-us\r\n" +
-                                      "Host: localhost\r\n\r\n" +
-                                      "Body of the Request";
   private RequestParser parser;
 
   @Before
   public void setup() {
-    parser = new RequestParser(new FakeClientSocket(FULL_REQUEST));
-  }
-
-  @Test
-  public void returnsTheRequestLine() {
-    String firstLine = "GET / HTTP/1.1";
-    assertThat(parser.getRequestLine(), is(firstLine));
-  }
-
-  @Test
-  public void returnsTheMethod() {
-   assertThat(parser.requestMethod(), is("GET"));
-  }
-
-  @Test(expected = InvalidRequestMethodException.class)
-  public void rejectsUnknownRequest() {
-    parser = new RequestParser(new FakeClientSocket("INVALID-REQUEST / HTTP/1.1\r\n"));
-    parser.requestMethod();
-  }
-
-  @Test
-  public void returnsTheURI() {
-    assertThat(parser.requestURI(), is("/"));
+    String request = "GET / HTTP/1.1\r\n" +
+                     "Content-Length: 25\r\n" +
+                     "\r\n" +
+                     "First Line\n" +
+                     "Second Line\r\n";
+    parser = new RequestParser(new FakeClientSocket(request));
   }
 
   @Test
@@ -51,17 +27,30 @@ public class RequestParserTest {
     assertThat(parser.getUriAndMethod(), is("GET /"));
   }
 
-  @Test
-  public void returnsTheHeaders() {
-    Map<String, String> headers = new HashMap<>();
-    headers.put("Accept-Language", "en-us");
-    headers.put("Host", "localhost");
-    assertThat(parser.requestHeaders(), equalTo(headers));
+  @Test(expected = InvalidRequestMethodException.class)
+  public void rejectsUnknownRequest() {
+    parser = new RequestParser(new FakeClientSocket("INVALID-REQUEST / HTTP/1.1\r\n"));
+    parser.getUriAndMethod();
   }
 
   @Test
-  public void returnsTheBodyOfTheRequest() {
-    assertThat(parser.requestBody(), is("Body of the Request\n"));
+  public void returnsRequestInParts() {
+    Request req = parser.buildRequest();
+    assertThat(req.getMethod(), is("GET"));
+    assertThat(req.getUri(), is("/"));
+    assertThat(req.getHeaders().get("Content-Length"), is("25"));
+    assertThat(req.getBody(), is("First Line\nSecond Line"));
+  }
+
+  @Test
+  public void ignoresTheBodyIfNoContentLengthHeaderIsPresent() {
+    String request = "GET / HTTP/1.1\r\n" +
+                     "\r\n" +
+                     "First Line\n" +
+                     "Second Line\r\n";
+    parser = new RequestParser(new FakeClientSocket(request));
+    Request req = parser.buildRequest();
+    assertThat(req.getBody(), is(""));
   }
 }
 
