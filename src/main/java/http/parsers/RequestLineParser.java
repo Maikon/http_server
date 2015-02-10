@@ -1,20 +1,17 @@
 package http.Parsers;
 
 import java.io.BufferedReader;
-import java.util.Scanner;
+import java.io.IOException;
 
 public class RequestLineParser {
 
   public String read(BufferedReader reader) {
-    Scanner scanner = new Scanner(reader);
-    String line = scanner.nextLine();
-    while (isEmpty(line)) {
-      line = scanner.nextLine();
+    String line = null;
+    try {
+      line = reader.readLine();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    return line.trim();
-  }
-
-  private boolean isEmpty(String line) {
-    return line.equals("");
+    return line;
   }
 }

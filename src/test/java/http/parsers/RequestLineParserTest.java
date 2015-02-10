@@ -10,24 +10,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RequestLineParserTest {
 
-  private final String REQUEST_LINE = "GET / HTTP/1.1";
-  private final String REQUEST = "GET / HTTP/1.1\r\n" +
-                                "Host: localhost\r\n\r\n" +
-                                "Body of the Request";
 
   @Test
   public void parsesRequestLine() {
+    String request = "GET / HTTP/1.1\r\n" +
+                     "Irrelevant Information";
+    BufferedReader reader = new BufferedReader(new StringReader(request));
     RequestLineParser parser = new RequestLineParser();
-    StringReader request = new StringReader(REQUEST);
-    BufferedReader reader = new BufferedReader(request);
-    assertThat(parser.read(reader), is(REQUEST_LINE));
-  }
 
-  @Test
-  public void parsesRequestLineThatIsPrecededByEmptyLines() {
-    RequestLineParser parser = new RequestLineParser();
-    StringReader request = new StringReader("\n\n" + REQUEST);
-    BufferedReader reader = new BufferedReader(request);
-    assertThat(parser.read(reader), is(REQUEST_LINE));
+    assertThat(parser.read(reader), is("GET / HTTP/1.1"));
   }
 }
