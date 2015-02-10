@@ -26,7 +26,7 @@ public class RequestParser {
 
   public String requestMethod() {
     String requestLine = reqLineParser.read(input);
-    String method = getLineContents(requestLine)[0];
+    String method = getMethod(requestLine);
     if (invalidMethod(method)) {
       throw new InvalidRequestMethodException();
     }
@@ -35,13 +35,13 @@ public class RequestParser {
 
   public String requestURI() {
     String requestLine = reqLineParser.read(input);
-    return getLineContents(requestLine)[1];
+    return getURI(requestLine);
   }
 
   public String getUriAndMethod() {
     String requestLine = reqLineParser.read(input);
-    String method = getLineContents(requestLine)[0];
-    String uri = getLineContents(requestLine)[1];
+    String method = getMethod(requestLine);
+    String uri = getURI(requestLine);
     return method + " " + uri;
   }
 
@@ -51,6 +51,14 @@ public class RequestParser {
 
   public String requestBody() {
     return reqBodyParser.read(input);
+  }
+
+  private String getMethod(String requestLine) {
+    return getLineContents(requestLine)[0];
+  }
+
+  private String getURI(String requestLine) {
+    return getLineContents(requestLine)[1];
   }
 
   private String[] getLineContents(String requestLine) {
