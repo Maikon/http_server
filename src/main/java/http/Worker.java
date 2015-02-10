@@ -20,11 +20,10 @@ public class Worker implements Runnable {
   }
 
   public void run() {
-    String methodUri = reqParser.getUriAndMethod();
     try {
-      router.dispatch(methodUri, output);
+      router.dispatch(reqParser.getUriAndMethod(), output);
     } catch (IOException e) {
-      stop();
+      // nothing to be done here
     }
     stop();
   }
