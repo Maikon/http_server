@@ -14,7 +14,6 @@ public class Server {
   private final Router router;
   private boolean running;
   private ServerSocket socket;
-  private ClientSocket clientSocket;
   private ExecutorService executor;
 
   public Server(int port, String directory) throws IOException {
@@ -31,7 +30,7 @@ public class Server {
     running = true;
     try {
       while (true) {
-        clientSocket = new RealSocket(socket.accept());
+        ClientSocket clientSocket = new RealSocket(socket.accept());
         executor.submit(new Worker(router, clientSocket));
       }
     } catch (IOException e) {
