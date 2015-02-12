@@ -1,6 +1,6 @@
 package http.Fakes;
 
-import http.Sockets.ClientSocket;
+import http.sockets.ClientSocket;
 
 import java.io.*;
 

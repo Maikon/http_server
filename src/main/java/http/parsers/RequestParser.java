@@ -2,7 +2,7 @@ package http.parsers;
 
 import http.exceptions.InvalidRequestMethodException;
 import http.Request;
-import http.Sockets.ClientSocket;
+import http.sockets.ClientSocket;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;

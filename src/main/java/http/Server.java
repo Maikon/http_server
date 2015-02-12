@@ -1,7 +1,7 @@
 package http;
 
-import http.Sockets.ClientSocket;
-import http.Sockets.RealSocket;
+import http.sockets.ClientSocket;
+import http.sockets.RealSocket;
 
 import java.io.IOException;
 import java.net.ServerSocket;
