@@ -14,6 +14,10 @@ public class ServerResponse {
     this.body = builder.body;
   }
 
+  public static Builder status(int code) {
+    return new Builder(code);
+  }
+
   public String statusLine() {
     Map<Integer, String> responses = new HashMap<>();
     responses.put(200, "HTTP/1.1 200 OK\r\n");
@@ -33,7 +37,7 @@ public class ServerResponse {
     private Map<String, String> headers = new HashMap<>();
     public String body;
 
-    public Builder(int statusCode) {
+    private Builder(int statusCode) {
       this.statusCode = statusCode;
     }
 
