@@ -22,7 +22,8 @@ public class FileReaderTest {
     FileWriter writer = new FileWriter(file);
     writer.write("Contents of File");
     writer.close();
-    FileReader fileReader = new FileReader(file);
-    assertThat(fileReader.readFile(), is("Contents of File"));
+    FileReader reader = new FileReader(file);
+    byte[] contents = "Contents of File".getBytes();
+    assertThat(reader.readFile(), is(contents));
   }
 }

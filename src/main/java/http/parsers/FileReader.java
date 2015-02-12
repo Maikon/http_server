@@ -1,6 +1,10 @@
 package http.parsers;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileReader {
   private File file;
@@ -9,16 +13,12 @@ public class FileReader {
     this.file = file;
   }
 
-  public String readFile() {
-    String result = "";
+  public byte[] readFile() {
+    int size = (int) file.length();
+    Path path = Paths.get(file.getAbsolutePath());
+    byte[] result = new byte[size];
     try {
-      FileInputStream stream = new FileInputStream(file);
-      BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-      char[] buffer = new char[(int) file.length()];
-      reader.read(buffer);
-      for (char s : buffer) {
-        result += s;
-      }
+      result = Files.readAllBytes(path);
     } catch (IOException e) {
       e.printStackTrace();
     }
