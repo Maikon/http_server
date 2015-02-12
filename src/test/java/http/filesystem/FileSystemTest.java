@@ -33,4 +33,13 @@ public class FileSystemTest {
     fs.createFile(root, "file1.txt");
     assertThat(fs.allFiles(root), is(asList("file1.txt")));
   }
+
+  @Test
+  public void canDeleteAFile() throws IOException {
+    FileSystem fs = new FileSystem();
+    File root = directory.getRoot();
+    fs.createFile(root, "file1.txt");
+    fs.deleteFile(root, "file1.txt");
+    assertThat(fs.allFiles(root), is(asList()));
+  }
 }

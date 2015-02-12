@@ -21,4 +21,8 @@ public class FileSystem {
   public void createFile(File root, String file) {
     allFiles(root).add(file);
   }
+
+  public void deleteFile(File root, String file) {
+    allFiles(root).remove(file);
+  }
 }
