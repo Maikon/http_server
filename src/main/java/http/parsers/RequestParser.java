@@ -5,6 +5,7 @@ import http.Request;
 import http.sockets.ClientSocket;
 
 import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class RequestParser {
   private BufferedReader reader;
 
   public RequestParser(ClientSocket client) {
-    this.reader = new Reader(client).invoke();
+    this.reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
     this.reqLineParser = new RequestLineParser();
     this.reqHeadersParser = new HeadersParser();
     this.reqBodyParser = new BodyParser();
