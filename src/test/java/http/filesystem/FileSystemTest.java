@@ -6,6 +6,7 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
@@ -27,11 +28,19 @@ public class FileSystemTest {
   }
 
   @Test
-  public void canCreateAFile() {
+  public void canCreateAFile() throws FileAlreadyExistsException {
     FileSystem fs = new FileSystem();
     File root = directory.getRoot();
     fs.createFile(root, "file1.txt");
     assertThat(fs.allFiles(root), is(asList("file1.txt")));
+  }
+
+  @Test(expected = FileAlreadyExistsException.class)
+  public void throwsExceptionIfFileAlreadyExists() throws FileAlreadyExistsException {
+    FileSystem fs = new FileSystem();
+    File root = directory.getRoot();
+    fs.createFile(root, "file1.txt");
+    fs.createFile(root, "file1.txt");
   }
 
   @Test

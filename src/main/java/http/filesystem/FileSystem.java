@@ -1,6 +1,7 @@
 package http.filesystem;
 
 import java.io.File;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -18,8 +19,12 @@ public class FileSystem {
     return allFiles;
   }
 
-  public void createFile(File root, String file) {
-    allFiles(root).add(file);
+  public void createFile(File root, String file) throws FileAlreadyExistsException {
+    ArrayList<String> directory = allFiles(root);
+    if (directory.contains(file)) {
+      throw new FileAlreadyExistsException(file);
+    }
+    directory.add(file);
   }
 
   public void deleteFile(File root, String file) {
