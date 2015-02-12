@@ -1,7 +1,7 @@
 package http.parsers;
 
 import http.exceptions.InvalidRequestMethodException;
-import http.Fakes.FakeClientSocket;
+import http.fakes.FakeClientSocket;
 import http.Request;
 import org.junit.Before;
 import org.junit.Test;

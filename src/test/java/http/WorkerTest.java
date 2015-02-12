@@ -1,7 +1,7 @@
 package http;
 
-import http.Fakes.FakeClientSocket;
-import http.Fakes.FakeRouter;
+import http.fakes.FakeClientSocket;
+import http.fakes.FakeRouter;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

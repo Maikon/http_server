@@ -1,4 +1,4 @@
-package http.Fakes;
+package http.fakes;
 
 import http.Router;
 
