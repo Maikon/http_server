@@ -29,6 +29,19 @@ public class ServerResponseTest {
   }
 
   @Test
+  public void returnsHeadersInAStringFormat() {
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Header1", "Value1");
+    headers.put("Header2", "Value2");
+    String headersString = "Header1: Value1\r\nHeader2: Value2\r\n";
+    ServerResponse response = ServerResponse.status(200)
+                                            .addHeader("Header1", "Value1")
+                                            .addHeader("Header2", "Value2")
+                                            .build();
+    assertThat(response.stringifyHeaders(), is(headersString));
+  }
+
+  @Test
   public void addsBodyToTheRequest() {
     ServerResponse response = ServerResponse.status(200)
                                             .addBody("Body")

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerResponse {
+  public final String CRLF = "\r\n";
   private String body;
   private Map<String, String> headers;
   private int statusCode;
@@ -24,9 +25,12 @@ public class ServerResponse {
     return responses.get(statusCode).toString();
   }
 
-  private Map<Integer, StatusLine> statusLinesList() {
-    responses.put(200, new StatusLine(200, "OK"));
-    return responses;
+  public String stringifyHeaders() {
+    String result = "";
+    for (Map.Entry<String, String> header : headers.entrySet()) {
+      result += header.getKey() + ": " + header.getValue() + CRLF;
+    }
+    return result;
   }
 
   public String getBody() {
@@ -35,6 +39,11 @@ public class ServerResponse {
 
   public Map<String, String> getHeaders() {
     return headers;
+  }
+
+  private Map<Integer, StatusLine> statusLinesList() {
+    responses.put(200, new StatusLine(200, "OK"));
+    return responses;
   }
 
   protected static class Builder {
