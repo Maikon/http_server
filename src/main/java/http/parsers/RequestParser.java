@@ -1,4 +1,4 @@
-package http.Parsers;
+package http.parsers;
 
 import http.exceptions.InvalidRequestMethodException;
 import http.Request;

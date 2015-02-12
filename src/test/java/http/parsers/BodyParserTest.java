@@ -1,4 +1,4 @@
-package http.Parsers;
+package http.parsers;
 
 import org.junit.Test;
 

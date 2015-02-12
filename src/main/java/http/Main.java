@@ -1,6 +1,6 @@
 package http;
 
-import http.Parsers.ArgumentsParser;
+import http.parsers.ArgumentsParser;
 
 import java.io.IOException;
 

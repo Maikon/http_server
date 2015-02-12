@@ -1,6 +1,6 @@
 package http;
 
-import http.Parsers.RequestParser;
+import http.parsers.RequestParser;
 import http.Sockets.ClientSocket;
 
 import java.io.IOException;
