@@ -1,6 +1,6 @@
 package http.Parsers;
 
-import http.Exceptions.InvalidRequestMethodException;
+import http.exceptions.InvalidRequestMethodException;
 import http.Request;
 import http.Sockets.ClientSocket;
 

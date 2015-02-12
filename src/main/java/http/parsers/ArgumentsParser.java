@@ -1,8 +1,8 @@
 package http.Parsers;
 
-import http.Exceptions.InvalidArgumentsException;
-import http.Exceptions.InvalidPortException;
-import http.Exceptions.WrongArgumentsNumberException;
+import http.exceptions.InvalidArgumentsException;
+import http.exceptions.InvalidPortException;
+import http.exceptions.WrongArgumentsNumberException;
 
 import java.util.HashMap;
 import java.util.Map;

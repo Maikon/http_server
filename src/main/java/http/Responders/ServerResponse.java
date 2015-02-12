@@ -7,6 +7,7 @@ public class ServerResponse {
   private String body;
   private Map<String, String> headers;
   private int statusCode;
+  private Map<Integer, StatusLine> responses = new HashMap<>();
 
   private ServerResponse(Builder builder) {
     this.statusCode = builder.statusCode;
@@ -19,9 +20,13 @@ public class ServerResponse {
   }
 
   public String statusLine() {
-    Map<Integer, String> responses = new HashMap<>();
-    responses.put(200, "HTTP/1.1 200 OK\r\n");
-    return responses.get(statusCode);
+    Map<Integer, StatusLine> responses = statusLinesList();
+    return responses.get(statusCode).toString();
+  }
+
+  private Map<Integer, StatusLine> statusLinesList() {
+    responses.put(200, new StatusLine(200, "OK"));
+    return responses;
   }
 
   public String getBody() {

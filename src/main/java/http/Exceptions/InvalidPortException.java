@@ -1,4 +1,4 @@
-package http.Exceptions;
+package http.exceptions;
 
 public class InvalidPortException extends RuntimeException {
   public InvalidPortException() {
