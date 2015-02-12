@@ -25,4 +25,12 @@ public class FileSystemTest {
     File root = directory.getRoot();
     assertThat(fs.allFiles(root), is(asList("file1.txt", "file2.txt", "file3.txt")));
   }
+
+  @Test
+  public void canCreateAFile() {
+    FileSystem fs = new FileSystem();
+    File root = directory.getRoot();
+    fs.createFile(root, "file1.txt");
+    assertThat(fs.allFiles(root), is(asList("file1.txt")));
+  }
 }
