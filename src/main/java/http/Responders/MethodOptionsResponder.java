@@ -1,4 +1,4 @@
-package http.Responders;
+package http.responders;
 
 public class MethodOptionsResponder implements Response {
   public String response() {

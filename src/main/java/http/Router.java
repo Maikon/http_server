@@ -1,6 +1,6 @@
 package http;
 
-import http.Responders.*;
+import http.responders.*;
 
 import java.io.IOException;
 import java.io.PrintStream;

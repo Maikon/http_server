@@ -1,4 +1,4 @@
-package http.Responders;
+package http.responders;
 
 public class SuccessResponder implements Response {
   public String response() {

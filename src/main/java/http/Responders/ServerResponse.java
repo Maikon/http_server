@@ -1,4 +1,4 @@
-package http.Responders;
+package http.responders;
 
 import java.util.HashMap;
 import java.util.Map;
