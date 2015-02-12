@@ -76,4 +76,19 @@ public class ServerResponseTest {
                                             .build();
     assertThat(response.toString(), is(fullResponse));
   }
+
+  @Test
+  public void returnsFullResponseInBytes() {
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Header1", "Value1");
+    byte[] fullResponse = ("HTTP/1.1 200 OK\r\n" +
+                          "Header1: Value1\r\n" +
+                          "\r\n" +
+                          "Body").getBytes();
+    ServerResponse response = ServerResponse.status(200)
+                                            .addHeader("Header1", "Value1")
+                                            .addBody("Body")
+                                            .build();
+    assertThat(response.toBytes(), is(fullResponse));
+  }
 }

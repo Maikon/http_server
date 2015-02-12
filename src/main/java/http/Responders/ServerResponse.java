@@ -38,6 +38,10 @@ public class ServerResponse {
     return statusLine() + stringifyHeaders() + CRLF + getBody();
   }
 
+  public byte[] toBytes() {
+    return toString().getBytes();
+  }
+
   public String getBody() {
     return body;
   }
