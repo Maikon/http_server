@@ -13,6 +13,10 @@ public class FileReader {
     this.file = file;
   }
 
+  public static boolean fileExists(File root, String file) {
+    return new File(root, file).isFile();
+  }
+
   public byte[] readFile() {
     int size = (int) file.length();
     Path path = Paths.get(file.getAbsolutePath());
