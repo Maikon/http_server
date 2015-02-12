@@ -61,4 +61,19 @@ public class ServerResponseTest {
     assertThat(response.getHeaders(), is(headers));
     assertThat(response.getBody(), is("Body"));
   }
+
+  @Test
+  public void returnsFullResponseInStringFormat() {
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Header1", "Value1");
+    String fullResponse = "HTTP/1.1 200 OK\r\n" +
+                          "Header1: Value1\r\n" +
+                          "\r\n" +
+                          "Body";
+    ServerResponse response = ServerResponse.status(200)
+                                            .addHeader("Header1", "Value1")
+                                            .addBody("Body")
+                                            .build();
+    assertThat(response.toString(), is(fullResponse));
+  }
 }

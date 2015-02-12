@@ -33,6 +33,11 @@ public class ServerResponse {
     return result;
   }
 
+  @Override
+  public String toString() {
+    return statusLine() + stringifyHeaders() + CRLF + getBody();
+  }
+
   public String getBody() {
     return body;
   }
