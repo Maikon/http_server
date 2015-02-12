@@ -58,6 +58,13 @@ public class ServerResponseTest {
   }
 
   @Test
+  public void getsTheContentLengthOfTheBody() {
+    ServerResponse response = ServerResponse.status(OK)
+                                            .build();
+    assertThat(response.getContentLength("Some Body"), is(9));
+  }
+
+  @Test
   public void buildsFullResponse() {
     Map<String, String> headers = new HashMap<>();
     headers.put(HEADER_1, VALUE_1);

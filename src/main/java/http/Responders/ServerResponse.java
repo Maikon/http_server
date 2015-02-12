@@ -55,6 +55,10 @@ public class ServerResponse {
     return responses;
   }
 
+  public int getContentLength(String body) {
+    return body.length();
+  }
+
   protected static class Builder {
     private int statusCode = 0;
     private Map<String, String> headers = new HashMap<>();
