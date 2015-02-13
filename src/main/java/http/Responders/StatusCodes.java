@@ -12,15 +12,7 @@ public enum StatusCodes {
     this.phrase = phrase;
   }
 
-  public int getCode() {
-    return code;
-  }
-
-  public String getPhrase() {
-    return phrase;
-  }
-
   String getLine() {
-    return "HTTP/1.1 " + getCode() + " " + getPhrase() + "\r\n";
+    return "HTTP/1.1 " + code + " " + phrase + "\r\n";
   }
 }
