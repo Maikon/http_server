@@ -5,12 +5,13 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileSystem {
 
-  private ArrayList<String> allFiles = new ArrayList<>();
+  private List<String> allFiles = new ArrayList<>();
 
-  public ArrayList<String> allFiles(File directory) {
+  public List<String> allFiles(File directory) {
     File[] files = directory.listFiles();
     for (File file : files) {
       Path path = Paths.get(file.getPath());
@@ -20,7 +21,7 @@ public class FileSystem {
   }
 
   public void createFile(File root, String file) throws FileAlreadyExistsException {
-    ArrayList<String> directory = allFiles(root);
+    List<String> directory = allFiles(root);
     if (directory.contains(file)) {
       throw new FileAlreadyExistsException(file);
     }
