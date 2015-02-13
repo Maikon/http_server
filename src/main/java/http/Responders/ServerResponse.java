@@ -5,12 +5,14 @@ import java.util.Map;
 
 public class ServerResponse {
   public final String CRLF = "\r\n";
+  private final StatusCodes status;
   private String body;
   private Map<String, String> headers;
   private int statusCode;
   private Map<Integer, StatusLine> responses = new HashMap<>();
 
   private ServerResponse(Builder builder) {
+    this.status = builder.status;
     this.statusCode = builder.statusCode;
     this.headers = builder.headers;
     this.body = builder.body;
@@ -20,7 +22,14 @@ public class ServerResponse {
     return new Builder(code);
   }
 
+  public static Builder status(StatusCodes code) {
+    return new Builder(code);
+  }
+
   public String statusLine() {
+    if (status != null) {
+      return status.getLine();
+    }
     Map<Integer, StatusLine> responses = statusLinesList();
     return responses.get(statusCode).toString();
   }
@@ -59,13 +68,18 @@ public class ServerResponse {
     return body.length();
   }
 
-  protected static class Builder {
+  public static class Builder {
+    private StatusCodes status;
     private int statusCode = 0;
     private Map<String, String> headers = new HashMap<>();
     public String body;
 
     private Builder(int statusCode) {
       this.statusCode = statusCode;
+    }
+
+    public Builder(StatusCodes code) {
+      this.status = code;
     }
 
     public ServerResponse build() {

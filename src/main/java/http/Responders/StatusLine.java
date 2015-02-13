@@ -9,6 +9,11 @@ public class StatusLine {
     this.phrase = phrase;
   }
 
+  public StatusLine(StatusCodes code) {
+    this.code = code.getCode();
+    this.phrase = code.getPhrase();
+  }
+
   @Override
   public String toString() {
     return "HTTP/1.1 " + code + " " + phrase + "\r\n";
