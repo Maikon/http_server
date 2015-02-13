@@ -1,6 +1,7 @@
 package http.responders;
 
 public enum StatusCodes {
+  OK(200, "OK"),
   NOT_FOUND(404, "Not Found");
 
   private final int code;

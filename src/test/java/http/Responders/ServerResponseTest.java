@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ServerResponseTest {
 
-  private final int OK = 200;
+  private final StatusCodes OK = StatusCodes.OK;
   private final String VALUE_1 = "Value1";
   private final String HEADER_2 = "Header2";
   private final String VALUE_2 = "Value2";

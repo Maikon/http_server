@@ -8,18 +8,11 @@ public class ServerResponse {
   private final StatusCodes status;
   private String body;
   private Map<String, String> headers;
-  private int statusCode;
-  private Map<Integer, StatusLine> responses = new HashMap<>();
 
   private ServerResponse(Builder builder) {
     this.status = builder.status;
-    this.statusCode = builder.statusCode;
     this.headers = builder.headers;
     this.body = builder.body;
-  }
-
-  public static Builder status(int code) {
-    return new Builder(code);
   }
 
   public static Builder status(StatusCodes code) {
@@ -27,11 +20,7 @@ public class ServerResponse {
   }
 
   public String statusLine() {
-    if (status != null) {
-      return status.getLine();
-    }
-    Map<Integer, StatusLine> responses = statusLinesList();
-    return responses.get(statusCode).toString();
+    return status.getLine();
   }
 
   public String stringifyHeaders() {
@@ -59,24 +48,14 @@ public class ServerResponse {
     return headers;
   }
 
-  private Map<Integer, StatusLine> statusLinesList() {
-    responses.put(200, new StatusLine(200, "OK"));
-    return responses;
-  }
-
   public int getContentLength(String body) {
     return body.length();
   }
 
   public static class Builder {
     private StatusCodes status;
-    private int statusCode = 0;
     private Map<String, String> headers = new HashMap<>();
     public String body;
-
-    private Builder(int statusCode) {
-      this.statusCode = statusCode;
-    }
 
     public Builder(StatusCodes code) {
       this.status = code;
