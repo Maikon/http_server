@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 
@@ -33,6 +34,16 @@ public class FileSystemTest {
     File root = directory.getRoot();
     fs.createFile(root, "file1.txt");
     assertThat(fs.allFiles(root), is(asList("file1.txt")));
+  }
+
+  @Test
+  public void canReadContentsOfAFile() throws IOException {
+    File file = directory.newFile("file.txt");
+    FileWriter writer = new FileWriter(file);
+    writer.write("Some Text");
+    writer.close();
+    FileSystem fs = new FileSystem(directory.getRoot());
+    assertThat(fs.readFile("file.txt"), is("Some Text".getBytes()));
   }
 
   @Test(expected = FileAlreadyExistsException.class)

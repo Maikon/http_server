@@ -1,7 +1,9 @@
 package http.filesystem;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -9,7 +11,15 @@ import java.util.List;
 
 public class FileSystem {
 
+  private File directory;
   private List<String> allFiles = new ArrayList<>();
+
+  public FileSystem(File directory) {
+    this.directory = directory;
+  }
+
+  public FileSystem() {
+  }
 
   public List<String> allFiles(File directory) {
     File[] files = directory.listFiles();
@@ -34,5 +44,17 @@ public class FileSystem {
 
   public boolean fileExists(File root, String file) {
     return allFiles(root).contains(file);
+  }
+
+  public byte[] readFile(String file) {
+    int size = file.length();
+    Path path = Paths.get(directory + "/" + file);
+    byte[] result = new byte[size];
+    try {
+      result = Files.readAllBytes(path);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return result;
   }
 }
