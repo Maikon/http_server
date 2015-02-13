@@ -57,4 +57,8 @@ public class FileSystem {
     }
     return result;
   }
+
+  public int contentLength(String file) {
+    return readFile(file).length;
+  }
 }
