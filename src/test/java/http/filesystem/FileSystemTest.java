@@ -22,14 +22,14 @@ public class FileSystemTest {
     directory.newFile("file1.txt");
     directory.newFile("file2.txt");
     directory.newFile("file3.txt");
-    FileSystem fs = new FileSystem();
+    FileSystem fs = createFileSystem();
     File root = directory.getRoot();
     assertThat(fs.allFiles(root), is(asList("file1.txt", "file2.txt", "file3.txt")));
   }
 
   @Test
   public void canCreateAFile() throws FileAlreadyExistsException {
-    FileSystem fs = new FileSystem();
+    FileSystem fs = createFileSystem();
     File root = directory.getRoot();
     fs.createFile(root, "file1.txt");
     assertThat(fs.allFiles(root), is(asList("file1.txt")));
@@ -37,7 +37,7 @@ public class FileSystemTest {
 
   @Test(expected = FileAlreadyExistsException.class)
   public void throwsExceptionIfFileAlreadyExists() throws FileAlreadyExistsException {
-    FileSystem fs = new FileSystem();
+    FileSystem fs = createFileSystem();
     File root = directory.getRoot();
     fs.createFile(root, "file1.txt");
     fs.createFile(root, "file1.txt");
@@ -45,10 +45,14 @@ public class FileSystemTest {
 
   @Test
   public void canDeleteAFile() throws IOException {
-    FileSystem fs = new FileSystem();
+    FileSystem fs = createFileSystem();
     File root = directory.getRoot();
     fs.createFile(root, "file1.txt");
     fs.deleteFile(root, "file1.txt");
     assertThat(fs.allFiles(root), is(asList()));
+  }
+
+  private FileSystem createFileSystem() {
+    return new FileSystem();
   }
 }
