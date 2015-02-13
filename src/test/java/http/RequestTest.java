@@ -41,4 +41,12 @@ public class RequestTest {
                              .build();
     assertThat(request.getBody(), is("Body"));
   }
+
+  @Test
+  public void returnsTheUriRelativeToTheRoot() {
+    Request request = Request.withMethod("GET")
+                             .addURI("/dir/file")
+                             .build();
+    assertThat(request.getUri(), is("dir/file"));
+  }
 }
