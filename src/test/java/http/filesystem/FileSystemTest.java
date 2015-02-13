@@ -52,6 +52,15 @@ public class FileSystemTest {
     assertThat(fs.allFiles(root), is(asList()));
   }
 
+  @Test
+  public void checksIfAFileExistsInTheSystem() throws IOException {
+    directory.newFile("file.txt");
+    FileSystem fs = createFileSystem();
+    File root = directory.getRoot();
+    assertThat(fs.fileExists(root, "file.txt"), is(true));
+    assertThat(fs.fileExists(root, "some-other-file.txt"), is(false));
+  }
+
   private FileSystem createFileSystem() {
     return new FileSystem();
   }

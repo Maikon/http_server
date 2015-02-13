@@ -31,4 +31,8 @@ public class FileSystem {
   public void deleteFile(File root, String file) {
     allFiles(root).remove(file);
   }
+
+  public boolean fileExists(File root, String file) {
+    return allFiles(root).contains(file);
+  }
 }
