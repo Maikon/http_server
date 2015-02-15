@@ -14,7 +14,7 @@ public class DefaultController implements Controller {
 
   public DefaultController(File directory) {
     this.directory = directory;
-    this.fs = new FileSystem();
+    this.fs = new FileSystem(directory);
   }
 
   @Override
@@ -24,7 +24,7 @@ public class DefaultController implements Controller {
                            .addHeader("Allow", "GET,HEAD,POST,OPTIONS,PUT")
                            .build();
     }
-    if (fs.fileExists(directory, request.getUri())) {
+    if (fs.fileExists(request.getUri())) {
       return ServerResponse.status(StatusCodes.OK).build();
     } else {
       return ServerResponse.status(StatusCodes.NOT_FOUND).build();

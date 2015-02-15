@@ -17,10 +17,7 @@ public class FileSystem {
     this.directory = directory;
   }
 
-  public FileSystem() {
-  }
-
-  public List<String> allFiles(File directory) {
+  public List<String> allFiles() {
     File[] files = directory.listFiles();
     for (File file : files) {
       Path path = Paths.get(file.getPath());
@@ -29,20 +26,20 @@ public class FileSystem {
     return allFiles;
   }
 
-  public void createFile(File root, String file) throws FileAlreadyExistsException {
-    List<String> directory = allFiles(root);
-    if (directory.contains(file)) {
+  public void createFile(String file) throws FileAlreadyExistsException {
+    List<String> dir = allFiles();
+    if (dir.contains(file)) {
       throw new FileAlreadyExistsException(file);
     }
-    directory.add(file);
+    dir.add(file);
   }
 
-  public void deleteFile(File root, String file) {
-    allFiles(root).remove(file);
+  public void deleteFile(String file) {
+    allFiles().remove(file);
   }
 
-  public boolean fileExists(File root, String file) {
-    return allFiles(root).contains(file);
+  public boolean fileExists(String file) {
+    return allFiles().contains(file);
   }
 
   public byte[] readFile(String file) {
