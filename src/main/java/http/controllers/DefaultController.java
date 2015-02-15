@@ -19,6 +19,11 @@ public class DefaultController implements Controller {
 
   @Override
   public ServerResponse respond(Request request) {
+    if(request.getMethod().equals("OPTIONS")) {
+      return ServerResponse.status(StatusCodes.OK)
+                           .addHeader("Allow", "GET,HEAD,POST,OPTIONS,PUT")
+                           .build();
+    }
     if (fs.fileExists(directory, request.getUri())) {
       return ServerResponse.status(StatusCodes.OK).build();
     } else {

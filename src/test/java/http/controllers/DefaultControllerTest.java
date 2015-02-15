@@ -34,4 +34,13 @@ public class DefaultControllerTest {
                                                         .build());
     assertThat(response.statusLine(), is("HTTP/1.1 404 Not Found\r\n"));
   }
+
+  @Test
+  public void respondsToTheOPTIONSMethod() {
+    Controller controller = new DefaultController(directory.getRoot());
+    ServerResponse response = controller.respond(Request.withMethod("OPTIONS")
+                                                        .addURI("/method_options")
+                                                        .build());
+    assertThat(response.stringifyHeaders(), is("Allow: GET,HEAD,POST,OPTIONS,PUT\r\n"));
+  }
 }
