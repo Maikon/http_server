@@ -2,7 +2,8 @@ package http.responders;
 
 public enum StatusCodes {
   OK(200, "OK"),
-  NOT_FOUND(404, "Not Found");
+  NOT_FOUND(404, "Not Found"),
+  REDIRECT(301, "Moved Permanently");
 
   private final int code;
   private final String phrase;
