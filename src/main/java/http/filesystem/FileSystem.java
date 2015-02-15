@@ -1,7 +1,6 @@
 package http.filesystem;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -60,5 +59,16 @@ public class FileSystem {
 
   public int contentLength(String file) {
     return readFile(file).length;
+  }
+
+  public void writeTo(String file, String content) {
+    Path path = Paths.get(directory + "/" + file);
+    byte[] data = content.getBytes();
+    try {
+      OutputStream out = new FileOutputStream(path.toString());
+      out.write(data, 0, data.length);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

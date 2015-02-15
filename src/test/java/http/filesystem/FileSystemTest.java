@@ -56,6 +56,14 @@ public class FileSystemTest {
     assertThat(fs.contentLength("file.txt"), is(9));
   }
 
+  @Test
+  public void canWriteToAFile() throws IOException {
+    directory.newFile("file.txt");
+    FileSystem fs = new FileSystem(directory.getRoot());
+    fs.writeTo("file.txt", "Some Text");
+    assertThat(fs.readFile("file.txt"), is("Some Text".getBytes()));
+  }
+
   @Test(expected = FileAlreadyExistsException.class)
   public void throwsExceptionIfFileAlreadyExists() throws FileAlreadyExistsException {
     FileSystem fs = createFileSystem();
