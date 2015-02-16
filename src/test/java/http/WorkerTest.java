@@ -9,24 +9,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class WorkerTest {
 
-  private final String FULL_REQUEST = "GET / HTTP/1.1\r\n" +
-                                      "Accept-Language: en-us\r\n" +
-                                      "Host: localhost\r\n\r\n" +
-                                      "Body of the Request";
+  private final String REQUEST_STATUS_LINE = "GET / HTTP/1.1\r\n";
 
   @Test
   public void dispatchesRequestToRouter() {
-    FakeClientSocket socket = new FakeClientSocket(FULL_REQUEST);
+    FakeClientSocket socket = new FakeClientSocket(REQUEST_STATUS_LINE);
     FakeRouter router = new FakeRouter();
     Worker worker = new Worker(router, socket);
 
     worker.run();
-    assertThat(router.calledWith("GET /"), is(true));
+    assertThat(router.calledWith("GET"), is(true));
   }
 
   @Test
   public void itClosesTheConnection() {
-    FakeClientSocket socket = new FakeClientSocket(FULL_REQUEST);
+    FakeClientSocket socket = new FakeClientSocket(REQUEST_STATUS_LINE);
     FakeRouter router = new FakeRouter();
     Worker worker = new Worker(router, socket);
 

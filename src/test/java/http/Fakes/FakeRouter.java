@@ -1,17 +1,19 @@
 package http.fakes;
 
+import http.Request;
 import http.Router;
 
 import java.io.PrintStream;
 
 public class FakeRouter extends Router {
-  private String dispatchValue;
 
-  public boolean calledWith(String request) {
-    return request.equals(dispatchValue);
+  private Request request;
+
+  public void dispatch(Request request, PrintStream output) {
+    this.request = request;
   }
 
-  public void dispatch(String identifier, PrintStream output) {
-    dispatchValue = identifier;
+  public boolean calledWith(String method) {
+    return request.getMethod().equals(method);
   }
 }

@@ -15,6 +15,9 @@ public class Router {
     this.responders = generateResponders();
   }
 
+  public void dispatch(Request request, PrintStream output) {
+  }
+
   public void dispatch(String identifier, PrintStream output) throws IOException {
     Response res = responders.get(identifier);
     if (res == null) {
