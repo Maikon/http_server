@@ -21,19 +21,13 @@ public class DefaultControllerTest {
   @Test
   public void returnsSuccessResponseIfFileExists() throws IOException {
     directory.newFile("file.txt");
-    Controller controller = new DefaultController(directory.getRoot());
-    ServerResponse response = controller.respond(Request.withMethod("GET")
-                                                        .addURI("/file.txt")
-                                                        .build());
+    ServerResponse response = getController().respond(buildRequest("GET", "/file.txt"));
     assertThat(response.statusLine(), is("HTTP/1.1 200 OK\r\n"));
   }
 
   @Test
   public void respondsToTheOPTIONSMethod() {
-    Controller controller = new DefaultController(directory.getRoot());
-    ServerResponse response = controller.respond(Request.withMethod("OPTIONS")
-                                                        .addURI("/method_options")
-                                                        .build());
+    ServerResponse response = getController().respond(buildRequest("OPTIONS", "/method_options"));
     assertThat(response.stringifyHeaders(), is("Allow: GET,HEAD,POST,OPTIONS,PUT\r\n"));
   }
 
@@ -43,10 +37,7 @@ public class DefaultControllerTest {
     FileWriter writer = new FileWriter(file);
     writer.write("Some content");
     writer.close();
-    Controller controller = new DefaultController(directory.getRoot());
-    ServerResponse response = controller.respond(Request.withMethod("GET")
-                                                        .addURI("/file.txt")
-                                                        .build());
+    ServerResponse response = getController().respond(buildRequest("GET", "/file.txt"));
     assertThat(response.stringifyHeaders(), is("Content-Length: 12\r\n"));
     assertThat(response.getBody(), is("Some content"));
   }
@@ -57,11 +48,16 @@ public class DefaultControllerTest {
     FileWriter writer = new FileWriter(file);
     writer.write("Some content");
     writer.close();
-    Controller controller = new DefaultController(directory.getRoot());
-    ServerResponse response = controller.respond(Request.withMethod("POST")
-                                                       .addURI("/file.txt")
-                                                       .build());
+    ServerResponse response = getController().respond(buildRequest("POST", "/file.txt"));
     assertThat(response.statusLine(), is("HTTP/1.1 200 OK\r\n"));
     assertThat(response.getBody(), is(""));
+  }
+
+  private Controller getController() {
+    return new DefaultController(directory.getRoot());
+  }
+
+  private Request buildRequest(String method, String uri) {
+    return Request.withMethod(method).addURI(uri).build();
   }
 }
