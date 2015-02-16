@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -51,6 +53,17 @@ public class DefaultControllerTest {
     ServerResponse response = getController().respond(buildRequest("POST", "/file.txt"));
     assertThat(response.statusLine(), is("HTTP/1.1 200 OK\r\n"));
     assertThat(response.getBody(), is(""));
+  }
+
+  @Test
+  public void returnsListingOfRootDirectory() throws IOException {
+    directory.newFile("file.txt");
+    directory.newFile("file_2.txt");
+    directory.newFile("file_3.txt");
+    ServerResponse response = getController().respond(buildRequest("GET", "/"));
+    assertThat(response.getBody(), allOf(containsString("file.txt"),
+                                         containsString("file_2.txt"),
+                                         containsString("file_3.txt")));
   }
 
   private Controller getController() {
