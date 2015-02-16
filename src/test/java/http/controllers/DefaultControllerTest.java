@@ -6,6 +6,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -27,20 +29,39 @@ public class DefaultControllerTest {
   }
 
   @Test
-  public void returnsNotFoundIfFileDoesNotExist() {
-    Controller controller = new DefaultController(directory.getRoot());
-    ServerResponse response = controller.respond(Request.withMethod("GET")
-                                                        .addURI("/foobar")
-                                                        .build());
-    assertThat(response.statusLine(), is("HTTP/1.1 404 Not Found\r\n"));
-  }
-
-  @Test
   public void respondsToTheOPTIONSMethod() {
     Controller controller = new DefaultController(directory.getRoot());
     ServerResponse response = controller.respond(Request.withMethod("OPTIONS")
                                                         .addURI("/method_options")
                                                         .build());
     assertThat(response.stringifyHeaders(), is("Allow: GET,HEAD,POST,OPTIONS,PUT\r\n"));
+  }
+
+  @Test
+  public void returnsContentsOfARequestResource() throws IOException {
+    File file = directory.newFile("file.txt");
+    FileWriter writer = new FileWriter(file);
+    writer.write("Some content");
+    writer.close();
+    Controller controller = new DefaultController(directory.getRoot());
+    ServerResponse response = controller.respond(Request.withMethod("GET")
+                                                        .addURI("/file.txt")
+                                                        .build());
+    assertThat(response.stringifyHeaders(), is("Content-Length: 12\r\n"));
+    assertThat(response.getBody(), is("Some content"));
+  }
+
+  @Test
+  public void doesNotReturnContentsOfARequestForWrongMethod() throws IOException {
+    File file = directory.newFile("file.txt");
+    FileWriter writer = new FileWriter(file);
+    writer.write("Some content");
+    writer.close();
+    Controller controller = new DefaultController(directory.getRoot());
+    ServerResponse response = controller.respond(Request.withMethod("POST")
+                                                       .addURI("/file.txt")
+                                                       .build());
+    assertThat(response.statusLine(), is("HTTP/1.1 200 OK\r\n"));
+    assertThat(response.getBody(), is(""));
   }
 }

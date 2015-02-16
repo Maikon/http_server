@@ -10,10 +10,8 @@ import java.io.File;
 public class DefaultController implements Controller {
 
   private final FileSystem fs;
-  private File directory;
 
   public DefaultController(File directory) {
-    this.directory = directory;
     this.fs = new FileSystem(directory);
   }
 
@@ -24,10 +22,16 @@ public class DefaultController implements Controller {
                            .addHeader("Allow", "GET,HEAD,POST,OPTIONS,PUT")
                            .build();
     }
-    if (fs.fileExists(request.getUri())) {
-      return ServerResponse.status(StatusCodes.OK).build();
+    if (fs.fileExists(request.getUri()) && request.getMethod().equals("GET")) {
+      String file = request.getUri();
+      return ServerResponse.status(StatusCodes.OK)
+                           .addHeader("Content-Length", String.valueOf(fs.contentLength(file)))
+                           .addBody(new String(fs.readFile(request.getUri())))
+                           .build();
     } else {
-      return ServerResponse.status(StatusCodes.NOT_FOUND).build();
+      return ServerResponse.status(StatusCodes.OK)
+                           .addBody("")
+                           .build();
     }
   }
 }
