@@ -15,10 +15,8 @@ public class Router {
     this.responders = generateResponders();
   }
 
-  public void dispatch(Request request, PrintStream output) {
-  }
-
-  public void dispatch(String identifier, PrintStream output) throws IOException {
+  public void dispatch(Request request, PrintStream output) throws IOException {
+    String identifier = request.methodWithUri();
     Response res = responders.get(identifier);
     if (res == null) {
       lastResponse = "404";

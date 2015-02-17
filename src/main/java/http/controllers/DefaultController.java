@@ -32,7 +32,7 @@ public class DefaultController implements Controller {
                              .addBody(HTML_START + body + HTML_END)
                              .build();
     }
-    if (fs.fileExists(request.getUri()) && request.getMethod().equals("GET")) {
+    if (fs.fileExists(request.getUri().substring(1)) && request.getMethod().equals("GET")) {
       String file = request.getUri();
       return ServerResponse.status(StatusCodes.OK)
                            .addHeader("Content-Length", String.valueOf(fs.contentLength(file)))

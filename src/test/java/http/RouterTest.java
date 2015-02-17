@@ -15,17 +15,16 @@ public class RouterTest {
   public void respondsToKnownURI() throws IOException {
     Router router = new Router();
     FakeOutput output = new FakeOutput();
-    PrintStream out = new PrintStream(output);
-    router.dispatch("GET /", out);
+    Request request = Request.withMethod("GET").addURI("/").build();
+    router.dispatch(request, new PrintStream(output));
     assertThat(output.wasWritten, is(true));
   }
 
   @Test
   public void respondsToUnknownURI() throws IOException {
     Router router = new Router();
-    FakeOutput output = new FakeOutput();
-    PrintStream out = new PrintStream(output);
-    router.dispatch("GET /unknown-path", out);
+    Request request = Request.withMethod("GET").addURI("/unknown-path").build();
+    router.dispatch(request, new PrintStream(new FakeOutput()));
     assertThat(router.lastResponse(), is("404"));
   }
 

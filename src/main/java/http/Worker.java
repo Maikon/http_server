@@ -3,6 +3,7 @@ package http;
 import http.parsers.RequestParser;
 import http.sockets.ClientSocket;
 
+import java.io.IOException;
 import java.io.PrintStream;
 
 public class Worker implements Runnable {
@@ -19,7 +20,11 @@ public class Worker implements Runnable {
   }
 
   public void run() {
-    router.dispatch(reqParser.buildRequest(), output);
+    try {
+      router.dispatch(reqParser.buildRequest(), output);
+    } catch (IOException e) {
+      //
+    }
     stop();
   }
 

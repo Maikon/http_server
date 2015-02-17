@@ -47,7 +47,8 @@ public class RequestTest {
     Request request = Request.withMethod("GET")
                              .addURI("/dir/file")
                              .build();
-    assertThat(request.getUri(), is("dir/file"));
+    assertThat(request.getUri(), is("/dir/file"));
+  }
 
   @Test
   public void returnsTheMethodAndUriCombined() {

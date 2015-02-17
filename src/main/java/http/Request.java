@@ -28,10 +28,7 @@ public class Request {
   }
 
   public String getUri() {
-    if (uri.length() == 1) {
-      return uri;
-    }
-    return uri.substring(1);
+    return uri;
   }
 
   public Map getHeaders() {
