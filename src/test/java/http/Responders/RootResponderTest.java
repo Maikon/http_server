@@ -9,8 +9,8 @@ public class RootResponderTest {
 
   @Test
   public void rootResponseContainsBody() {
-    RootResponder res = new RootResponder();
-    assertThat(res.response(), is("HTTP/1.1 200 OK\r\n" +
+    ServerResponse res = new RootResponder().response();
+    assertThat(res.toString(), is("HTTP/1.1 200 OK\r\n" +
                                   "Content-Type: text/html\r\n\r\n" +
                                   "<html><head></head><body>" +
                                   "<a href='file1'>file1</a>"+

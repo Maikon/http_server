@@ -9,8 +9,8 @@ public class RedirectResponderTest {
 
   @Test
   public void respondsToARedirect() {
-    RedirectResponder res = new RedirectResponder();
-    assertThat(res.response(), is("HTTP/1.1 301 Moved Permanently\r\n" +
+    ServerResponse res = new RedirectResponder().response();
+    assertThat(res.toString(), is("HTTP/1.1 301 Moved Permanently\r\n" +
                                   "Location: http://localhost:5000/\r\n\r\n"));
   }
 }

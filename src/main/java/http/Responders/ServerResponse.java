@@ -55,7 +55,7 @@ public class ServerResponse {
   public static class Builder {
     private StatusCodes status;
     private Map<String, String> headers = new HashMap<>();
-    public String body;
+    public String body = "";
 
     public Builder(StatusCodes code) {
       this.status = code;

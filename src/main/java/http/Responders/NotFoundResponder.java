@@ -1,8 +1,8 @@
 package http.responders;
 
 public class NotFoundResponder implements Responder {
-  public String response() {
+  public ServerResponse response() {
     ServerResponse response = ServerResponse.status(StatusCodes.NOT_FOUND).build();
-    return response.statusLine();
+    return response;
   }
 }

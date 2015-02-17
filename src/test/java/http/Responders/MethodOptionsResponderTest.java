@@ -9,8 +9,8 @@ public class MethodOptionsResponderTest {
 
   @Test
   public void respondsToAnOptionsMethod() {
-    MethodOptionsResponder res = new MethodOptionsResponder();
-    assertThat(res.response(), is("HTTP/1.1 200 OK\r\n" +
+    ServerResponse res = new MethodOptionsResponder().response();
+    assertThat(res.toString(), is("HTTP/1.1 200 OK\r\n" +
                                   "Allow: GET,HEAD,POST,OPTIONS,PUT\r\n\r\n"));
   }
 }

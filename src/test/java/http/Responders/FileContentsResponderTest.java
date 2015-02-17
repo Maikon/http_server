@@ -9,8 +9,8 @@ public class FileContentsResponderTest {
 
   @Test
   public void respondsWithTheContentsOfTheFile() {
-    FileContentsResponder res = new FileContentsResponder();
-    assertThat(res.response(), is("HTTP/1.1 200 OK\r\n" +
+    ServerResponse res = new FileContentsResponder().response();
+    assertThat(res.toString(), is("HTTP/1.1 200 OK\r\n" +
                                   "Content-Type: text/html\r\n\r\n" +
                                   "<html><head></head><body>" +
                                   "<p>file1 contents</p>" +

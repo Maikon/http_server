@@ -9,7 +9,7 @@ public class SuccessResponderTest {
 
   @Test
   public void respondsToARootRequest() {
-    SuccessResponder res = new SuccessResponder();
-    assertThat(res.response(), is("HTTP/1.1 200 OK\r\n"));
+    ServerResponse res = new SuccessResponder().response();
+    assertThat(res.toString(), is("HTTP/1.1 200 OK\r\n\r\n"));
   }
 }

@@ -1,9 +1,9 @@
 package http.responders;
 
 public class MethodNotAllowedResponder implements Responder {
-  public String response() {
+  public ServerResponse response() {
     ServerResponse response = ServerResponse.status(StatusCodes.METHOD_NOT_ALLOWED)
                                             .build();
-    return response.statusLine();
+    return response;
   }
 }

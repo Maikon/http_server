@@ -9,7 +9,7 @@ public class NotFoundResponderTest {
 
   @Test
   public void respondsToAnUnknownResourceRequest() {
-    NotFoundResponder res = new NotFoundResponder();
-    assertThat(res.response(), is("HTTP/1.1 404 Not Found\r\n"));
+    ServerResponse res = new NotFoundResponder().response();
+    assertThat(res.toString(), is("HTTP/1.1 404 Not Found\r\n\r\n"));
   }
 }

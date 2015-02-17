@@ -23,7 +23,7 @@ public class Router {
       lastResponse = "404";
       res = new NotFoundResponder();
     }
-    output.write(res.response().getBytes());
+    output.write(res.response().toBytes());
   }
 
   private Map<String, Responder> generateResponders() {
