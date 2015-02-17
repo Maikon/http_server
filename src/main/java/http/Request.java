@@ -46,7 +46,11 @@ public class Request {
     return new Builder(method);
   }
 
- public static class Builder {
+  public String methodWithUri() {
+    return getMethod() + " " + getUri();
+  }
+
+  public static class Builder {
 
    private final String method;
    private Map<String, String> headers = new HashMap<>();
