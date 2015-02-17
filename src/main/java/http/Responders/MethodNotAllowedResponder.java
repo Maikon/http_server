@@ -2,6 +2,8 @@ package http.responders;
 
 public class MethodNotAllowedResponder implements Response {
   public String response() {
-    return "HTTP 405 Method Not Allowed\r\n";
+    ServerResponse response = ServerResponse.status(StatusCodes.METHOD_NOT_ALLOWED)
+                                            .build();
+    return response.statusLine();
   }
 }

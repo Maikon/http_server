@@ -10,6 +10,6 @@ public class MethodNotAllowedResponderTest {
   @Test
   public void respondsToAProhibitedRequestMethod() {
     MethodNotAllowedResponder res = new MethodNotAllowedResponder();
-    assertThat(res.response(), is("HTTP 405 Method Not Allowed\r\n"));
+    assertThat(res.response(), is("HTTP/1.1 405 Method Not Allowed\r\n"));
   }
 }
