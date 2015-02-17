@@ -21,11 +21,9 @@ public class Router {
     Responder res = responders.get(identifier);
     if (res == null) {
       lastResponse = "404";
-      Response notFound = new NotFoundResponder();
-      output.write(notFound.response().getBytes());
-    } else {
-      output.write(res.response().getBytes());
+      res = new NotFoundResponder();
     }
+    output.write(res.response().getBytes());
   }
 
   private Map<String, Responder> generateResponders() {

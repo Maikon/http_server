@@ -8,13 +8,11 @@ public class ServerResponse {
   private final StatusCodes status;
   private String body;
   private Map<String, String> headers;
-  private StatusCodes statusCode;
 
   private ServerResponse(Builder builder) {
     this.status = builder.status;
     this.headers = builder.headers;
     this.body = builder.body;
-    this.statusCode = builder.status;
   }
 
   public static Builder status(StatusCodes code) {
@@ -52,10 +50,6 @@ public class ServerResponse {
 
   public int getContentLength(String body) {
     return body.length();
-  }
-
-  public StatusCodes getStatusCode() {
-    return statusCode;
   }
 
   public static class Builder {
