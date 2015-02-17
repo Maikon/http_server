@@ -52,6 +52,14 @@ public class ServerResponse {
     return body.length();
   }
 
+  public StatusCodes getStatus() {
+    return status;
+  }
+
+  public String getHeader(String key) {
+    return headers.get(key);
+  }
+
   public static class Builder {
     private StatusCodes status;
     private Map<String, String> headers = new HashMap<>();

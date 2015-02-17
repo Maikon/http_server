@@ -2,18 +2,27 @@ package http.responders;
 
 import org.junit.Test;
 
+import static http.responders.StatusCodes.OK;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class FileContentsResponderTest {
 
+  private ServerResponse response = new FileContentsResponder().response();
+
+  @Test
+  public void respondsWithSuccess() {
+    assertThat(response.getStatus(), is(OK));
+  }
+
+  @Test
+  public void respondsWithHTML() {
+    assertThat(response.getHeader("Content-Type"), is("text/html"));
+  }
+
   @Test
   public void respondsWithTheContentsOfTheFile() {
-    ServerResponse res = new FileContentsResponder().response();
-    assertThat(res.toString(), is("HTTP/1.1 200 OK\r\n" +
-                                  "Content-Type: text/html\r\n\r\n" +
-                                  "<html><head></head><body>" +
-                                  "<p>file1 contents</p>" +
-                                  "</body></html>"));
+    assertThat(response.getBody(), containsString("<p>file1 contents</p>"));
   }
 }

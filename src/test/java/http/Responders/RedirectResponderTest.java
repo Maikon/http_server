@@ -2,15 +2,21 @@ package http.responders;
 
 import org.junit.Test;
 
+import static http.responders.StatusCodes.REDIRECT;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RedirectResponderTest {
 
   @Test
-  public void respondsToARedirect() {
+  public void respondsWithARedirect() {
     ServerResponse res = new RedirectResponder().response();
-    assertThat(res.toString(), is("HTTP/1.1 301 Moved Permanently\r\n" +
-                                  "Location: http://localhost:5000/\r\n\r\n"));
+    assertThat(res.getStatus(), is(REDIRECT));
+  }
+
+  @Test
+  public void hasTheCorrectLocation() {
+    ServerResponse res = new RedirectResponder().response();
+    assertThat(res.getHeader("Location"), is("http://localhost:5000/"));
   }
 }
