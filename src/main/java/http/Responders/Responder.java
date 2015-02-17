@@ -1,5 +1,5 @@
 package http.responders;
 
-public interface Response {
+public interface Responder {
   String response();
 }

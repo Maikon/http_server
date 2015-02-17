@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Router {
-  private Map<String, Response> responders;
+  private FileSystem fs;
+  private Map<String, Responder> responders;
   private String lastResponse;
 
   public Router() {
@@ -17,7 +18,7 @@ public class Router {
 
   public void dispatch(Request request, PrintStream output) throws IOException {
     String identifier = request.methodWithUri();
-    Response res = responders.get(identifier);
+    Responder res = responders.get(identifier);
     if (res == null) {
       lastResponse = "404";
       Response notFound = new NotFoundResponder();
@@ -27,8 +28,8 @@ public class Router {
     }
   }
 
-  private Map<String, Response> generateResponders() {
-    Map<String, Response> responders = new HashMap<>();
+  private Map<String, Responder> generateResponders() {
+    Map<String, Responder> responders = new HashMap<>();
     responders.put("GET /", new RootResponder());
     responders.put("GET /redirect", new RedirectResponder());
     responders.put("GET /foobar", new NotFoundResponder());

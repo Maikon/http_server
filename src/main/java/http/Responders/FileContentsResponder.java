@@ -1,6 +1,6 @@
 package http.responders;
 
-public class FileContentsResponder implements Response {
+public class FileContentsResponder implements Responder {
   public String response() {
     ServerResponse response = ServerResponse.status(StatusCodes.OK)
                                             .addHeader("Content-Type", "text/html")

@@ -8,7 +8,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class ServerResponseTest {
+public class ServerResponderTest {
 
   private final StatusCodes OK = StatusCodes.OK;
   private final String VALUE_1 = "Value1";

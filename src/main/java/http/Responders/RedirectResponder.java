@@ -1,8 +1,10 @@
 package http.responders;
 
-public class RedirectResponder implements Response {
+import static http.responders.StatusCodes.*;
+
+public class RedirectResponder implements Responder {
   public String response() {
-    ServerResponse response = ServerResponse.status(StatusCodes.REDIRECT)
+    ServerResponse response = ServerResponse.status(REDIRECT)
                                             .addHeader("Location", "http://localhost:5000/")
                                             .addBody("")
                                             .build();
