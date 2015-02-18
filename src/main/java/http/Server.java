@@ -3,6 +3,7 @@ package http;
 import http.sockets.ClientSocket;
 import http.sockets.RealSocket;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
@@ -20,7 +21,7 @@ public class Server {
     this.port = port;
     this.directory = directory;
     socket = new ServerSocket(port);
-    this.router = new Router();
+    this.router = new Router(new File(directory));
     running = false;
     executor = Executors.newFixedThreadPool(20);
     System.out.println("Starting server at port: " + port);
