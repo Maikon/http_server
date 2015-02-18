@@ -1,5 +1,6 @@
 package http.responders;
 
+import http.Request;
 import org.junit.Test;
 
 import static http.responders.StatusCodes.REDIRECT;
@@ -10,13 +11,13 @@ public class RedirectResponderTest {
 
   @Test
   public void respondsWithARedirect() {
-    ServerResponse res = new RedirectResponder().response();
+    ServerResponse res = new RedirectResponder().response(Request.withMethod("GET").build());
     assertThat(res.getStatus(), is(REDIRECT));
   }
 
   @Test
   public void hasTheCorrectLocation() {
-    ServerResponse res = new RedirectResponder().response();
+    ServerResponse res = new RedirectResponder().response(Request.withMethod("GET").build());
     assertThat(res.getHeader("Location"), is("http://localhost:5000/"));
   }
 }

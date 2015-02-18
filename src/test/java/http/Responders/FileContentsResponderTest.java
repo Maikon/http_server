@@ -1,5 +1,6 @@
 package http.responders;
 
+import http.Request;
 import org.junit.Test;
 
 import static http.responders.StatusCodes.OK;
@@ -9,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class FileContentsResponderTest {
 
-  private ServerResponse response = new FileContentsResponder().response();
+  private ServerResponse response = new FileContentsResponder().response(Request.withMethod("GET").build());
 
   @Test
   public void respondsWithSuccess() {

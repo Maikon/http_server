@@ -1,5 +1,6 @@
 package http.responders;
 
+import http.Request;
 import org.junit.Test;
 
 import static http.responders.StatusCodes.*;
@@ -10,7 +11,7 @@ public class MethodNotAllowedResponderTest {
 
   @Test
   public void respondsToAProhibitedRequestMethod() {
-    ServerResponse res = new MethodNotAllowedResponder().response();
+    ServerResponse res = new MethodNotAllowedResponder().response(Request.withMethod("GET").build());
     assertThat(res.getStatus(), is(METHOD_NOT_ALLOWED));
   }
 }

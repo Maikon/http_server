@@ -1,5 +1,7 @@
 package http.responders;
 
+import http.Request;
+
 public interface Responder {
-  ServerResponse response();
+  ServerResponse response(Request request);
 }

@@ -1,5 +1,6 @@
 package http.responders;
 
+import http.Request;
 import org.junit.Test;
 
 import static http.responders.StatusCodes.*;
@@ -10,7 +11,7 @@ public class SuccessResponderTest {
 
   @Test
   public void respondsToARootRequest() {
-    ServerResponse res = new SuccessResponder().response();
+    ServerResponse res = new SuccessResponder().response(Request.withMethod("GET").build());
     assertThat(res.getStatus(), is(OK));
   }
 }
