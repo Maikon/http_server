@@ -34,16 +34,16 @@ public class Router {
 
   private Map<String, Responder> generateResponders() {
     Map<String, Responder> responders = new HashMap<>();
-    responders.put("GET /", new RootResponder());
-    responders.put("GET /redirect", new RedirectResponder());
-    responders.put("GET /foobar", new NotFoundResponder());
-    responders.put("GET /file1", new FileContentsResponder());
-    responders.put("GET /form", new FormResponder(directory));
-    responders.put("POST /form", new FormResponder(directory));
-    responders.put("PUT /form", new FormResponder(directory));
-    responders.put("DELETE /form", new FormResponder(directory));
-    responders.put("POST /text-file.txt", new MethodNotAllowedResponder());
-    responders.put("PUT /file1", new MethodNotAllowedResponder());
+    responders.put("GET /",                   new RootResponder());
+    responders.put("GET /redirect",           new RedirectResponder());
+    responders.put("GET /foobar",             new NotFoundResponder());
+    responders.put("GET /file1",              new FileContentsResponder());
+    responders.put("GET /form",               new FormResponder(directory));
+    responders.put("POST /form",              new FormResponder(directory));
+    responders.put("PUT /form",               new FormResponder(directory));
+    responders.put("DELETE /form",            new FormResponder(directory));
+    responders.put("POST /text-file.txt",     new MethodNotAllowedResponder());
+    responders.put("PUT /file1",              new MethodNotAllowedResponder());
     responders.put("OPTIONS /method_options", new MethodOptionsResponder());
     return responders;
   }
