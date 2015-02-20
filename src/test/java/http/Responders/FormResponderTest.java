@@ -1,11 +1,10 @@
 package http.responders;
 
 import http.Request;
+import http.TestHelper;
 import http.filesystem.FileReader;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,10 +14,7 @@ import static http.responders.StatusCodes.OK;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class FormResponderTest {
-
-  @Rule
-  public TemporaryFolder directory = new TemporaryFolder();
+public class FormResponderTest extends TestHelper {
   private FormResponder formResponder;
 
   @Before
