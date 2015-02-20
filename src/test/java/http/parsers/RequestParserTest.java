@@ -52,5 +52,21 @@ public class RequestParserTest {
     Request req = parser.buildRequest();
     assertThat(req.getBody(), is(""));
   }
+
+  @Test
+  public void stripsParametersWhenReturningURI() {
+    String request = "GET /some-url?%3Cexample-decoding%3E HTTP/1.1\r\n";
+    parser = new RequestParser(new FakeClientSocket(request));
+    Request req = parser.buildRequest();
+    assertThat(req.getUri(), is("/some-url"));
+  }
+
+  @Test
+  public void decodesURLParameters() {
+    String request = "GET /some-url?%3Cexample-decoding%3E HTTP/1.1\r\n";
+    parser = new RequestParser(new FakeClientSocket(request));
+    String decodedParams = parser.decodeURIParams();
+    assertThat(decodedParams, is("<example-decoding>"));
+  }
 }
 

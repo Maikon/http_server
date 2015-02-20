@@ -6,6 +6,8 @@ import http.sockets.ClientSocket;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -39,6 +41,18 @@ public class RequestParser {
     validateMethod(method);
     String uri = getURI(requestLine);
     return method + " " + uri;
+  }
+
+  public String decodeURIParams() {
+    String decoded = "";
+    String wholeURI = getLineContents(getRequestLine())[1];
+    String params = wholeURI.split("\\?")[1];
+    try {
+      decoded = URLDecoder.decode(params, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    }
+    return decoded;
   }
 
   private void validateMethod(String method) {
@@ -77,7 +91,8 @@ public class RequestParser {
   }
 
   private String getURI(String requestLine) {
-    return getLineContents(requestLine)[1];
+    String wholeURI = getLineContents(requestLine)[1];
+    return wholeURI.split("\\?")[0];
   }
 
   private String[] getLineContents(String requestLine) {
