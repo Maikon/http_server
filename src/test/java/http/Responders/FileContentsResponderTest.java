@@ -1,7 +1,15 @@
 package http.responders;
 
 import http.Request;
+import http.filesystem.FileReader;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import static http.responders.StatusCodes.OK;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -10,7 +18,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class FileContentsResponderTest {
 
-  private ServerResponse response = new FileContentsResponder().response(Request.withMethod("GET").build());
+  @Rule
+  public TemporaryFolder directory = new TemporaryFolder();
+  private ServerResponse response;
+
+
+  @Before
+  public void setUp() throws IOException {
+    File file = directory.newFile("file");
+    FileWriter writer = new FileWriter(file);
+    writer.write("file contents");
+    writer.close();
+    FileReader reader = new FileReader(directory.getRoot());
+    response = new FileContentsResponder(reader).response(Request.withMethod("GET").addURI("/file").build());
+  }
 
   @Test
   public void respondsWithSuccess() {
@@ -24,6 +45,6 @@ public class FileContentsResponderTest {
 
   @Test
   public void respondsWithTheContentsOfTheFile() {
-    assertThat(response.getBody(), containsString("<p>file1 contents</p>"));
+    assertThat(response.getBody(), containsString("file contents"));
   }
 }

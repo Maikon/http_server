@@ -38,7 +38,7 @@ public class Router {
     responders.put("GET /",                   new RootResponder());
     responders.put("GET /redirect",           new RedirectResponder());
     responders.put("GET /foobar",             new NotFoundResponder());
-    responders.put("GET /file1",              new FileContentsResponder());
+    responders.put("GET /file1",              new FileContentsResponder(reader));
     responders.put("GET /form",               new FormResponder(reader));
     responders.put("POST /form",              new FormResponder(reader));
     responders.put("PUT /form",               new FormResponder(reader));
