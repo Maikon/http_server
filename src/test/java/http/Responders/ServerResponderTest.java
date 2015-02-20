@@ -38,9 +38,6 @@ public class ServerResponderTest {
 
   @Test
   public void returnsHeadersInAStringFormat() {
-    Map<String, String> headers = new HashMap<>();
-    headers.put(HEADER_1, VALUE_1);
-    headers.put(HEADER_2, VALUE_2);
     String headersString = "Header1: Value1\r\nHeader2: Value2\r\n";
     ServerResponse response = ServerResponse.status(OK)
                                             .addHeader(HEADER_1, VALUE_1)
@@ -79,8 +76,6 @@ public class ServerResponderTest {
 
   @Test
   public void returnsFullResponseInStringFormat() {
-    Map<String, String> headers = new HashMap<>();
-    headers.put(HEADER_1, VALUE_1);
     String fullResponse = "HTTP/1.1 200 OK\r\n" +
                           "Header1: Value1\r\n" +
                           "\r\n" +
@@ -94,8 +89,6 @@ public class ServerResponderTest {
 
   @Test
   public void returnsFullResponseInBytes() {
-    Map<String, String> headers = new HashMap<>();
-    headers.put(HEADER_1, VALUE_1);
     byte[] fullResponse = ("HTTP/1.1 200 OK\r\n" +
                           "Header1: Value1\r\n" +
                           "\r\n" +
