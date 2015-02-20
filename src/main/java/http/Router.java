@@ -25,17 +25,17 @@ public class Router {
 
   public void dispatch(Request request, PrintStream output) throws IOException {
     String identifier = request.methodWithUri();
-    Responder res = responders.get(identifier);
-    if (res == null) {
+    Responder responder = responders.get(identifier);
+    if (responder == null) {
       lastResponse = "404";
-      res = new NotFoundResponder();
+      responder = new NotFoundResponder();
     }
-    output.write(res.response(request).toBytes());
+    output.write(responder.response(request).toBytes());
   }
 
   private Map<String, Responder> generateResponders() {
     Map<String, Responder> responders = new HashMap<>();
-    responders.put("GET /",                   new RootResponder());
+    responders.put("GET /",                   new RootResponder(reader));
     responders.put("GET /redirect",           new RedirectResponder());
     responders.put("GET /foobar",             new NotFoundResponder());
     responders.put("GET /file1",              new FileContentsResponder(reader));
