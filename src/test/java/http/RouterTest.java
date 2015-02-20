@@ -1,6 +1,8 @@
 package http;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,9 +13,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RouterTest {
 
+  @Rule
+  public TemporaryFolder directory = new TemporaryFolder();
+
   @Test
   public void respondsToKnownURI() throws IOException {
-    Router router = new Router();
+    Router router = new Router(directory.getRoot());
     FakeOutput output = new FakeOutput();
     Request request = Request.withMethod("GET").addURI("/").build();
     router.dispatch(request, new PrintStream(output));

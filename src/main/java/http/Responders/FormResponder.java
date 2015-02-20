@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FormResponder implements Responder {
-  private FileReader reader;
+  private final FileReader reader;
 
-  public FormResponder(File directory) {
-    reader = new FileReader(directory);
+  public FormResponder(FileReader reader) {
+    this.reader = reader;
   }
 
   public Map<String, Responder> getResponders() {

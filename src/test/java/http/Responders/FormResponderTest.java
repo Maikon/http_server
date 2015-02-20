@@ -1,12 +1,15 @@
 package http.responders;
 
 import http.Request;
+import http.filesystem.FileReader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import static http.responders.StatusCodes.OK;
 import static org.hamcrest.CoreMatchers.is;
@@ -20,7 +23,8 @@ public class FormResponderTest {
 
   @Before
   public void setUp() throws Exception {
-    formResponder = new FormResponder(directory.getRoot());
+    http.filesystem.FileReader reader = new FileReader(directory.getRoot());
+    formResponder = new FormResponder(reader);
   }
 
   @Test

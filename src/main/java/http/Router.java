@@ -1,5 +1,6 @@
 package http;
 
+import http.filesystem.FileReader;
 import http.responders.*;
 
 import java.io.File;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Router {
-  private File directory;
+  private FileReader reader;
   private Map<String, Responder> responders;
   private String lastResponse;
 
@@ -18,7 +19,7 @@ public class Router {
   }
 
   public Router(File directory) {
-    this.directory = directory;
+    this.reader = new FileReader(directory);
     this.responders = generateResponders();
   }
 
@@ -38,10 +39,10 @@ public class Router {
     responders.put("GET /redirect",           new RedirectResponder());
     responders.put("GET /foobar",             new NotFoundResponder());
     responders.put("GET /file1",              new FileContentsResponder());
-    responders.put("GET /form",               new FormResponder(directory));
-    responders.put("POST /form",              new FormResponder(directory));
-    responders.put("PUT /form",               new FormResponder(directory));
-    responders.put("DELETE /form",            new FormResponder(directory));
+    responders.put("GET /form",               new FormResponder(reader));
+    responders.put("POST /form",              new FormResponder(reader));
+    responders.put("PUT /form",               new FormResponder(reader));
+    responders.put("DELETE /form",            new FormResponder(reader));
     responders.put("POST /text-file.txt",     new MethodNotAllowedResponder());
     responders.put("PUT /file1",              new MethodNotAllowedResponder());
     responders.put("OPTIONS /method_options", new MethodOptionsResponder());
