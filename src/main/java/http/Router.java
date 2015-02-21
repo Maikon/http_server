@@ -46,6 +46,7 @@ public class Router {
     responders.put("POST /text-file.txt",     new MethodNotAllowedResponder());
     responders.put("PUT /file1",              new MethodNotAllowedResponder());
     responders.put("OPTIONS /method_options", new MethodOptionsResponder());
+    responders.put("GET /parameters",         new ParamsResponder());
     return responders;
   }
 
