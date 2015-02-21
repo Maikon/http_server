@@ -8,12 +8,14 @@ public class Request {
   private final String uri;
   private final Map<String, String> headers;
   private final String body;
+  private String params;
 
   public Request(Builder builder) {
     this.method = builder.method;
     this.uri = builder.uri;
     this.headers = builder.headers;
     this.body = builder.body;
+    this.params = builder.params;
   }
 
   public String getMethod() {
@@ -40,14 +42,19 @@ public class Request {
     return getMethod() + " " + getUri();
   }
 
+  public String getParams() {
+    return params;
+  }
+
   public static class Builder {
 
    private final String method;
    private Map<String, String> headers = new HashMap<>();
    private String body;
    private String uri;
+    public String params;
 
-   public Builder(String method) {
+    public Builder(String method) {
      this.method = method;
    }
 
@@ -69,5 +76,10 @@ public class Request {
      this.uri = uri;
      return this;
    }
- }
+
+    public Builder addParams(String params) {
+      this.params = params;
+      return this;
+    }
+  }
 }

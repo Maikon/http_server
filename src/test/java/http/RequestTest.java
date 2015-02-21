@@ -57,4 +57,13 @@ public class RequestTest {
                              .build();
     assertThat(request.methodWithUri(), is("GET /"));
   }
+
+  @Test
+  public void addsParamsToRequest() {
+    Request request = Request.withMethod("GET")
+                             .addURI("/resource")
+                             .addParams("params")
+                             .build();
+    assertThat(request.getParams(), is("params"));
+  }
 }
