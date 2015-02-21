@@ -62,11 +62,27 @@ public class RequestParserTest {
   }
 
   @Test
-  public void decodesURLParameters() {
+  public void decodesSingleURLParameters() {
     String request = "GET /some-url?%3Cexample-decoding%3E HTTP/1.1\r\n";
     parser = new RequestParser(new FakeClientSocket(request));
-    String decodedParams = parser.decodeURIParams();
-    assertThat(decodedParams, is("<example-decoding>"));
+    Request req = parser.buildRequest();
+    assertThat(req.getParams(), is("<example-decoding>\n"));
+  }
+
+  @Test
+  public void decodesMultipleURLParameters() {
+    String request = "GET /some-url?%3Cone%3E&%3Ctwo%3E HTTP/1.1\r\n";
+    parser = new RequestParser(new FakeClientSocket(request));
+    Request req = parser.buildRequest();
+    assertThat(req.getParams(), is("<one>\n<two>\n"));
+  }
+
+  @Test
+  public void formatsURLParamsCorrectly() {
+    String request = "GET /parameters?param1=has%3D&param2=two HTTP/1.1\r\n";
+    parser = new RequestParser(new FakeClientSocket(request));
+    Request req = parser.buildRequest();
+    assertThat(req.getParams(), is("param1 = has=\nparam2 = two\n"));
   }
 }
 

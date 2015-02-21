@@ -1,7 +1,7 @@
 package http.parsers;
 
-import http.exceptions.InvalidRequestMethodException;
 import http.Request;
+import http.exceptions.InvalidRequestMethodException;
 import http.sockets.ClientSocket;
 
 import java.io.BufferedReader;
@@ -32,6 +32,7 @@ public class RequestParser {
     String body = requestBody(contentLength(headers));
     Request.Builder builder = Request.withMethod(getMethod(requestLine))
                                      .addURI(getURI(requestLine))
+                                     .addParams(decodeURIParams(requestLine))
                                      .addBody(body);
     Request.Builder request = addHeaders(headers, builder);
     return request.build();
@@ -45,16 +46,46 @@ public class RequestParser {
     return method + " " + uri;
   }
 
-  public String decodeURIParams() {
-    String decoded = "";
-    String wholeURI = getLineContents(getRequestLine())[1];
-    String params = wholeURI.split("\\?")[1];
+  private String decodeURIParams(String requestLine) {
+    String[] allParams = findParams(requestLine).split("&");
+    return buildParams(allParams);
+  }
+
+  private String findParams(String line) {
+    String params;
+    String wholeURI = getLineContents(line)[1];
+    String[] uri = wholeURI.split("\\?");
+    if (uri.length > 1) {
+      params = uri[1];
+    } else {
+      params = "";
+    }
+    return params;
+  }
+
+  private String buildParams(String[] allParams) {
+    String decodedParams = "";
     try {
-      decoded = URLDecoder.decode(params, "UTF-8");
+      for (String param : allParams) {
+        if (param.contains("=")) {
+          decodedParams += formatParam(param);
+        } else {
+          decodedParams += decode(param) + "\n";
+        }
+      }
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     }
-    return decoded;
+    return decodedParams;
+  }
+
+  private String formatParam(String param) throws UnsupportedEncodingException {
+    String[] parts = param.split("=");
+    return parts[0] + " = " + decode(parts[1]) + "\n";
+  }
+
+  private String decode(String param) throws UnsupportedEncodingException {
+    return URLDecoder.decode(param, "UTF-8");
   }
 
   private Request.Builder addHeaders(Map<String, String> headers, Request.Builder builder) {
