@@ -28,11 +28,13 @@ public class RequestParser {
 
   public Request buildRequest() {
     String requestLine = getRequestLine();
-    String method = getMethod(requestLine);
-    String uri = getURI(requestLine);
     Map<String, String> headers = requestHeaders();
     String body = requestBody(contentLength(headers));
-    return new Request(method, uri, headers, body);
+    Request.Builder builder = Request.withMethod(getMethod(requestLine))
+                                     .addURI(getURI(requestLine))
+                                     .addBody(body);
+    Request.Builder request = addHeaders(headers, builder);
+    return request.build();
   }
 
   public String getUriAndMethod() {
@@ -53,6 +55,13 @@ public class RequestParser {
       e.printStackTrace();
     }
     return decoded;
+  }
+
+  private Request.Builder addHeaders(Map<String, String> headers, Request.Builder builder) {
+    for (Map.Entry<String, String> header : headers.entrySet()) {
+      builder.addHeader(header.getKey(), header.getValue());
+    }
+    return builder;
   }
 
   private void validateMethod(String method) {

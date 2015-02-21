@@ -9,13 +9,6 @@ public class Request {
   private final Map<String, String> headers;
   private final String body;
 
-  public Request(String method, String uri, Map headers, String body) {
-    this.method = method;
-    this.uri = uri;
-    this.headers = headers;
-    this.body = body;
-  }
-
   public Request(Builder builder) {
     this.method = builder.method;
     this.uri = builder.uri;
