@@ -10,24 +10,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import static http.responders.StatusCodes.OK;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class FormResponderTest extends TestHelper {
+
   private FormResponder formResponder;
 
   @Before
   public void setUp() throws Exception {
     http.filesystem.FileReader reader = new FileReader(directory.getRoot());
     formResponder = new FormResponder(reader);
-  }
-
-  @Test
-  public void getReturnsEmptyBodyWhenNoFormFile() {
-    ServerResponse response = formResponder.response(Request.withMethod("GET").build());
-    assertThat(response.getStatus(), is(OK));
-    assertThat(response.getBody(), is(""));
   }
 
   @Test
