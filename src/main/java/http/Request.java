@@ -26,7 +26,7 @@ public class Request {
     return uri;
   }
 
-  public Map getHeaders() {
+  public Map<String, String> getHeaders() {
     return headers;
   }
 
