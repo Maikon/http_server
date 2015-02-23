@@ -5,6 +5,7 @@ public enum StatusCodes {
   NO_CONTENT(204, "No Content"),
   REDIRECT(301, "Moved Permanently"),
   NOT_FOUND(404, "Not Found"),
+  PRECONDITION_FAILED(412, "Precondition Failed"),
   METHOD_NOT_ALLOWED(405, "Method Not Allowed");
 
   private final int code;

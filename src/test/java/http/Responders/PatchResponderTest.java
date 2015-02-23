@@ -9,8 +9,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import static http.responders.StatusCodes.NO_CONTENT;
-import static http.responders.StatusCodes.OK;
+import static http.responders.StatusCodes.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -46,5 +45,31 @@ public class PatchResponderTest extends TestHelper {
                                                         .build());
     assertThat(response.getStatus(), is(NO_CONTENT));
     assertThat(reader.getFileContents(file), is("patched content"));
+  }
+
+  @Test
+  public void doesNotApplyPatchIfNoEtagExists() throws IOException {
+    File file = directory.newFile("file");
+    FileWriter writer = new FileWriter(file);
+    writer.write("default content");
+    writer.close();
+    FileReader reader = new FileReader(directory.getRoot());
+    Responder responder = new PatchResponder(reader);
+    ServerResponse response = responder.response(Request.withMethod("PATCH")
+                                                        .addURI("/file")
+                                                        .addBody("patched content")
+                                                        .build());
+    assertThat(response.getStatus(), is(PRECONDITION_FAILED));
+    assertThat(reader.getFileContents(file), is("default content"));
+  }
+
+  @Test
+  public void returnsANotFoundIfFileDoesNotExist() {
+    FileReader reader = new FileReader(directory.getRoot());
+    Responder responder = new PatchResponder(reader);
+    ServerResponse response = responder.response(Request.withMethod("PATCH")
+                                                        .addURI("/non-existent-file")
+                                                        .build());
+    assertThat(response.getStatus(), is(NOT_FOUND));
   }
 }
