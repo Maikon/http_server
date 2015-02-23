@@ -27,7 +27,7 @@ public class FileReader {
   }
 
   public String getFileContents(Request request) {
-    Path path = this.findFile(request).toPath();
+    Path path = findFile(request).toPath();
     return getFileContents(path);
   }
 
