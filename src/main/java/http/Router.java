@@ -47,6 +47,8 @@ public class Router {
     responders.put("PUT /file1",              new MethodNotAllowedResponder());
     responders.put("OPTIONS /method_options", new MethodOptionsResponder());
     responders.put("GET /parameters",         new ParamsResponder());
+    responders.put("GET /patch-content.txt",  new PatchResponder(reader));
+    responders.put("PATCH /patch-content.txt", new PatchResponder(reader));
     return responders;
   }
 

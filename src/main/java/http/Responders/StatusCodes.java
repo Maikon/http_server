@@ -2,6 +2,7 @@ package http.responders;
 
 public enum StatusCodes {
   OK(200, "OK"),
+  NO_CONTENT(204, "No Content"),
   REDIRECT(301, "Moved Permanently"),
   NOT_FOUND(404, "Not Found"),
   METHOD_NOT_ALLOWED(405, "Method Not Allowed");
