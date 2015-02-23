@@ -36,6 +36,10 @@ public class FileReader {
     return getFileContents(path);
   }
 
+  public boolean fileExists(Request request) {
+    return !(fileThatMatchesURI(request) == null);
+  }
+
   private String getFileContents(Path path) {
     String body = "";
     try {

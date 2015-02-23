@@ -54,4 +54,13 @@ public class FileReaderTest extends TestHelper {
     writer.close();
     assertThat(reader.getFileContents(file), is("Body"));
   }
+
+  @Test
+  public void checksIfAFileExists() throws IOException {
+    directory.newFile("file");
+    Request requestNoFile = Request.withMethod("GET").addURI("/some-file").build();
+    Request requestWithFile = Request.withMethod("GET").addURI("/file").build();
+    assertThat(reader.fileExists(requestNoFile), is(false));
+    assertThat(reader.fileExists(requestWithFile), is(true));
+  }
 }
