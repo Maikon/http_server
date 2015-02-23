@@ -24,7 +24,7 @@ public class FormResponderTest extends TestHelper {
   }
 
   @Test
-  public void writesToAFormIfPostContainsData() throws IOException {
+  public void writesToAFormOnAPost() throws IOException {
     formResponder.response(Request.withMethod("POST")
                                   .addURI("/form")
                                   .addBody("Body")
@@ -36,7 +36,7 @@ public class FormResponderTest extends TestHelper {
   }
 
   @Test
-  public void overridesFileContentsOnPUT() throws IOException {
+  public void overridesFileContentsOnAPut() throws IOException {
     File form = directory.newFile("/form");
     FileWriter writer = new FileWriter(form);
     writer.write("Old Body");
@@ -51,7 +51,7 @@ public class FormResponderTest extends TestHelper {
   }
 
   @Test
-  public void deletesFileOnDELETERequest() throws IOException {
+  public void deletesFileOnADelete() throws IOException {
     directory.newFile("/form");
     formResponder.response(Request.withMethod("DELETE")
                                   .addURI("/form")
