@@ -45,4 +45,13 @@ public class FileReaderTest extends TestHelper {
     Request request = Request.withMethod("GET").addURI("/file").build();
     assertThat(reader.getFileContents(request), is("Body"));
   }
+
+  @Test
+  public void returnsContentOfAGivenFile() throws IOException {
+    File file = directory.newFile("file");
+    FileWriter writer = new FileWriter(file);
+    writer.write("Body");
+    writer.close();
+    assertThat(reader.getFileContents(file), is("Body"));
+  }
 }

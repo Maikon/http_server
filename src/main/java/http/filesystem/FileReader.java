@@ -5,6 +5,7 @@ import http.Request;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class FileReader {
   private final File directory;
@@ -26,16 +27,25 @@ public class FileReader {
   }
 
   public String getFileContents(Request request) {
+    Path path = this.findFile(request).toPath();
+    return getFileContents(path);
+  }
+
+  public String getFileContents(File file) {
+    Path path = file.toPath();
+    return getFileContents(path);
+  }
+
+  private String getFileContents(Path path) {
     String body = "";
     try {
-      byte[] data = Files.readAllBytes(this.findFile(request).toPath());
+      byte[] data = Files.readAllBytes(path);
       body = new String(data);
     } catch (IOException e) {
       e.printStackTrace();
     }
     return body;
   }
-
 
   private File fileThatMatchesURI(Request request) {
     File file = null;
