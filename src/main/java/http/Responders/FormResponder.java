@@ -35,7 +35,7 @@ public class FormResponder implements Responder {
 
   private Responder postPutResponder() {
     return request -> {
-      File file = fileIO.findFile(request);
+      File file = fileIO.findFile(request).orElseGet(() -> fileIO.createFile(request.getUri()));
       try {
         PrintWriter writer = new PrintWriter(file, "UTF-8");
         writer.write(request.getBody());
@@ -49,7 +49,7 @@ public class FormResponder implements Responder {
 
   private Responder deleteResponder() {
     return request -> {
-      fileIO.findFile(request).delete();
+      fileIO.findFile(request).get().delete();
       return ServerResponse.status(StatusCodes.OK).build();
     };
   }

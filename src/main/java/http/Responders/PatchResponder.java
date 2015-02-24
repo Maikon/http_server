@@ -45,7 +45,7 @@ public class PatchResponder implements Responder {
         return ServerResponse.status(PRECONDITION_FAILED).build();
       }
       if (fileSha.equals(requestSha)) {
-        writeContentToFile(request, fileIO.findFile(request));
+        writeContentToFile(request, fileIO.findFile(request).get());
         return ServerResponse.status(NO_CONTENT).build();
       } else {
         return ServerResponse.status(CONFLICT).build();

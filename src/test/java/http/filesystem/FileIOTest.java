@@ -33,7 +33,7 @@ public class FileIOTest extends TestHelper {
   public void returnsAFileBasedOnRequest() throws IOException {
     File file = directory.newFile("file");
     Request request = Request.withMethod("GET").addURI("/file").build();
-    assertThat(fileIO.findFile(request), is(file));
+    assertThat(fileIO.findFile(request).get(), is(file));
   }
 
   @Test

@@ -20,18 +20,16 @@ public class FileIO {
     return directory.listFiles();
   }
 
-  public File findFile(Request request) {
-    Optional<File> reqFile = fileThatMatchesURI(request);
-    if (reqFile.isPresent()) {
-      return reqFile.get();
-    } else {
-      return new File(directory.getAbsolutePath() + request.getUri());
+  public String getFileContents(Request request) {
+    Optional<File> file = findFile(request);
+    if (file.isPresent()) {
+      return getFileContents(file.get());
     }
+    return "";
   }
 
-  public String getFileContents(Request request) {
-    Path path = findFile(request).toPath();
-    return getFileContents(path);
+  public Optional<File> findFile(Request request) {
+    return fileThatMatchesURI(request);
   }
 
   public String getFileContents(File file) {
