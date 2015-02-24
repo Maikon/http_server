@@ -3,6 +3,7 @@ package http.responders;
 import http.Request;
 import org.junit.Test;
 
+import static http.responders.StatusCodes.OK;
 import static http.responders.StatusCodes.UNAUTHORIZED;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,5 +29,16 @@ public class BasicAuthResponderTest {
   public void bodyContainsAuthorizationWarning() {
     ServerResponse response = responder.response(request);
     assertThat(response.getBody(), is("Authentication required"));
+  }
+
+  @Test
+  public void allowsAccessIfCredentialsMatch() {
+    Responder responder = new BasicAuthResponder();
+    Request request = Request.withMethod("GET")
+                             .addURI("/logs")
+                             .addHeader("Authorization", "Basic YWRtaW46aHVudGVyMg==")
+                             .build();
+    ServerResponse response = responder.response(request);
+    assertThat(response.getStatus(), is(OK));
   }
 }
