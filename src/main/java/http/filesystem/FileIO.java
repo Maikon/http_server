@@ -9,10 +9,10 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class FileReader {
+public class FileIO {
   private final File directory;
 
-  public FileReader(File directory) {
+  public FileIO(File directory) {
     this.directory = directory;
   }
 

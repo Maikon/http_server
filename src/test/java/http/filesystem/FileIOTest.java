@@ -12,12 +12,12 @@ import java.io.IOException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class FileReaderTest extends TestHelper {
-  private FileReader reader;
+public class FileIOTest extends TestHelper {
+  private FileIO fileIO;
 
   @Before
   public void setUp() {
-    reader = new FileReader(directory.getRoot());
+    fileIO = new FileIO(directory.getRoot());
   }
 
   @Test
@@ -26,14 +26,14 @@ public class FileReaderTest extends TestHelper {
     directory.newFile("file2");
     directory.newFile("file3");
 
-    assertThat(reader.getDirectoryFiles().length, is(3));
+    assertThat(fileIO.getDirectoryFiles().length, is(3));
   }
 
   @Test
   public void returnsAFileBasedOnRequest() throws IOException {
     File file = directory.newFile("file");
     Request request = Request.withMethod("GET").addURI("/file").build();
-    assertThat(reader.findFile(request), is(file));
+    assertThat(fileIO.findFile(request), is(file));
   }
 
   @Test
@@ -43,7 +43,7 @@ public class FileReaderTest extends TestHelper {
     writer.write("Body");
     writer.close();
     Request request = Request.withMethod("GET").addURI("/file").build();
-    assertThat(reader.getFileContents(request), is("Body"));
+    assertThat(fileIO.getFileContents(request), is("Body"));
   }
 
   @Test
@@ -52,7 +52,7 @@ public class FileReaderTest extends TestHelper {
     FileWriter writer = new FileWriter(file);
     writer.write("Body");
     writer.close();
-    assertThat(reader.getFileContents(file), is("Body"));
+    assertThat(fileIO.getFileContents(file), is("Body"));
   }
 
   @Test
@@ -60,7 +60,7 @@ public class FileReaderTest extends TestHelper {
     directory.newFile("file");
     Request requestNoFile = Request.withMethod("GET").addURI("/some-file").build();
     Request requestWithFile = Request.withMethod("GET").addURI("/file").build();
-    assertThat(reader.fileExists(requestNoFile), is(false));
-    assertThat(reader.fileExists(requestWithFile), is(true));
+    assertThat(fileIO.fileExists(requestNoFile), is(false));
+    assertThat(fileIO.fileExists(requestWithFile), is(true));
   }
 }

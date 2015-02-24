@@ -2,7 +2,7 @@ package http.responders;
 
 import http.Request;
 import http.TestHelper;
-import http.filesystem.FileReader;
+import http.filesystem.FileIO;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,8 +25,8 @@ public class FileContentsResponderTest extends TestHelper {
     FileWriter writer = new FileWriter(file);
     writer.write("file contents");
     writer.close();
-    FileReader reader = new FileReader(directory.getRoot());
-    response = new FileContentsResponder(reader).response(Request.withMethod("GET").addURI("/file").build());
+    FileIO fileIO = new FileIO(directory.getRoot());
+    response = new FileContentsResponder(fileIO).response(Request.withMethod("GET").addURI("/file").build());
   }
 
   @Test

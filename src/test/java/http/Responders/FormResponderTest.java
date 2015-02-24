@@ -2,7 +2,7 @@ package http.responders;
 
 import http.Request;
 import http.TestHelper;
-import http.filesystem.FileReader;
+import http.filesystem.FileIO;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,8 +19,8 @@ public class FormResponderTest extends TestHelper {
 
   @Before
   public void setUp() throws Exception {
-    http.filesystem.FileReader reader = new FileReader(directory.getRoot());
-    formResponder = new FormResponder(reader);
+    FileIO fileIO = new FileIO(directory.getRoot());
+    formResponder = new FormResponder(fileIO);
   }
 
   @Test

@@ -1,6 +1,6 @@
 package http;
 
-import http.filesystem.FileReader;
+import http.filesystem.FileIO;
 import http.responders.*;
 
 import java.io.File;
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Router {
-  private FileReader reader;
+  private FileIO fileIO;
   private Map<String, Responder> responders;
   private String lastResponse;
 
@@ -19,7 +19,7 @@ public class Router {
   }
 
   public Router(File directory) {
-    this.reader = new FileReader(directory);
+    this.fileIO = new FileIO(directory);
     this.responders = generateResponders();
   }
 
@@ -35,20 +35,20 @@ public class Router {
 
   private Map<String, Responder> generateResponders() {
     Map<String, Responder> responders = new HashMap<>();
-    responders.put("GET /",                   new RootResponder(reader));
+    responders.put("GET /",                   new RootResponder(fileIO));
     responders.put("GET /redirect",           new RedirectResponder());
     responders.put("GET /foobar",             new NotFoundResponder());
-    responders.put("GET /file1",              new FileContentsResponder(reader));
-    responders.put("GET /form",               new FormResponder(reader));
-    responders.put("POST /form",              new FormResponder(reader));
-    responders.put("PUT /form",               new FormResponder(reader));
-    responders.put("DELETE /form",            new FormResponder(reader));
+    responders.put("GET /file1",              new FileContentsResponder(fileIO));
+    responders.put("GET /form",               new FormResponder(fileIO));
+    responders.put("POST /form",              new FormResponder(fileIO));
+    responders.put("PUT /form",               new FormResponder(fileIO));
+    responders.put("DELETE /form",            new FormResponder(fileIO));
     responders.put("POST /text-file.txt",     new MethodNotAllowedResponder());
     responders.put("PUT /file1",              new MethodNotAllowedResponder());
     responders.put("OPTIONS /method_options", new MethodOptionsResponder());
     responders.put("GET /parameters",         new ParamsResponder());
-    responders.put("GET /patch-content.txt",  new PatchResponder(reader));
-    responders.put("PATCH /patch-content.txt", new PatchResponder(reader));
+    responders.put("GET /patch-content.txt",  new PatchResponder(fileIO));
+    responders.put("PATCH /patch-content.txt", new PatchResponder(fileIO));
     return responders;
   }
 

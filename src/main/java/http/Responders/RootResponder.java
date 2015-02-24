@@ -1,17 +1,17 @@
 package http.responders;
 
 import http.Request;
-import http.filesystem.FileReader;
+import http.filesystem.FileIO;
 
 import java.io.File;
 
 public class RootResponder implements Responder {
   public final String HTML_START = "<html><head></head><body>";
   public final String HTML_END = "</body></html>";
-  private FileReader reader;
+  private FileIO fileIO;
 
-  public RootResponder(FileReader reader) {
-    this.reader = reader;
+  public RootResponder(FileIO fileIO) {
+    this.fileIO = fileIO;
   }
 
   public ServerResponse response(Request request) {
@@ -23,7 +23,7 @@ public class RootResponder implements Responder {
   }
 
   private String getDirectoryLinks() {
-    File[] files = reader.getDirectoryFiles();
+    File[] files = fileIO.getDirectoryFiles();
     String body = "";
     for (File file : files) {
       String fileName = file.getName();

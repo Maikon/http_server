@@ -1,7 +1,7 @@
 package http.responders;
 
 import http.Request;
-import http.filesystem.FileReader;
+import http.filesystem.FileIO;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FormResponder implements Responder {
-  private final FileReader reader;
+  private final FileIO fileIO;
 
-  public FormResponder(FileReader reader) {
-    this.reader = reader;
+  public FormResponder(FileIO fileIO) {
+    this.fileIO = fileIO;
   }
 
   @Override
@@ -35,7 +35,7 @@ public class FormResponder implements Responder {
 
   private Responder postPutResponder() {
     return request -> {
-      File file = reader.findFile(request);
+      File file = fileIO.findFile(request);
       try {
         PrintWriter writer = new PrintWriter(file, "UTF-8");
         writer.write(request.getBody());
@@ -49,14 +49,14 @@ public class FormResponder implements Responder {
 
   private Responder deleteResponder() {
     return request -> {
-      reader.findFile(request).delete();
+      fileIO.findFile(request).delete();
       return ServerResponse.status(StatusCodes.OK).build();
     };
   }
 
   private Responder getResponder() {
     return request -> {
-      String body = reader.getFileContents(request);
+      String body = fileIO.getFileContents(request);
       return ServerResponse.status(StatusCodes.OK).addBody(body).build();
     };
   }

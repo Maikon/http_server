@@ -2,7 +2,7 @@ package http.responders;
 
 import http.Request;
 import http.TestHelper;
-import http.filesystem.FileReader;
+import http.filesystem.FileIO;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,15 +18,15 @@ public class PatchResponderTest extends TestHelper {
 
   private File file;
   private FileWriter writer;
-  private FileReader reader;
+  private FileIO fileIO;
   private PatchResponder responder;
 
   @Before
   public void setUp() throws Exception {
     file = directory.newFile("file");
     writer = new FileWriter(file);
-    reader = new FileReader(directory.getRoot());
-    responder = new PatchResponder(reader);
+    fileIO = new FileIO(directory.getRoot());
+    responder = new PatchResponder(fileIO);
   }
 
   @Test
@@ -48,7 +48,7 @@ public class PatchResponderTest extends TestHelper {
                                                         .addBody("patched content")
                                                         .build());
     assertThat(response.getStatus(), is(NO_CONTENT));
-    assertThat(reader.getFileContents(file), is("patched content"));
+    assertThat(fileIO.getFileContents(file), is("patched content"));
   }
 
   @Test
@@ -60,7 +60,7 @@ public class PatchResponderTest extends TestHelper {
                                                         .addBody("patched content")
                                                         .build());
     assertThat(response.getStatus(), is(StatusCodes.CONFLICT));
-    assertThat(reader.getFileContents(file), is("default content"));
+    assertThat(fileIO.getFileContents(file), is("default content"));
   }
 
   @Test
@@ -71,7 +71,7 @@ public class PatchResponderTest extends TestHelper {
                                                         .addBody("patched content")
                                                         .build());
     assertThat(response.getStatus(), is(PRECONDITION_FAILED));
-    assertThat(reader.getFileContents(file), is("default content"));
+    assertThat(fileIO.getFileContents(file), is("default content"));
   }
 
   @Test

@@ -2,7 +2,7 @@ package http.responders;
 
 import http.Request;
 import http.TestHelper;
-import http.filesystem.FileReader;
+import http.filesystem.FileIO;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,8 +19,8 @@ public class RootResponderTest extends TestHelper {
   @Before
   public void setUp() throws IOException {
     directory.newFile("file1");
-    FileReader reader = new FileReader(directory.getRoot());
-    response = new RootResponder(reader).response(Request.withMethod("GET").addURI("/").build());
+    FileIO fileIO = new FileIO(directory.getRoot());
+    response = new RootResponder(fileIO).response(Request.withMethod("GET").addURI("/").build());
   }
 
   @Test
