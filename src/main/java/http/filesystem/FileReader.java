@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class FileReader {
   private final File directory;
@@ -19,11 +21,12 @@ public class FileReader {
   }
 
   public File findFile(Request request) {
-    File file = fileThatMatchesURI(request);
-    if (file == null) {
-      file = new File(directory.getAbsolutePath() + request.getUri());
+    Optional<File> reqFile = fileThatMatchesURI(request);
+    if (reqFile.isPresent()) {
+      return reqFile.get();
+    } else {
+      return new File(directory.getAbsolutePath() + request.getUri());
     }
-    return file;
   }
 
   public String getFileContents(Request request) {
@@ -37,7 +40,7 @@ public class FileReader {
   }
 
   public boolean fileExists(Request request) {
-    return !(fileThatMatchesURI(request) == null);
+    return fileThatMatchesURI(request).isPresent();
   }
 
   private String getFileContents(Path path) {
@@ -51,14 +54,9 @@ public class FileReader {
     return body;
   }
 
-  private File fileThatMatchesURI(Request request) {
-    File file = null;
-    for (File directoryFile : getDirectoryFiles()) {
-      String uri = request.getUri().substring(1);
-      if (directoryFile.getName().equals(uri)) {
-        file = directoryFile;
-      }
-    }
-    return file;
+  private Optional<File> fileThatMatchesURI(Request request) {
+    String uri = request.getUri().substring(1);
+    return Stream.of(getDirectoryFiles()).filter(f -> f.getName().equals(uri))
+                                         .findFirst();
   }
 }

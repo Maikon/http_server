@@ -63,7 +63,7 @@ public class PatchResponder implements Responder {
       writer.write(request.getBody());
       writer.close();
     } catch (FileNotFoundException | UnsupportedEncodingException e) {
-      System.out.println("Print message: " + e.getMessage());
+      System.out.println("Exception message: " + e.getMessage());
     }
   }
 }
