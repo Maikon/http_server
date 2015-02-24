@@ -3,6 +3,7 @@ package http.responders;
 import http.Request;
 import http.TestHelper;
 import http.filesystem.FileReader;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -15,14 +16,22 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PatchResponderTest extends TestHelper {
 
+  private File file;
+  private FileWriter writer;
+  private FileReader reader;
+  private PatchResponder responder;
+
+  @Before
+  public void setUp() throws Exception {
+    file = directory.newFile("file");
+    writer = new FileWriter(file);
+    reader = new FileReader(directory.getRoot());
+    responder = new PatchResponder(reader);
+  }
+
   @Test
   public void returnsContentsOfRequestedResource() throws IOException {
-    File file = directory.newFile("file");
-    FileWriter writer = new FileWriter(file);
-    writer.write("default content");
-    writer.close();
-    FileReader reader = new FileReader(directory.getRoot());
-    Responder responder = new PatchResponder(reader);
+    writeDefaultContentToFile();
     ServerResponse response = responder.response(Request.withMethod("GET")
                                                         .addURI("/file")
                                                         .build());
@@ -32,12 +41,7 @@ public class PatchResponderTest extends TestHelper {
 
   @Test
   public void performsPatchIfEtagMatches() throws IOException {
-    File file = directory.newFile("file");
-    FileWriter writer = new FileWriter(file);
-    writer.write("default content");
-    writer.close();
-    FileReader reader = new FileReader(directory.getRoot());
-    Responder responder = new PatchResponder(reader);
+    writeDefaultContentToFile();
     ServerResponse response = responder.response(Request.withMethod("PATCH")
                                                         .addURI("/file")
                                                         .addHeader("If-Match", "dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec")
@@ -49,12 +53,7 @@ public class PatchResponderTest extends TestHelper {
 
   @Test
   public void doesNotApplyPatchIfNoEtagExists() throws IOException {
-    File file = directory.newFile("file");
-    FileWriter writer = new FileWriter(file);
-    writer.write("default content");
-    writer.close();
-    FileReader reader = new FileReader(directory.getRoot());
-    Responder responder = new PatchResponder(reader);
+    writeDefaultContentToFile();
     ServerResponse response = responder.response(Request.withMethod("PATCH")
                                                         .addURI("/file")
                                                         .addBody("patched content")
@@ -65,11 +64,14 @@ public class PatchResponderTest extends TestHelper {
 
   @Test
   public void returnsANotFoundIfFileDoesNotExist() {
-    FileReader reader = new FileReader(directory.getRoot());
-    Responder responder = new PatchResponder(reader);
     ServerResponse response = responder.response(Request.withMethod("PATCH")
                                                         .addURI("/non-existent-file")
                                                         .build());
     assertThat(response.getStatus(), is(NOT_FOUND));
+  }
+
+  private void writeDefaultContentToFile() throws IOException {
+    writer.write("default content");
+    writer.close();
   }
 }
