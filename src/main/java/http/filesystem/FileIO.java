@@ -2,8 +2,7 @@ package http.filesystem;
 
 import http.Request;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -53,6 +52,16 @@ public class FileIO {
       e.printStackTrace();
     }
     return file;
+  }
+
+  public void writeToFile(File file, String content) {
+    try {
+      PrintWriter writer = new PrintWriter(file, "UTF-8");
+      writer.write(content);
+      writer.close();
+    } catch (FileNotFoundException | UnsupportedEncodingException e) {
+      e.printStackTrace();
+    }
   }
 
   private String getFileContents(Path path) {

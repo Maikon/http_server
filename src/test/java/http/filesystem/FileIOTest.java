@@ -69,4 +69,11 @@ public class FileIOTest extends TestHelper {
     fileIO.createFile("new-file");
     assertThat(fileIO.fileExists("new-file"), is(true));
   }
+
+  @Test
+  public void writesToAFile() {
+    File file = fileIO.createFile("file");
+    fileIO.writeToFile(file, "some content");
+    assertThat(fileIO.getFileContents(file), is("some content"));
+  }
 }
