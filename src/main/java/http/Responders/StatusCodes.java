@@ -4,10 +4,11 @@ public enum StatusCodes {
   OK(200, "OK"),
   NO_CONTENT(204, "No Content"),
   REDIRECT(301, "Moved Permanently"),
+  UNAUTHORIZED(401, "Unauthorized"),
   NOT_FOUND(404, "Not Found"),
-  PRECONDITION_FAILED(412, "Precondition Failed"),
   METHOD_NOT_ALLOWED(405, "Method Not Allowed"),
-  CONFLICT(409, "Conflict");
+  CONFLICT(409, "Conflict"),
+  PRECONDITION_FAILED(412, "Precondition Failed");
 
   private final int code;
   private final String phrase;
