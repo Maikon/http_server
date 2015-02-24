@@ -39,9 +39,7 @@ public class FileIOTest extends TestHelper {
   @Test
   public void retrievesContentsOfFile() throws IOException {
     File file = directory.newFile("file");
-    FileWriter writer = new FileWriter(file);
-    writer.write("Body");
-    writer.close();
+    writeToFile(file, "Body");
     Request request = Request.withMethod("GET").addURI("/file").build();
     assertThat(fileIO.getFileContents(request), is("Body"));
   }
@@ -49,19 +47,22 @@ public class FileIOTest extends TestHelper {
   @Test
   public void returnsContentOfAGivenFile() throws IOException {
     File file = directory.newFile("file");
-    FileWriter writer = new FileWriter(file);
-    writer.write("Body");
-    writer.close();
+    writeToFile(file, "Body");
     assertThat(fileIO.getFileContents(file), is("Body"));
   }
 
   @Test
-  public void checksIfAFileExists() throws IOException {
+  public void returnsTrueIfFileExists() throws IOException {
+    directory.newFile("file");
+    Request requestWithFile = Request.withMethod("GET").addURI("/file").build();
+    assertThat(fileIO.fileExists(requestWithFile), is(true));
+  }
+
+  @Test
+  public void returnsFalseIfFileDoesNotExists() throws IOException {
     directory.newFile("file");
     Request requestNoFile = Request.withMethod("GET").addURI("/some-file").build();
-    Request requestWithFile = Request.withMethod("GET").addURI("/file").build();
     assertThat(fileIO.fileExists(requestNoFile), is(false));
-    assertThat(fileIO.fileExists(requestWithFile), is(true));
   }
 
   @Test
@@ -75,5 +76,11 @@ public class FileIOTest extends TestHelper {
     File file = fileIO.createFile("file");
     fileIO.writeToFile(file, "some content");
     assertThat(fileIO.getFileContents(file), is("some content"));
+  }
+
+  private void writeToFile(File file, String content) throws IOException {
+    FileWriter writer = new FileWriter(file);
+    writer.write(content);
+    writer.close();
   }
 }
