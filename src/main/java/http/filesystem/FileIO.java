@@ -43,6 +43,20 @@ public class FileIO {
     return fileThatMatchesURI(request).isPresent();
   }
 
+  public boolean fileExists(String fileName) {
+    return new File(directory.getAbsolutePath() + fileName).exists();
+  }
+
+  public File createFile(String uri) {
+    File file = new File(directory.getAbsolutePath() + uri);
+    try {
+      file.createNewFile();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return file;
+  }
+
   private String getFileContents(Path path) {
     String body = "";
     try {

@@ -63,4 +63,10 @@ public class FileIOTest extends TestHelper {
     assertThat(fileIO.fileExists(requestNoFile), is(false));
     assertThat(fileIO.fileExists(requestWithFile), is(true));
   }
+
+  @Test
+  public void canCreateAFile() {
+    fileIO.createFile("new-file");
+    assertThat(fileIO.fileExists("new-file"), is(true));
+  }
 }
