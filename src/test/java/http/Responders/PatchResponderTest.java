@@ -52,6 +52,18 @@ public class PatchResponderTest extends TestHelper {
   }
 
   @Test
+  public void doesNotApplyPatchIfEtagDoesNotMatch() throws IOException {
+    writeDefaultContentToFile();
+    ServerResponse response = responder.response(Request.withMethod("PATCH")
+                                                        .addURI("/file")
+                                                        .addHeader("If-Match", "abc")
+                                                        .addBody("patched content")
+                                                        .build());
+    assertThat(response.getStatus(), is(StatusCodes.CONFLICT));
+    assertThat(reader.getFileContents(file), is("default content"));
+  }
+
+  @Test
   public void doesNotApplyPatchIfNoEtagExists() throws IOException {
     writeDefaultContentToFile();
     ServerResponse response = responder.response(Request.withMethod("PATCH")

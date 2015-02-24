@@ -41,11 +41,14 @@ public class PatchResponder implements Responder {
     return request -> {
       String fileSha = DigestUtils.sha1Hex(reader.getFileContents(request));
       String requestSha = request.getHeaders().get("If-Match");
+      if (requestSha == null) {
+        return ServerResponse.status(PRECONDITION_FAILED).build();
+      }
       if (fileSha.equals(requestSha)) {
         writeContentToFile(request, reader.findFile(request));
         return ServerResponse.status(NO_CONTENT).build();
       } else {
-        return ServerResponse.status(PRECONDITION_FAILED).build();
+        return ServerResponse.status(CONFLICT).build();
       }
     };
   }
