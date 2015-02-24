@@ -4,9 +4,6 @@ import http.Request;
 import http.filesystem.FileIO;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,13 +33,7 @@ public class FormResponder implements Responder {
   private Responder postPutResponder() {
     return request -> {
       File file = fileIO.findFile(request).orElseGet(() -> fileIO.createFile(request.getUri()));
-      try {
-        PrintWriter writer = new PrintWriter(file, "UTF-8");
-        writer.write(request.getBody());
-        writer.close();
-      } catch (FileNotFoundException | UnsupportedEncodingException e) {
-        e.printStackTrace();
-      }
+      fileIO.writeToFile(file, request.getBody());
       return ServerResponse.status(StatusCodes.OK).build();
     };
   }

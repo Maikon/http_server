@@ -5,9 +5,6 @@ import http.filesystem.FileIO;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,12 +55,6 @@ public class PatchResponder implements Responder {
   }
 
   private void writeContentToFile(Request request, File file) {
-    try {
-      PrintWriter writer = new PrintWriter(file, "UTF-8");
-      writer.write(request.getBody());
-      writer.close();
-    } catch (FileNotFoundException | UnsupportedEncodingException e) {
-      System.out.println("Exception message: " + e.getMessage());
-    }
+    fileIO.writeToFile(file, request.getBody());
   }
 }
