@@ -66,4 +66,12 @@ public class RequestTest {
                              .build();
     assertThat(request.getParams(), is("params"));
   }
+
+  @Test
+  public void returnsStatusLine() {
+    Request request = Request.withMethod("GET")
+                             .addURI("/")
+                             .build();
+    assertThat(request.getStatusLine(), is("GET / HTTP/1.1"));
+  }
 }

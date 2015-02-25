@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Request {
+  private static final String PROTOCOL = "HTTP/1.1";
   private final String method;
   private final String uri;
   private final Map<String, String> headers;
@@ -44,6 +45,10 @@ public class Request {
 
   public String getParams() {
     return params;
+  }
+
+  public String getStatusLine() {
+    return methodWithUri() + " " + PROTOCOL;
   }
 
   public static class Builder {
