@@ -1,6 +1,7 @@
 package http.responders;
 
 import http.Request;
+import http.filters.Authenticator;
 import org.junit.Test;
 
 import static http.responders.StatusCodes.OK;
@@ -10,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class BasicAuthResponderTest {
 
-  private Responder responder = new BasicAuthResponder();
+  private Responder responder = new BasicAuthResponder(new Authenticator("user", "password"));
   private Request request = Request.withMethod("GET").addURI("/resource").build();
 
   @Test
@@ -33,7 +34,7 @@ public class BasicAuthResponderTest {
 
   @Test
   public void allowsAccessIfCredentialsMatch() {
-    Responder responder = new BasicAuthResponder();
+    Responder responder = new BasicAuthResponder(new Authenticator("admin", "hunter2"));
     Request request = Request.withMethod("GET")
                              .addURI("/logs")
                              .addHeader("Authorization", "Basic YWRtaW46aHVudGVyMg==")

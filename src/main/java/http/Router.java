@@ -1,6 +1,7 @@
 package http;
 
 import http.filesystem.FileIO;
+import http.filters.Authenticator;
 import http.responders.*;
 
 import java.io.File;
@@ -49,7 +50,7 @@ public class Router {
     responders.put("GET /parameters",         new ParamsResponder());
     responders.put("GET /patch-content.txt",  new PatchResponder(fileIO));
     responders.put("PATCH /patch-content.txt", new PatchResponder(fileIO));
-    responders.put("GET /logs",               new BasicAuthResponder());
+    responders.put("GET /logs",               new BasicAuthResponder(new Authenticator("admin", "hunter2")));
     return responders;
   }
 

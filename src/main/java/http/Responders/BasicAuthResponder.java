@@ -1,11 +1,18 @@
 package http.responders;
 
 import http.Request;
+import http.filters.Authenticator;
 
 import static http.responders.StatusCodes.OK;
 import static http.responders.StatusCodes.UNAUTHORIZED;
 
 public class BasicAuthResponder implements Responder {
+
+  private final Authenticator authenticator;
+
+  public BasicAuthResponder(Authenticator authenticator) {
+    this.authenticator = authenticator;
+  }
 
   @Override
   public ServerResponse response(Request request) {
@@ -28,34 +35,10 @@ public class BasicAuthResponder implements Responder {
       return false;
     }
     String encoded = encodedCredentials(headerValue);
-    Authenticator authenticator = new Authenticator(encoded).invoke();
-    return authenticator.validAuthentication();
+    return authenticator.validAuthentication(encoded);
   }
 
   private String encodedCredentials(String headerValue) {
     return headerValue.split("\\s")[1];
-  }
-
-  private class Authenticator {
-    private String encodedCredentials;
-    private String username;
-    private String password;
-
-    public Authenticator(String encodedCredentials) {
-      this.encodedCredentials = encodedCredentials;
-    }
-
-    public Authenticator invoke() {
-      String credentials = encodedCredentials;
-      byte[] decoded = org.apache.commons.codec.binary.Base64.decodeBase64(credentials);
-      String[] decodedCredentials = new String(decoded).split(":");
-      username = decodedCredentials[0];
-      password = decodedCredentials[1];
-      return this;
-    }
-
-    public boolean validAuthentication() {
-      return "admin".equals(username) && "hunter2".equals(password);
-    }
   }
 }
