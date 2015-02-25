@@ -3,6 +3,7 @@ package http;
 import http.filesystem.FileIO;
 import http.filters.Authenticator;
 import http.responders.*;
+import http.utils.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class Router {
   public void dispatch(Request request, PrintStream output) throws IOException {
     String identifier = request.methodWithUri();
     Responder responder = responders.get(identifier);
+    Logger.log(request);
     if (responder == null) {
       lastResponse = "404";
       responder = new NotFoundResponder();
