@@ -35,27 +35,32 @@ public class BasicAuthResponderTest {
 
   @Test
   public void allowsAccessIfCredentialsMatch() {
-    Responder responder = new BasicAuthResponder(new Authenticator("admin", "hunter2"));
-    Request request = Request.withMethod("GET")
-                             .addURI("/logs")
-                             .addHeader("Authorization", "Basic YWRtaW46aHVudGVyMg==")
-                             .build();
+    Responder responder = createResponderWithCredentials();
+    Request request = requestWithCorrectCredentials();
     ServerResponse response = responder.response(request);
     assertThat(response.getStatus(), is(OK));
   }
 
   @Test
   public void bodyOfResponseContainsStatusLinesOfPastRequests() {
-    Authenticator authenticator = new Authenticator("admin", "hunter2");
-    Responder responder = new BasicAuthResponder(authenticator);
+    Responder responder = createResponderWithCredentials();
+    Request request = requestWithCorrectCredentials();
     Request request2 = Request.withMethod("POST").addURI("/file2").build();
-    Request request3 = Request.withMethod("GET").addURI("/logs")
-                                                .addHeader("Authorization", "Basic YWRtaW46aHVudGVyMg==")
-                                                .build();
+    Logger.log(request);
     Logger.log(request2);
-    Logger.log(request3);
-    ServerResponse response = responder.response(request3);
+    ServerResponse response = responder.response(request);
     assertThat(response.getBody(), allOf(containsString("GET /logs HTTP/1.1"),
                                          containsString("POST /file2 HTTP/1.1")));
+  }
+
+  private Request requestWithCorrectCredentials() {
+    return Request.withMethod("GET")
+                  .addURI("/logs")
+                  .addHeader("Authorization", "Basic YWRtaW46aHVudGVyMg==")
+                  .build();
+  }
+
+  private Responder createResponderWithCredentials() {
+    return new BasicAuthResponder(new Authenticator("admin", "hunter2"));
   }
 }
