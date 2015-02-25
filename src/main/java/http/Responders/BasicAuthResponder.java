@@ -2,6 +2,7 @@ package http.responders;
 
 import http.Request;
 import http.filters.Authenticator;
+import http.utils.Logger;
 
 import static http.responders.StatusCodes.OK;
 import static http.responders.StatusCodes.UNAUTHORIZED;
@@ -18,12 +19,22 @@ public class BasicAuthResponder implements Responder {
   public ServerResponse response(Request request) {
     String headerValue = getAuthorizationHeader(request);
     if (authenticated(headerValue)) {
-      return ServerResponse.status(OK).build();
+      return ServerResponse.status(OK)
+                           .addBody(bodyContainingLogs())
+                           .build();
     }
     return ServerResponse.status(UNAUTHORIZED)
                          .addHeader("WWW-Authenticate", "SecureDomain")
                          .addBody("Authentication required")
                          .build();
+  }
+
+  private String bodyContainingLogs() {
+    String body = "";
+    for (String requestLine : Logger.loggedRequests()) {
+      body += requestLine + "\n";
+    }
+    return body;
   }
 
   private String getAuthorizationHeader(Request request) {
