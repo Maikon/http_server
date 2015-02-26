@@ -1,12 +1,14 @@
 package http.responders;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ServerResponse {
   public final String CRLF = "\r\n";
   private final StatusCodes status;
-  private String body;
+  private byte[] body;
   private Map<String, String> headers;
 
   private ServerResponse(Builder builder) {
@@ -37,11 +39,24 @@ public class ServerResponse {
   }
 
   public byte[] toBytes() {
-    return toString().getBytes();
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    try {
+      addToArray(output, getBytes(statusLine()));
+      addToArray(output, getBytes(stringifyHeaders()));
+      addToArray(output, getBytes(CRLF));
+      addToArray(output, body);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return output.toByteArray();
+  }
+
+  private void addToArray(ByteArrayOutputStream out, byte[] content) throws IOException {
+    out.write(content);
   }
 
   public String getBody() {
-    return body;
+    return new String(body);
   }
 
   public Map<String, String> getHeaders() {
@@ -60,10 +75,14 @@ public class ServerResponse {
     return headers.get(key);
   }
 
+  private byte[] getBytes(String content) {
+    return content.getBytes();
+  }
+
   public static class Builder {
     private StatusCodes status;
     private Map<String, String> headers = new HashMap<>();
-    public String body = "";
+    public byte[] body = new byte[0];
 
     public Builder(StatusCodes code) {
       this.status = code;
@@ -79,7 +98,12 @@ public class ServerResponse {
     }
 
     public Builder addBody(String body) {
-      this.body = body;
+      this.body = body.getBytes();
+      return this;
+    }
+
+    public Builder addBody(byte[] fileContents) {
+      this.body = fileContents;
       return this;
     }
   }
