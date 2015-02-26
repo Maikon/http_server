@@ -29,6 +29,9 @@ public class Router {
     String identifier = request.methodWithUri();
     Responder responder = responders.get(identifier);
     Logger.log(request);
+    if (request.getUri().contains("image")) {
+      responder = new ImagesResponder(fileIO);
+    }
     if (responder == null) {
       lastResponse = "404";
       responder = new NotFoundResponder();
