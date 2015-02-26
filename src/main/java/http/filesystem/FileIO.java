@@ -64,6 +64,16 @@ public class FileIO {
     }
   }
 
+  public byte[] getBytes(File file) {
+    byte[] content = new byte[0];
+    try {
+      content = Files.readAllBytes(file.toPath());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return content;
+  }
+
   private String getFileContents(Path path) {
     String body = "";
     try {

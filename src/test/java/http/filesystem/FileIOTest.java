@@ -78,6 +78,13 @@ public class FileIOTest extends TestHelper {
     assertThat(fileIO.getFileContents(file), is("some content"));
   }
 
+  @Test
+  public void returnsContentsOfFileInBytes() {
+    File file = fileIO.createFile("file");
+    fileIO.writeToFile(file, "content");
+    assertThat(fileIO.getBytes(file), is("content".getBytes()));
+  }
+
   private void writeToFile(File file, String content) throws IOException {
     FileWriter writer = new FileWriter(file);
     writer.write(content);
