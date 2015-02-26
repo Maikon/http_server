@@ -4,7 +4,6 @@ import http.Request;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -32,8 +31,12 @@ public class FileIO {
   }
 
   public String getFileContents(File file) {
-    Path path = file.toPath();
-    return getFileContents(path);
+    byte[] content = getContent(file);
+    return new String(content);
+  }
+
+  public byte[] getFileBytes(File file) {
+    return getContent(file);
   }
 
   public boolean fileExists(Request request) {
@@ -64,7 +67,7 @@ public class FileIO {
     }
   }
 
-  public byte[] getBytes(File file) {
+  private byte[] getContent(File file) {
     byte[] content = new byte[0];
     try {
       content = Files.readAllBytes(file.toPath());
@@ -72,17 +75,6 @@ public class FileIO {
       e.printStackTrace();
     }
     return content;
-  }
-
-  private String getFileContents(Path path) {
-    String body = "";
-    try {
-      byte[] data = Files.readAllBytes(path);
-      body = new String(data);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return body;
   }
 
   private Optional<File> fileThatMatchesURI(Request request) {

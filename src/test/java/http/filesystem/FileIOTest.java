@@ -82,7 +82,7 @@ public class FileIOTest extends TestHelper {
   public void returnsContentsOfFileInBytes() {
     File file = fileIO.createFile("file");
     fileIO.writeToFile(file, "content");
-    assertThat(fileIO.getBytes(file), is("content".getBytes()));
+    assertThat(fileIO.getFileBytes(file), is("content".getBytes()));
   }
 
   private void writeToFile(File file, String content) throws IOException {
