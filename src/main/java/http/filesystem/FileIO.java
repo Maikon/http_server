@@ -67,6 +67,44 @@ public class FileIO {
     }
   }
 
+  public byte[] getRange(int from, int to, File file) {
+    byte[] content = getContent(file);
+    int maxLength = content.length;
+    int start = getStartIndex(from, to, maxLength);
+    int end = getEndIndex(from, to, maxLength);
+    return getRange(content, start, end);
+  }
+
+  private int getStartIndex(int startingPoint, int to, int max) {
+    if (startsAtTheEnd(startingPoint)) {
+      return max - to;
+    }
+    return startingPoint;
+  }
+
+  private boolean startsAtTheEnd(int startingPoint) {
+    return startingPoint == -1;
+  }
+
+  private int getEndIndex(int from, int to, int max) {
+    if (boundsArePositive(from, to)) {
+      return to + 1;
+    }
+    return max;
+  }
+
+  private boolean boundsArePositive(int from, int to) {
+    return from > -1 && to > -1;
+  }
+
+  private byte[] getRange(byte[] content, int startingIndex, int endIndex) {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    for (int i = startingIndex; i < endIndex; i++) {
+      out.write(content[i]);
+    }
+    return out.toByteArray();
+  }
+
   private byte[] getContent(File file) {
     byte[] content = new byte[0];
     try {

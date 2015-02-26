@@ -85,6 +85,30 @@ public class FileIOTest extends TestHelper {
     assertThat(fileIO.getFileBytes(file), is("content".getBytes()));
   }
 
+  @Test
+  public void returnsARangeOfTheContentInBytes() {
+    File file = fileIO.createFile("file");
+    fileIO.writeToFile(file, "content");
+    String result = new String(fileIO.getRange(0, 4, file));
+    assertThat(result, is("conte"));
+  }
+
+  @Test
+  public void returnsRangeOfTheContentInBytesStartingFromTheEnd() {
+    File file = fileIO.createFile("file");
+    fileIO.writeToFile(file, "content");
+    String result = new String(fileIO.getRange(-1, 4, file));
+    assertThat(result, is("tent"));
+  }
+
+  @Test
+  public void returnsRestOfTheContentFromAStartingPoint() {
+    File file = fileIO.createFile("file");
+    fileIO.writeToFile(file, "content");
+    String result = new String(fileIO.getRange(2, -1, file));
+    assertThat(result, is("ntent"));
+  }
+
   private void writeToFile(File file, String content) throws IOException {
     FileWriter writer = new FileWriter(file);
     writer.write(content);
