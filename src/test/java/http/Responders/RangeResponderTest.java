@@ -91,6 +91,14 @@ public class RangeResponderTest extends TestHelper {
   }
 
   @Test
+  public void responseIncludesContentType() {
+    createFileWithContent();
+    Request request = createRequestWithRange("0-3");
+    ServerResponse response = getResponse(request);
+    assertThat(response.getHeader("Content-Type"), is("text/plain"));
+  }
+
+  @Test
   public void responseIncludesDateHeader() {
     createFileWithContent();
     Request request = createRequestWithRange("0-3");

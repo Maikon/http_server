@@ -51,6 +51,7 @@ public class RangeResponder implements Responder {
     return ServerResponse.status(PARTIAL_CONTENT)
                          .addHeader("Content-Length", lengthOf(contents))
                          .addHeader("Content-Range", rangeFormat(file, from, to))
+                         .addHeader("Content-Type", "text/plain")
                          .addHeader("Date", getCurrentDate())
                          .addBody(contents)
                          .build();
