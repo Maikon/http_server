@@ -56,6 +56,7 @@ public class Router {
     responders.put("GET /patch-content.txt",  new PatchResponder(fileIO));
     responders.put("PATCH /patch-content.txt", new PatchResponder(fileIO));
     responders.put("GET /logs",               new BasicAuthResponder(new Authenticator("admin", "hunter2")));
+    responders.put("GET /partial_content.txt", new RangeResponder(fileIO));
     return responders;
   }
 
