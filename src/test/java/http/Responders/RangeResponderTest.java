@@ -12,8 +12,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static http.responders.StatusCodes.*;
-import static http.responders.StatusCodes.NOT_FOUND;
-import static http.responders.StatusCodes.PARTIAL_CONTENT;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -82,6 +80,14 @@ public class RangeResponderTest extends TestHelper {
     Request request = createRequestWithRange("0-3");
     ServerResponse response = getResponse(request);
     assertThat(response.getHeader("Content-Range"), is("bytes 0-3/7"));
+  }
+
+  @Test
+  public void responseIncludesContentLengthHeader() {
+    createFileWithContent();
+    Request request = createRequestWithRange("0-3");
+    ServerResponse response = getResponse(request);
+    assertThat(response.getHeader("Content-Length"), is("4"));
   }
 
   @Test

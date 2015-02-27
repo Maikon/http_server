@@ -49,10 +49,15 @@ public class RangeResponder implements Responder {
 
   private ServerResponse partialContent(File file, int from, int to, byte[] contents) {
     return ServerResponse.status(PARTIAL_CONTENT)
+                         .addHeader("Content-Length", lengthOf(contents))
                          .addHeader("Content-Range", rangeFormat(file, from, to))
                          .addHeader("Date", getCurrentDate())
                          .addBody(contents)
                          .build();
+  }
+
+  private String lengthOf(byte[] contents) {
+    return String.valueOf(contents.length);
   }
 
   private ServerResponse rangeNotSatisfiable(File file) {
