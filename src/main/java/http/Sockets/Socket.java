@@ -3,13 +3,12 @@ package http.sockets;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
 
-public class RealSocket implements ClientSocket {
+public class Socket implements ClientSocket {
 
-  private final Socket client;
+  private final java.net.Socket client;
 
-  public RealSocket(Socket client) {
+  public Socket(java.net.Socket client) {
     this.client = client;
   }
 

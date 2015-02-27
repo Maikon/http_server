@@ -1,7 +1,7 @@
 package http;
 
 import http.sockets.ClientSocket;
-import http.sockets.RealSocket;
+import http.sockets.Socket;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class Server {
     running = true;
     try {
       while (true) {
-        ClientSocket clientSocket = new RealSocket(socket.accept());
+        ClientSocket clientSocket = new Socket(socket.accept());
         executor.submit(new Worker(router, clientSocket));
       }
     } catch (IOException e) {
