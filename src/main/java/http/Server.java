@@ -3,32 +3,24 @@ package http;
 import http.sockets.ClientSocket;
 import http.sockets.Socket;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-  private final int port;
-  private final String directory;
   private final Router router;
-  private boolean running;
-  private ServerSocket socket;
+  private final ServerSocket socket;
   private ExecutorService executor;
 
-  public Server(int port, String directory) throws IOException {
-    this.port = port;
-    this.directory = directory;
-    socket = new ServerSocket(port);
-    this.router = new Router(new File(directory));
-    running = false;
+  public Server(ServerSocket socket, Router router) {
+    this.router = router;
+    this.socket = socket;
     executor = Executors.newFixedThreadPool(20);
-    System.out.println("Starting server at port: " + port);
   }
 
   public void start() {
-    running = true;
+    System.out.println("Starting server at port: " + socket.getLocalPort());
     try {
       while (true) {
         ClientSocket clientSocket = new Socket(socket.accept());
@@ -40,20 +32,7 @@ public class Server {
     stop();
   }
 
-  public int getPort() {
-    return port;
-  }
-
-  public String getDirectory() {
-    return directory;
-  }
-
-  public boolean isRunning() {
-    return running;
-  }
-
   public void stop() {
-    running = false;
     try {
       socket.close();
       executor.shutdown();
