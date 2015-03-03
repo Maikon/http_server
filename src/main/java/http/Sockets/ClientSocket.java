@@ -8,4 +8,6 @@ public interface ClientSocket {
   public InputStream getInputStream();
 
   void close();
+
+  boolean hasData();
 }

@@ -30,6 +30,11 @@ public class FakeClientSocket extends Socket implements ClientSocket {
     closed = true;
   }
 
+  @Override
+  public boolean hasData() {
+    return false;
+  }
+
   public boolean wasClosed() {
     return closed;
   }

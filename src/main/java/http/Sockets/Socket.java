@@ -45,6 +45,7 @@ public class Socket implements ClientSocket {
     }
   }
 
+  @Override
   public boolean hasData() {
     Scanner reader = new Scanner(getInputStream());
     return reader.hasNext();
