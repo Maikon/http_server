@@ -16,16 +16,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ServerTest {
 
   private FakeExecutor executor;
-  private FakeRouter router;
   private Server server;
-  private http.sockets.Socket clientSocket;
   private Worker worker;
 
   @Before
   public void setUp() throws Exception {
     executor = new FakeExecutor();
-    clientSocket = new http.sockets.Socket(new FakeServerSocket());
-    router = new FakeRouter();
+    http.sockets.Socket clientSocket = new http.sockets.Socket(new FakeServerSocket());
+    FakeRouter router = new FakeRouter();
     worker = new Worker(router, clientSocket);
     server = new Server(executor, worker);
   }
