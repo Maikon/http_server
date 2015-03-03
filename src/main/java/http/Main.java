@@ -23,12 +23,20 @@ public class Main {
       FileIO fileIO = new FileIO(new File(directory));
       registerRoutes(router, fileIO);
       Server server = new Server(Executors.newFixedThreadPool(20), worker);
-      System.out.println("Starting server at port: " + port);
+      startingServerMessage(port);
       server.start();
-      System.out.println("Closing server...");
+      closingServerMessage();
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  private static void startingServerMessage(int port) {
+    System.out.println("Starting server at port: " + port);
+  }
+
+  private static void closingServerMessage() {
+    System.out.println("Closing server...");
   }
 
   private static void registerRoutes(Router router, FileIO fileIO) {
