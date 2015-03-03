@@ -1,23 +1,19 @@
 package http;
 
-import http.sockets.Socket;
-
 import java.util.concurrent.ExecutorService;
 
 public class Server {
-  private final Router router;
-  private final Socket clientSocket;
+  private Worker worker;
   private ExecutorService executor;
 
-  public Server(ExecutorService executor, Socket clientSocket, Router router) {
-    this.router = router;
-    this.clientSocket = clientSocket;
+  public Server(ExecutorService executor, Worker worker) {
     this.executor = executor;
+    this.worker = worker;
   }
 
   public void start() {
-    while (clientSocket.hasData()) {
-      executor.execute(new Worker(router, clientSocket));
+    while (worker.clientHasData()) {
+      executor.execute(worker);
     }
     executor.shutdown();
   }

@@ -20,13 +20,15 @@ public class ServerTest {
   private FakeRouter router;
   private Server server;
   private http.sockets.Socket clientSocket;
+  private Worker worker;
 
   @Before
   public void setUp() throws Exception {
     executor = new FakeExecutor();
     clientSocket = new http.sockets.Socket(new FakeServerSocket());
     router = new FakeRouter();
-    server = new Server(executor, clientSocket, router);
+    worker = new Worker(router, clientSocket);
+    server = new Server(executor, worker);
   }
 
   @Test

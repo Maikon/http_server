@@ -16,7 +16,8 @@ public class Main {
     try {
       Router router = new Router(new File(directory));
       Socket clientSocket = new Socket(new ServerSocket(port));
-      Server server = new Server(Executors.newFixedThreadPool(20), clientSocket, router);
+      Worker worker = new Worker(router, clientSocket);
+      Server server = new Server(Executors.newFixedThreadPool(20), worker);
       System.out.println("Starting server at port: " + port);
       server.start();
       System.out.println("Closing server...");

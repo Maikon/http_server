@@ -31,4 +31,8 @@ public class Worker implements Runnable {
   public void stop() {
     client.close();
   }
+
+  public boolean clientHasData() {
+    return client.hasData();
+  }
 }
