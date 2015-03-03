@@ -3,8 +3,9 @@ package http.fakes;
 import http.sockets.ClientSocket;
 
 import java.io.*;
+import java.net.Socket;
 
-public class FakeClientSocket implements ClientSocket {
+public class FakeClientSocket extends Socket implements ClientSocket {
   private ByteArrayInputStream input;
   private ByteArrayOutputStream output;
   private boolean closed = false;

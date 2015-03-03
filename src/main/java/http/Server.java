@@ -18,20 +18,14 @@ public class Server {
   }
 
   public void start() {
-    while (true) {
-      executeRequestInThread();
-    }
-  }
-
-  private void executeRequestInThread() {
     try {
-      executor.submit(new Worker(router, new Socket(socket.accept())));
+      Socket client = new Socket(socket.accept());
+      while (client.hasData()) {
+        executor.execute(new Worker(router, client));
+      }
     } catch (IOException e) {
-      e.printStackTrace();
+      //
     }
-  }
-
-  public void stop() {
     executor.shutdown();
   }
 }
