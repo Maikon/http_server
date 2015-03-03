@@ -1,6 +1,7 @@
 package http;
 
 import http.parsers.ArgumentsParser;
+import http.sockets.Socket;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +14,9 @@ public class Main {
     int port = parser.integerValueFor("-p");
     String directory = parser.stringValueFor("-d");
     try {
-      ServerSocket socket = new ServerSocket(port);
       Router router = new Router(new File(directory));
-      Server server = new Server(Executors.newFixedThreadPool(20), socket, router);
+      Socket clientSocket = new Socket(new ServerSocket(port));
+      Server server = new Server(Executors.newFixedThreadPool(20), clientSocket, router);
       System.out.println("Starting server at port: " + port);
       server.start();
       System.out.println("Closing server...");

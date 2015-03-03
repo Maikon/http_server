@@ -17,26 +17,27 @@ import static org.hamcrest.core.Is.isA;
 public class ServerTest {
 
   private FakeExecutor executor;
-  private FakeServerSocket socket;
   private FakeRouter router;
   private Server server;
+  private http.sockets.Socket clientSocket;
 
   @Before
   public void setUp() throws Exception {
     executor = new FakeExecutor();
-    socket = new FakeServerSocket();
+    clientSocket = new http.sockets.Socket(new FakeServerSocket());
     router = new FakeRouter();
-    server = new Server(executor, socket, router);
-    server.start();
+    server = new Server(executor, clientSocket, router);
   }
 
   @Test
   public void processRequestThroughTheExecutor() throws IOException {
+    server.start();
     assertThat(executor.calledWith(), isA(Runnable.class));
   }
 
   @Test
   public void closesTheExecutorWhenDoneWithRequestProcessing() throws IOException {
+    server.start();
     assertThat(executor.isShutdown(), is(true));
   }
 
