@@ -15,16 +15,20 @@ public class ArgumentsParser {
     this.args = args;
   }
 
-  public String stringValueFor(String key) {
-    return getArguments().get(key);
-  }
-
-  public int integerValueFor(String key) {
+  public int getPort() {
     try {
-      return Integer.parseInt(getArguments().get(key));
+      return Integer.parseInt(retrieveValueFor("-p"));
     } catch (NumberFormatException e) {
       throw new InvalidPortException();
     }
+  }
+
+  public String getDirectory() {
+    return retrieveValueFor("-d");
+  }
+
+  private String retrieveValueFor(String key) {
+    return getArguments().get(key);
   }
 
   public Map<String, String> getArguments() {

@@ -14,8 +14,8 @@ import java.util.concurrent.Executors;
 public class Main {
   public static void main(String[] args) {
     ArgumentsParser parser = new ArgumentsParser(args);
-    int port = parser.integerValueFor("-p");
-    String directory = parser.stringValueFor("-d");
+    int port = parser.getPort();
+    String directory = parser.getDirectory();
     try {
       Router router = new Router();
       Socket clientSocket = new Socket(new ServerSocket(port));

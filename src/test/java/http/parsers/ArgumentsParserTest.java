@@ -43,19 +43,19 @@ public class ArgumentsParserTest {
   @Test(expected = InvalidPortException.class)
   public void raisesExceptionIfInvalidPort() {
     ArgumentsParser parser = createParserWith(PORT_FLAG, "invalidPort", DIRECTORY_FLAG, DIRECTORY_PATH);
-    parser.integerValueFor("-p");
+    parser.getPort();
   }
 
   @Test
-  public void gettingIntegerValueForAnArgument() {
+  public void retrievingThePort() {
     ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER);
-    assertThat(parser.integerValueFor(PORT_FLAG), is(5000));
+    assertThat(parser.getPort(), is(5000));
   }
 
   @Test
-  public void gettingStringValueForAnArgument() {
+  public void retrievingTheDirectory() {
     ArgumentsParser parser = createParserWith(DIRECTORY_FLAG, DIRECTORY_PATH);
-    assertThat(parser.stringValueFor(DIRECTORY_FLAG), is(DIRECTORY_PATH));
+    assertThat(parser.getDirectory(), is(DIRECTORY_PATH));
   }
 
   private ArgumentsParser createParserWith(String ... args) {
