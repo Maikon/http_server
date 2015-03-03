@@ -13,7 +13,9 @@ public class Main {
     String directory = parser.stringValueFor("-d");
     try {
       Server server = new Server(new ServerSocket(port), new Router(new File(directory)));
+      System.out.println("Starting server at port: " + port);
       server.start();
+      System.out.println("Closing server...");
     } catch (IOException e) {
       e.printStackTrace();
     }

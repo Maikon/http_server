@@ -20,16 +20,14 @@ public class Server {
   }
 
   public void start() {
-    System.out.println("Starting server at port: " + socket.getLocalPort());
     try {
       while (true) {
         ClientSocket clientSocket = new Socket(socket.accept());
         executor.submit(new Worker(router, clientSocket));
       }
     } catch (IOException e) {
-      System.out.println("Closing server...");
+      //
     }
-    stop();
   }
 
   public void stop() {
