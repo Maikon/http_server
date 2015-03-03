@@ -1,5 +1,7 @@
 package http;
 
+import http.responders.Responder;
+import http.responders.ServerResponse;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -9,6 +11,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RouterTest {
@@ -33,6 +36,13 @@ public class RouterTest {
     assertThat(router.lastResponse(), is("404"));
   }
 
+  @Test
+  public void registersARouteWithAResponder() {
+    Router router = new Router();
+    router.registerRoute("GET /", new FakeResponder());
+    assertThat(router.getResponderFor("GET /"), isA(Responder.class));
+  }
+
   private class FakeOutput extends OutputStream {
     private boolean wasWritten;
 
@@ -43,6 +53,13 @@ public class RouterTest {
     @Override
     public void write(int response) throws IOException {
       wasWritten = true;
+    }
+  }
+
+  private class FakeResponder implements Responder {
+    @Override
+    public ServerResponse response(Request request) {
+      return null;
     }
   }
 }
