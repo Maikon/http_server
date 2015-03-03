@@ -32,11 +32,6 @@ public class Server {
   }
 
   public void stop() {
-    try {
-      socket.close();
-      executor.shutdown();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    executor.shutdown();
   }
 }
