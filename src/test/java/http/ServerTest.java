@@ -3,6 +3,7 @@ package http;
 import http.fakes.FakeClientSocket;
 import http.fakes.FakeExecutor;
 import http.fakes.FakeRouter;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,23 +16,27 @@ import static org.hamcrest.core.Is.isA;
 
 public class ServerTest {
 
+  private FakeExecutor executor;
+  private FakeServerSocket socket;
+  private FakeRouter router;
+  private Server server;
+
+  @Before
+  public void setUp() throws Exception {
+    executor = new FakeExecutor();
+    socket = new FakeServerSocket();
+    router = new FakeRouter();
+    server = new Server(executor, socket, router);
+    server.start();
+  }
+
   @Test
   public void processRequestThroughTheExecutor() throws IOException {
-    FakeExecutor executor = new FakeExecutor();
-    FakeServerSocket socket = new FakeServerSocket();
-    FakeRouter router = new FakeRouter();
-    Server server = new Server(executor, socket, router);
-    server.start();
     assertThat(executor.calledWith(), isA(Runnable.class));
   }
 
   @Test
   public void closesTheExecutorWhenDoneWithRequestProcessing() throws IOException {
-    FakeExecutor executor = new FakeExecutor();
-    FakeServerSocket socket = new FakeServerSocket();
-    FakeRouter router = new FakeRouter();
-    Server server = new Server(executor, socket, router);
-    server.start();
     assertThat(executor.isShutdown(), is(true));
   }
 
