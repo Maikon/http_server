@@ -1,6 +1,5 @@
 package http;
 
-import http.sockets.ClientSocket;
 import http.sockets.Socket;
 
 import java.io.IOException;
@@ -20,13 +19,16 @@ public class Server {
   }
 
   public void start() {
+    while (true) {
+      executeRequestInThread();
+    }
+  }
+
+  private void executeRequestInThread() {
     try {
-      while (true) {
-        ClientSocket clientSocket = new Socket(socket.accept());
-        executor.submit(new Worker(router, clientSocket));
-      }
+      executor.submit(new Worker(router, new Socket(socket.accept())));
     } catch (IOException e) {
-      //
+      e.printStackTrace();
     }
   }
 
