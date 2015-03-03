@@ -10,10 +10,6 @@ public class FakeExecutor implements ExecutorService {
   private Runnable workerCalled;
   private boolean closed;
 
-  public Runnable calledWith() {
-    return workerCalled;
-  }
-
   @Override
   public void execute(Runnable command) {
     closed = false;

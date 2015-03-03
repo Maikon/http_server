@@ -12,7 +12,6 @@ import java.net.Socket;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.isA;
 
 public class ServerTest {
 
@@ -34,7 +33,7 @@ public class ServerTest {
   @Test
   public void processRequestThroughTheExecutor() throws IOException {
     server.start();
-    assertThat(executor.calledWith(), isA(Runnable.class));
+    assertThat(executor.calledWith(worker), is(true));
   }
 
   @Test
