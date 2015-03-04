@@ -4,6 +4,7 @@ import http.fakes.FakeClientSocket;
 import http.fakes.FakeRouter;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,7 +14,6 @@ import java.util.concurrent.Executors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
@@ -28,7 +28,7 @@ public class ServerTest {
     http.sockets.Socket clientSocket = new http.sockets.Socket(new FakeServerSocket());
     FakeRouter router = new FakeRouter();
     Worker worker = new Worker(router, clientSocket);
-    spyWorker = spy(worker);
+    spyWorker = Mockito.spy(worker);
     executor = Executors.newFixedThreadPool(1);
     server = new Server(executor, spyWorker);
     doNothing().when(spyWorker).run();
