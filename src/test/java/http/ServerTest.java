@@ -1,7 +1,6 @@
 package http;
 
 import http.fakes.FakeClientSocket;
-import http.fakes.FakeExecutor;
 import http.fakes.FakeRouter;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,29 +8,36 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 public class ServerTest {
 
-  private FakeExecutor executor;
+  private ExecutorService executor;
   private Server server;
-  private Worker worker;
+  private Worker spyWorker;
 
   @Before
   public void setUp() throws Exception {
-    executor = new FakeExecutor();
     http.sockets.Socket clientSocket = new http.sockets.Socket(new FakeServerSocket());
     FakeRouter router = new FakeRouter();
-    worker = new Worker(router, clientSocket);
-    server = new Server(executor, worker);
+    Worker worker = new Worker(router, clientSocket);
+    spyWorker = spy(worker);
+    executor = Executors.newFixedThreadPool(1);
+    server = new Server(executor, spyWorker);
+    doNothing().when(spyWorker).run();
   }
 
   @Test
-  public void processRequestThroughTheExecutor() throws IOException {
+  public void workerGetsExecuted() {
     server.start();
-    assertThat(executor.calledWith(worker), is(true));
+    verify(spyWorker).run();
   }
 
   @Test
