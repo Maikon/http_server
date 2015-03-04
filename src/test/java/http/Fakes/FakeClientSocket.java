@@ -6,8 +6,8 @@ import java.io.*;
 import java.net.Socket;
 
 public class FakeClientSocket extends Socket implements ClientSocket {
-  private ByteArrayInputStream input;
-  private ByteArrayOutputStream output;
+  private InputStream input;
+  private OutputStream output;
   private boolean closed = false;
 
   public FakeClientSocket(String input) {
