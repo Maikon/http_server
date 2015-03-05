@@ -4,7 +4,7 @@ import http.responders.NotFoundResponder;
 import http.responders.Responder;
 import http.responders.ServerResponse;
 import http.responders.StatusCodes;
-import http.utils.Logger;
+import http.utils.RequestLogger;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -20,7 +20,7 @@ public class Router {
   public void dispatch(Request request, PrintStream output) throws IOException {
     String identifier = request.methodWithUri();
     Responder responder = responders.get(identifier);
-    Logger.log(request);
+    RequestLogger.log(request);
     if (responder == null) {
       lastResponse = NOT_FOUND;
       responder = new NotFoundResponder();

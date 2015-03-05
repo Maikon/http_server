@@ -2,7 +2,7 @@ package http.responders;
 
 import http.Request;
 import http.filters.Authenticator;
-import http.utils.Logger;
+import http.utils.RequestLogger;
 import org.junit.Test;
 
 import static http.responders.StatusCodes.OK;
@@ -46,8 +46,8 @@ public class BasicAuthResponderTest {
     Responder responder = createResponderWithCredentials();
     Request request = requestWithCorrectCredentials();
     Request request2 = Request.withMethod("POST").addURI("/file2").build();
-    Logger.log(request);
-    Logger.log(request2);
+    RequestLogger.log(request);
+    RequestLogger.log(request2);
     ServerResponse response = responder.response(request);
     assertThat(response.getBody(), allOf(containsString("GET /logs HTTP/1.1"),
                                          containsString("POST /file2 HTTP/1.1")));

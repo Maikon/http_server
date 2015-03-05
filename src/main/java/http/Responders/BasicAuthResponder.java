@@ -2,7 +2,7 @@ package http.responders;
 
 import http.Request;
 import http.filters.Authenticator;
-import http.utils.Logger;
+import http.utils.RequestLogger;
 
 import static http.responders.StatusCodes.OK;
 import static http.responders.StatusCodes.UNAUTHORIZED;
@@ -31,7 +31,7 @@ public class BasicAuthResponder implements Responder {
 
   private String bodyContainingLogs() {
     String body = "";
-    for (String requestLine : Logger.loggedRequests()) {
+    for (String requestLine : RequestLogger.loggedRequests()) {
       body += requestLine + "\n";
     }
     return body;

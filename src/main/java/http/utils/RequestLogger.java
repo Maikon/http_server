@@ -4,7 +4,7 @@ import http.Request;
 
 import java.util.ArrayList;
 
-public class Logger {
+public class RequestLogger {
   private static ArrayList<String> requests = new ArrayList<>();
 
   public static void log(Request request) {
