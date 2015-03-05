@@ -25,10 +25,6 @@ public class Worker implements Runnable {
     } catch (IOException e) {
       //
     }
-    stop();
-  }
-
-  public void stop() {
     client.close();
   }
 }

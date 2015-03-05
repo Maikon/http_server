@@ -28,7 +28,6 @@ public class WorkerTest {
     Worker worker = new Worker(router, socket);
 
     worker.run();
-    worker.stop();
     assertThat(socket.wasClosed(), is(true));
   }
 }
