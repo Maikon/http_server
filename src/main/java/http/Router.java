@@ -2,6 +2,7 @@ package http;
 
 import http.responders.NotFoundResponder;
 import http.responders.Responder;
+import http.responders.ServerResponse;
 import http.responders.StatusCodes;
 import http.utils.Logger;
 
@@ -9,6 +10,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import static http.responders.StatusCodes.NOT_FOUND;
 
 public class Router {
   private Map<String, Responder> responders = new HashMap<>();
@@ -19,11 +22,12 @@ public class Router {
     Responder responder = responders.get(identifier);
     Logger.log(request);
     if (responder == null) {
-      lastResponse = StatusCodes.NOT_FOUND;
+      lastResponse = NOT_FOUND;
       responder = new NotFoundResponder();
     }
-    lastResponse = responder.response(request).getStatus();
-    output.write(responder.response(request).toBytes());
+    ServerResponse response = responder.response(request);
+    lastResponse = response.getStatus();
+    output.write(response.toBytes());
   }
 
   public StatusCodes lastResponse() {

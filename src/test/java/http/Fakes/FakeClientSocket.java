@@ -3,9 +3,8 @@ package http.fakes;
 import http.sockets.ClientSocket;
 
 import java.io.*;
-import java.net.Socket;
 
-public class FakeClientSocket extends Socket implements ClientSocket {
+public class FakeClientSocket implements ClientSocket {
   private InputStream input;
   private OutputStream output;
   private boolean closed = false;
@@ -28,11 +27,6 @@ public class FakeClientSocket extends Socket implements ClientSocket {
   @Override
   public void close() {
     closed = true;
-  }
-
-  @Override
-  public boolean hasData() {
-    return false;
   }
 
   public boolean wasClosed() {

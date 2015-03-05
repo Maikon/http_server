@@ -1,19 +1,29 @@
 package http;
 
+import http.sockets.Socket;
+
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 
 public class Server {
-  private Worker worker;
+  private final Router router;
+  private final ServerSocket socket;
   private ExecutorService executor;
 
-  public Server(ExecutorService executor, Worker worker) {
+  public Server(ExecutorService executor, ServerSocket socket, Router router) {
+    this.router = router;
+    this.socket = socket;
     this.executor = executor;
-    this.worker = worker;
   }
 
   public void start() {
-    while (worker.clientHasData()) {
-      executor.execute(worker);
+    try {
+      while (true) {
+        executor.submit(new Worker(router, new Socket(socket.accept())));
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
     executor.shutdown();
   }

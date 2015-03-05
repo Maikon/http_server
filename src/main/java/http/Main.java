@@ -4,7 +4,6 @@ import http.filesystem.FileIO;
 import http.filters.Authenticator;
 import http.parsers.ArgumentsParser;
 import http.responders.*;
-import http.sockets.Socket;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,11 +17,9 @@ public class Main {
     String directory = parser.getDirectory();
     try {
       Router router = new Router();
-      Socket clientSocket = new Socket(new ServerSocket(port));
-      Worker worker = new Worker(router, clientSocket);
       FileIO fileIO = new FileIO(new File(directory));
       registerRoutes(router, fileIO);
-      Server server = new Server(Executors.newFixedThreadPool(20), worker);
+      Server server = new Server(Executors.newFixedThreadPool(20), new ServerSocket(port), router);
       startingServerMessage(port);
       server.start();
       closingServerMessage();
