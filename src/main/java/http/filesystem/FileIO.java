@@ -1,6 +1,7 @@
 package http.filesystem;
 
 import http.Request;
+import http.utils.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class FileIO {
+  private final Logger logger = new Logger(org.apache.log4j.Logger.getLogger(FileIO.class));
   private final File directory;
 
   public FileIO(File directory) {
@@ -52,7 +54,7 @@ public class FileIO {
     try {
       file.createNewFile();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
     return file;
   }
@@ -63,7 +65,7 @@ public class FileIO {
       writer.write(content);
       writer.close();
     } catch (FileNotFoundException | UnsupportedEncodingException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
   }
 
@@ -110,7 +112,7 @@ public class FileIO {
     try {
       content = Files.readAllBytes(file.toPath());
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
     return content;
   }

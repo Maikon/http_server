@@ -3,6 +3,7 @@ package http.parsers;
 import http.Request;
 import http.exceptions.InvalidRequestMethodException;
 import http.sockets.ClientSocket;
+import http.utils.Logger;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,6 +15,7 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 
 public class RequestParser {
+  private final Logger logger = new Logger(org.apache.log4j.Logger.getLogger(RequestParser.class));
   private final RequestLineParser reqLineParser;
   private final HeadersParser reqHeadersParser;
   private final BodyParser reqBodyParser;
@@ -74,7 +76,7 @@ public class RequestParser {
         }
       }
     } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
     return decodedParams;
   }

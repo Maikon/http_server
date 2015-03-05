@@ -1,9 +1,13 @@
 package http.parsers;
 
+import http.utils.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
 public class BodyParser {
+  private final Logger logger = new Logger(org.apache.log4j.Logger.getLogger(BodyParser.class));
+
   public String read(BufferedReader reader, int contentLength) {
     String body = "";
     char[] buffer = new char[contentLength];
@@ -13,7 +17,7 @@ public class BodyParser {
         body += s;
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
     return body.trim();
   }

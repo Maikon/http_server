@@ -1,11 +1,14 @@
 package http.parsers;
 
+import http.utils.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HeadersParser {
+  private final Logger logger = new Logger(org.apache.log4j.Logger.getLogger(HeadersParser.class));
 
   private final int FIELD = 0;
   private final int VALUE = 1;
@@ -21,7 +24,7 @@ public class HeadersParser {
         createHeaderFrom(line);
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
     return headers;
   }

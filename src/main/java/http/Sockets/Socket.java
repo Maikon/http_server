@@ -1,11 +1,13 @@
 package http.sockets;
 
+import http.utils.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class Socket implements ClientSocket {
-
+  private final Logger logger = new Logger(org.apache.log4j.Logger.getLogger(Socket.class));
   private final java.net.Socket client;
 
   public Socket(java.net.Socket client) {
@@ -18,7 +20,7 @@ public class Socket implements ClientSocket {
     try {
       out = client.getOutputStream();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
     return out;
   }
@@ -29,7 +31,7 @@ public class Socket implements ClientSocket {
     try {
       in = client.getInputStream();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
     return in;
   }
@@ -39,7 +41,7 @@ public class Socket implements ClientSocket {
     try {
       client.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
   }
 }

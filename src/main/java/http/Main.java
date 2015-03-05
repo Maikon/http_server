@@ -4,8 +4,8 @@ import http.filesystem.FileIO;
 import http.filters.Authenticator;
 import http.parsers.ArgumentsParser;
 import http.responders.*;
+import http.utils.Logger;
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.net.ServerSocket;
 import java.util.concurrent.Executors;
 
 public class Main {
-  private static Logger logger = Logger.getLogger(Main.class);
+  private static Logger logger = new Logger(org.apache.log4j.Logger.getLogger(Main.class));
 
   public static void main(String[] args) {
     BasicConfigurator.configure();
@@ -25,11 +25,11 @@ public class Main {
       FileIO fileIO = new FileIO(new File(directory));
       registerRoutes(router, fileIO);
       Server server = new Server(Executors.newFixedThreadPool(20), new ServerSocket(port), router);
-      logger.info("Starting server at port: " + port);
+      logger.logInfo("Starting server at port: " + port);
       server.start();
-      logger.info("Closing server...");
+      logger.logInfo("Closing server...");
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
   }
 

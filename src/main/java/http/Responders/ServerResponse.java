@@ -1,11 +1,14 @@
 package http.responders;
 
+import http.utils.Logger;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ServerResponse {
+  public final Logger logger = new Logger(org.apache.log4j.Logger.getLogger(ServerResponse.class));
   public final String CRLF = "\r\n";
   private final StatusCodes status;
   private byte[] body;
@@ -46,7 +49,7 @@ public class ServerResponse {
       addToArray(output, getBytes(CRLF));
       addToArray(output, body);
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
     return output.toByteArray();
   }
