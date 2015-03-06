@@ -16,13 +16,6 @@ public class Worker implements Runnable {
   private PrintStream output;
   private ClientSocket client;
 
-  public Worker(Router router, ClientSocket client) {
-    this.client = client;
-    this.router = router;
-    this.reqParser = new RequestParser(client);
-    this.output = new PrintStream(client.getOutputStream());
-  }
-
   public Worker(Router router) {
     this.router = router;
   }
@@ -40,7 +33,7 @@ public class Worker implements Runnable {
     try {
       client = new Socket(serverSocket.accept());
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.logError(e);
     }
     reqParser = new RequestParser(client);
     output = new PrintStream(client.getOutputStream());
