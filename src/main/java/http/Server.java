@@ -1,32 +1,28 @@
 package http;
 
-import http.sockets.Socket;
-import http.utils.Logger;
-
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 
 public class Server {
-  private final Logger logger = new Logger(org.apache.log4j.Logger.getLogger(Server.class));
-  private final Router router;
   private final ServerSocket socket;
+  private Worker worker;
   private ExecutorService executor;
 
-  public Server(ExecutorService executor, ServerSocket socket, Router router) {
-    this.router = router;
-    this.socket = socket;
+  public Server(ExecutorService executor, ServerSocket serverSocket, Worker worker) {
     this.executor = executor;
+    this.socket = serverSocket;
+    this.worker = worker;
   }
 
   public void start() {
-    try {
-      while (true) {
-        executor.submit(new Worker(router, new Socket(socket.accept())));
-      }
-    } catch (IOException e) {
-      logger.logError(e);
+    while (isServerRunning()) {
+      worker.setupClientWithIO(socket);
+      executor.execute(worker);
     }
     executor.shutdown();
+  }
+
+  public boolean isServerRunning() {
+    return true;
   }
 }
