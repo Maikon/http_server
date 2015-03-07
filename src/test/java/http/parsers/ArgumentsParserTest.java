@@ -14,51 +14,51 @@ import static org.hamcrest.core.Is.is;
 
 public class ArgumentsParserTest {
 
-  private final String DIRECTORY_PATH = "directory-path";
-  private final String DIRECTORY_FLAG = "-d";
-  private final String PORT_FLAG = "-p";
-  private final String PORT_NUMBER = "5000";
+    private final String DIRECTORY_PATH = "directory-path";
+    private final String DIRECTORY_FLAG = "-d";
+    private final String PORT_FLAG = "-p";
+    private final String PORT_NUMBER = "5000";
 
-  @Test
-  public void associatesFlagsWithValues() {
-    ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER, DIRECTORY_FLAG, DIRECTORY_PATH);
-    Map<String, String> arguments = new HashMap<>();
-    arguments.put(PORT_FLAG, PORT_NUMBER);
-    arguments.put(DIRECTORY_FLAG, DIRECTORY_PATH);
-    assertThat(parser.getArguments(), equalTo(arguments));
-  }
+    @Test
+    public void associatesFlagsWithValues() {
+        ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER, DIRECTORY_FLAG, DIRECTORY_PATH);
+        Map<String, String> arguments = new HashMap<>();
+        arguments.put(PORT_FLAG, PORT_NUMBER);
+        arguments.put(DIRECTORY_FLAG, DIRECTORY_PATH);
+        assertThat(parser.getArguments(), equalTo(arguments));
+    }
 
-  @Test(expected = WrongArgumentsNumberException.class)
-  public void raisesExceptionIfIncorrectNumberOfArguments() {
-    ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER, DIRECTORY_FLAG);
-    parser.getArguments();
-  }
+    @Test(expected = WrongArgumentsNumberException.class)
+    public void raisesExceptionIfIncorrectNumberOfArguments() {
+        ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER, DIRECTORY_FLAG);
+        parser.getArguments();
+    }
 
-  @Test(expected = InvalidArgumentsException.class)
-  public void raisesExceptionIfInvalidArguments() {
-    ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER, DIRECTORY_PATH, DIRECTORY_FLAG);
-    parser.getArguments();
-  }
+    @Test(expected = InvalidArgumentsException.class)
+    public void raisesExceptionIfInvalidArguments() {
+        ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER, DIRECTORY_PATH, DIRECTORY_FLAG);
+        parser.getArguments();
+    }
 
-  @Test(expected = InvalidPortException.class)
-  public void raisesExceptionIfInvalidPort() {
-    ArgumentsParser parser = createParserWith(PORT_FLAG, "invalidPort", DIRECTORY_FLAG, DIRECTORY_PATH);
-    parser.getPort();
-  }
+    @Test(expected = InvalidPortException.class)
+    public void raisesExceptionIfInvalidPort() {
+        ArgumentsParser parser = createParserWith(PORT_FLAG, "invalidPort", DIRECTORY_FLAG, DIRECTORY_PATH);
+        parser.getPort();
+    }
 
-  @Test
-  public void retrievingThePort() {
-    ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER);
-    assertThat(parser.getPort(), is(5000));
-  }
+    @Test
+    public void retrievingThePort() {
+        ArgumentsParser parser = createParserWith(PORT_FLAG, PORT_NUMBER);
+        assertThat(parser.getPort(), is(5000));
+    }
 
-  @Test
-  public void retrievingTheDirectory() {
-    ArgumentsParser parser = createParserWith(DIRECTORY_FLAG, DIRECTORY_PATH);
-    assertThat(parser.getDirectory(), is(DIRECTORY_PATH));
-  }
+    @Test
+    public void retrievingTheDirectory() {
+        ArgumentsParser parser = createParserWith(DIRECTORY_FLAG, DIRECTORY_PATH);
+        assertThat(parser.getDirectory(), is(DIRECTORY_PATH));
+    }
 
-  private ArgumentsParser createParserWith(String ... args) {
-    return new ArgumentsParser(args);
-  }
+    private ArgumentsParser createParserWith(String... args) {
+        return new ArgumentsParser(args);
+    }
 }

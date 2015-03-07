@@ -4,8 +4,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public interface ClientSocket {
-  public OutputStream getOutputStream();
-  public InputStream getInputStream();
+    public OutputStream getOutputStream();
 
-  void close();
+    public InputStream getInputStream();
+
+    void close();
 }

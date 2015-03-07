@@ -14,31 +14,31 @@ import java.util.Map;
 import static http.responders.StatusCodes.NOT_FOUND;
 
 public class Router {
-  private Map<String, Responder> responders = new HashMap<>();
-  private StatusCodes lastResponse;
+    private Map<String, Responder> responders = new HashMap<>();
+    private StatusCodes lastResponse;
 
-  public void dispatch(Request request, PrintStream output) throws IOException {
-    String identifier = request.methodWithUri();
-    Responder responder = responders.get(identifier);
-    RequestLogger.log(request);
-    if (responder == null) {
-      lastResponse = NOT_FOUND;
-      responder = new NotFoundResponder();
+    public void dispatch(Request request, PrintStream output) throws IOException {
+        String identifier = request.methodWithUri();
+        Responder responder = responders.get(identifier);
+        RequestLogger.log(request);
+        if (responder == null) {
+            lastResponse = NOT_FOUND;
+            responder = new NotFoundResponder();
+        }
+        ServerResponse response = responder.response(request);
+        lastResponse = response.getStatus();
+        output.write(response.toBytes());
     }
-    ServerResponse response = responder.response(request);
-    lastResponse = response.getStatus();
-    output.write(response.toBytes());
-  }
 
-  public StatusCodes lastResponse() {
-    return lastResponse;
-  }
+    public StatusCodes lastResponse() {
+        return lastResponse;
+    }
 
-  public void registerRoute(String uriWithMethod, Responder responder) {
-    responders.put(uriWithMethod, responder);
-  }
+    public void registerRoute(String uriWithMethod, Responder responder) {
+        responders.put(uriWithMethod, responder);
+    }
 
-  public Responder getResponderFor(String identifier) {
-    return responders.get(identifier);
-  }
+    public Responder getResponderFor(String identifier) {
+        return responders.get(identifier);
+    }
 }

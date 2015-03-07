@@ -5,6 +5,6 @@ import org.junit.rules.TemporaryFolder;
 
 public class TestHelper {
 
-  @Rule
-  public TemporaryFolder directory = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder directory = new TemporaryFolder();
 }

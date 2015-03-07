@@ -16,31 +16,31 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class FileContentsResponderTest extends TestHelper {
-  private ServerResponse response;
+    private ServerResponse response;
 
 
-  @Before
-  public void setUp() throws IOException {
-    File file = directory.newFile("file");
-    FileWriter writer = new FileWriter(file);
-    writer.write("file contents");
-    writer.close();
-    FileIO fileIO = new FileIO(directory.getRoot());
-    response = new FileContentsResponder(fileIO).response(Request.withMethod("GET").addURI("/file").build());
-  }
+    @Before
+    public void setUp() throws IOException {
+        File file = directory.newFile("file");
+        FileWriter writer = new FileWriter(file);
+        writer.write("file contents");
+        writer.close();
+        FileIO fileIO = new FileIO(directory.getRoot());
+        response = new FileContentsResponder(fileIO).response(Request.withMethod("GET").addURI("/file").build());
+    }
 
-  @Test
-  public void respondsWithSuccess() {
-    assertThat(response.getStatus(), is(OK));
-  }
+    @Test
+    public void respondsWithSuccess() {
+        assertThat(response.getStatus(), is(OK));
+    }
 
-  @Test
-  public void respondsWithHTML() {
-    assertThat(response.getHeader("Content-Type"), is("text/html"));
-  }
+    @Test
+    public void respondsWithHTML() {
+        assertThat(response.getHeader("Content-Type"), is("text/html"));
+    }
 
-  @Test
-  public void respondsWithTheContentsOfTheFile() {
-    assertThat(response.getBody(), containsString("file contents"));
-  }
+    @Test
+    public void respondsWithTheContentsOfTheFile() {
+        assertThat(response.getBody(), containsString("file contents"));
+    }
 }

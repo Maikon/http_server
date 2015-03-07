@@ -9,9 +9,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class NotFoundResponderTest {
 
-  @Test
-  public void respondsToAnUnknownResourceRequest() {
-    ServerResponse res = new NotFoundResponder().response(Request.withMethod("GET").build());
-    assertThat(res.getStatus(), is(NOT_FOUND));
-  }
+    @Test
+    public void respondsToAnUnknownResourceRequest() {
+        ServerResponse res = new NotFoundResponder().response(Request.withMethod("GET").build());
+        assertThat(res.getStatus(), is(NOT_FOUND));
+    }
 }

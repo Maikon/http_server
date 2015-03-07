@@ -12,15 +12,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ParamsResponderTest {
 
-  @Test
-  public void responseBodyContainsDecodedParams() {
-    String statusLine = "GET /params?%3Cexample-decoding%3E HTTP/1.1\r\n";
-    RequestParser parser = new RequestParser(new FakeClientSocket(statusLine));
-    Request request = parser.buildRequest();
-    Responder responder = new ParamsResponder();
-    ServerResponse response = responder.response(request);
+    @Test
+    public void responseBodyContainsDecodedParams() {
+        String statusLine = "GET /params?%3Cexample-decoding%3E HTTP/1.1\r\n";
+        RequestParser parser = new RequestParser(new FakeClientSocket(statusLine));
+        Request request = parser.buildRequest();
+        Responder responder = new ParamsResponder();
+        ServerResponse response = responder.response(request);
 
-    assertThat(response.getStatus(), is(OK));
-    assertThat(response.getBody(), containsString("<example-decoding>"));
-  }
+        assertThat(response.getStatus(), is(OK));
+        assertThat(response.getBody(), containsString("<example-decoding>"));
+    }
 }

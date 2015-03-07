@@ -7,13 +7,13 @@ import java.io.PrintStream;
 
 public class FakeRouter extends Router {
 
-  private Request request;
+    private Request request;
 
-  public void dispatch(Request request, PrintStream output) {
-    this.request = request;
-  }
+    public void dispatch(Request request, PrintStream output) {
+        this.request = request;
+    }
 
-  public boolean calledWith(String method) {
-    return request.getMethod().equals(method);
-  }
+    public boolean calledWith(String method) {
+        return request.getMethod().equals(method);
+    }
 }

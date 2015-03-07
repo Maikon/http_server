@@ -9,15 +9,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MethodOptionsResponderTest {
 
-  private ServerResponse response = new MethodOptionsResponder().response(Request.withMethod("GET").build());
+    private ServerResponse response = new MethodOptionsResponder().response(Request.withMethod("GET").build());
 
-  @Test
-  public void respondsWithSuccess() {
-    assertThat(response.getStatus(), is(OK));
-  }
+    @Test
+    public void respondsWithSuccess() {
+        assertThat(response.getStatus(), is(OK));
+    }
 
-  @Test
-  public void respondsWithCorrectHeader() {
-    assertThat(response.getHeader("Allow"), is("GET,HEAD,POST,OPTIONS,PUT"));
-  }
+    @Test
+    public void respondsWithCorrectHeader() {
+        assertThat(response.getHeader("Allow"), is("GET,HEAD,POST,OPTIONS,PUT"));
+    }
 }
