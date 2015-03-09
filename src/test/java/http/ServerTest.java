@@ -29,7 +29,7 @@ public class ServerTest {
     @Test
     public void setsUpClientSocketWithIO() throws IOException {
         serverSpy.start();
-        Mockito.verify(workerSpy).setupClientWithIO(serverSocket);
+        Mockito.verify(workerSpy).acceptInput(serverSocket);
     }
 
     @Test

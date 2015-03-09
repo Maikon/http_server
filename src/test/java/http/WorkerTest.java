@@ -19,7 +19,7 @@ public class WorkerTest {
         FakeClientSocket socket = new FakeClientSocket(REQUEST_STATUS_LINE);
         FakeRouter router = new FakeRouter();
         Worker worker = new Worker(router);
-        worker.setupClientWithIO(new FakeServerSocket(socket));
+        worker.acceptInput(new FakeServerSocket(socket));
         worker.run();
         assertThat(router.calledWith("GET"), is(true));
     }
@@ -29,7 +29,7 @@ public class WorkerTest {
         FakeClientSocket socket = new FakeClientSocket(REQUEST_STATUS_LINE);
         FakeRouter router = new FakeRouter();
         Worker worker = new Worker(router);
-        worker.setupClientWithIO(new FakeServerSocket(socket));
+        worker.acceptInput(new FakeServerSocket(socket));
         worker.run();
         assertThat(socket.wasClosed(), is(true));
     }

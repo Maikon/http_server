@@ -29,7 +29,7 @@ public class Worker implements Runnable {
         client.close();
     }
 
-    public void setupClientWithIO(ServerSocket serverSocket) {
+    public void acceptInput(ServerSocket serverSocket) {
         try {
             client = new Socket(serverSocket.accept());
         } catch (IOException e) {

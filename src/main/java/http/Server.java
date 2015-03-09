@@ -16,7 +16,7 @@ public class Server {
 
     public void start() {
         while (isServerRunning()) {
-            worker.setupClientWithIO(socket);
+            worker.acceptInput(socket);
             executor.execute(worker);
         }
         executor.shutdown();
