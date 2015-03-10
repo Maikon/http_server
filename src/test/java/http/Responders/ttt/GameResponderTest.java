@@ -1,7 +1,7 @@
 package http.responders.ttt;
 
 import http.Request;
-import http.filesystem.FileIO;
+import http.filesystem.RetrieveTemplate;
 import http.responders.ServerResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class GameResponderTest {
 
     @Before
     public void setUp() {
-        responder = new GameResponder(new FileIO());
+        responder = new GameResponder(new RetrieveTemplate("/index.html"));
         request = buildRequest("GET", "/game");
     }
 

@@ -1,9 +1,11 @@
 package http;
 
 import http.filesystem.FileIO;
+import http.filesystem.RetrieveTemplate;
 import http.filters.Authenticator;
 import http.parsers.ArgumentsParser;
 import http.responders.*;
+import http.responders.ttt.GameResponder;
 import http.utils.Logger;
 import org.apache.log4j.BasicConfigurator;
 
@@ -53,5 +55,6 @@ public class Main {
         router.registerRoute("PATCH /patch-content.txt", new PatchResponder(fileIO));
         router.registerRoute("DELETE /form", new FormResponder(fileIO));
         router.registerRoute("OPTIONS /method_options", new MethodOptionsResponder());
+        router.registerRoute("GET /game", new GameResponder(new RetrieveTemplate("/index.html")));
     }
 }
