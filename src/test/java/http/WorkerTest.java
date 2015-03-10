@@ -2,6 +2,7 @@ package http;
 
 import http.fakes.FakeClientSocket;
 import http.fakes.FakeRouter;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -11,22 +12,25 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class WorkerTest {
 
-    private final String REQUEST_STATUS_LINE = "GET / HTTP/1.1\r\n";
+    private FakeClientSocket socket;
+    private FakeRouter router;
+    private Worker worker;
+
+    @Before
+    public void setUp() {
+        socket = new FakeClientSocket("GET / HTTP/1.1\r\n");
+        router = new FakeRouter();
+        worker = new Worker(router, socket);
+    }
 
     @Test
     public void dispatchesRequestToRouter() throws IOException {
-        FakeClientSocket socket = new FakeClientSocket(REQUEST_STATUS_LINE);
-        FakeRouter router = new FakeRouter();
-        Worker worker = new Worker(router, socket);
         worker.run();
         assertThat(router.calledWith("GET"), is(true));
     }
 
     @Test
     public void itClosesTheConnection() throws IOException {
-        FakeClientSocket socket = new FakeClientSocket(REQUEST_STATUS_LINE);
-        FakeRouter router = new FakeRouter();
-        Worker worker = new Worker(router, socket);
         worker.run();
         assertThat(socket.wasClosed(), is(true));
     }
