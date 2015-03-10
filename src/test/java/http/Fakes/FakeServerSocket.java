@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 
 public class FakeServerSocket extends ServerSocket {
     private FakeClientSocket socket;
+    private boolean opened = false;
 
     public FakeServerSocket(FakeClientSocket socket) throws IOException {
         super();
@@ -13,6 +14,11 @@ public class FakeServerSocket extends ServerSocket {
 
     @Override
     public java.net.Socket accept() {
+        opened = true;
         return socket;
+    }
+
+    public boolean wasOpened() {
+        return opened;
     }
 }

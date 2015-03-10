@@ -2,12 +2,10 @@ package http;
 
 import http.parsers.RequestParser;
 import http.sockets.ClientSocket;
-import http.sockets.Socket;
 import http.utils.Logger;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.ServerSocket;
 
 public class Worker implements Runnable {
     private final Logger logger = new Logger(org.apache.log4j.Logger.getLogger(Worker.class));
@@ -16,8 +14,11 @@ public class Worker implements Runnable {
     private PrintStream output;
     private ClientSocket client;
 
-    public Worker(Router router) {
+    public Worker(Router router, ClientSocket socket) {
         this.router = router;
+        this.client = socket;
+        reqParser = new RequestParser(client);
+        output = new PrintStream(client.getOutputStream());
     }
 
     public void run() {
@@ -27,15 +28,5 @@ public class Worker implements Runnable {
             logger.logError(e);
         }
         client.close();
-    }
-
-    public void acceptInput(ServerSocket serverSocket) {
-        try {
-            client = new Socket(serverSocket.accept());
-        } catch (IOException e) {
-            logger.logError(e);
-        }
-        reqParser = new RequestParser(client);
-        output = new PrintStream(client.getOutputStream());
     }
 }

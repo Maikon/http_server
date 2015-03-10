@@ -2,7 +2,6 @@ package http;
 
 import http.fakes.FakeClientSocket;
 import http.fakes.FakeRouter;
-import http.fakes.FakeServerSocket;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -18,8 +17,7 @@ public class WorkerTest {
     public void dispatchesRequestToRouter() throws IOException {
         FakeClientSocket socket = new FakeClientSocket(REQUEST_STATUS_LINE);
         FakeRouter router = new FakeRouter();
-        Worker worker = new Worker(router);
-        worker.acceptInput(new FakeServerSocket(socket));
+        Worker worker = new Worker(router, socket);
         worker.run();
         assertThat(router.calledWith("GET"), is(true));
     }
@@ -28,8 +26,7 @@ public class WorkerTest {
     public void itClosesTheConnection() throws IOException {
         FakeClientSocket socket = new FakeClientSocket(REQUEST_STATUS_LINE);
         FakeRouter router = new FakeRouter();
-        Worker worker = new Worker(router);
-        worker.acceptInput(new FakeServerSocket(socket));
+        Worker worker = new Worker(router, socket);
         worker.run();
         assertThat(socket.wasClosed(), is(true));
     }

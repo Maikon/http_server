@@ -24,7 +24,8 @@ public class Main {
             Router router = new Router();
             FileIO fileIO = new FileIO(new File(directory));
             registerRoutes(router, fileIO);
-            Server server = new Server(Executors.newFixedThreadPool(20), new ServerSocket(port), new Worker(router));
+            ServerSocket serverSocket = new ServerSocket(port);
+            Server server = new Server(Executors.newFixedThreadPool(20), serverSocket, router);
             logger.logInfo("Starting server at port: " + port);
             server.start();
             logger.logInfo("Closing server...");
