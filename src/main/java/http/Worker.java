@@ -14,11 +14,11 @@ public class Worker implements Runnable {
     private PrintStream output;
     private ClientSocket client;
 
-    public Worker(Router router, ClientSocket socket) {
+    public Worker(Router router, ClientSocket clientSocket) {
         this.router = router;
-        this.client = socket;
-        reqParser = new RequestParser(client);
-        output = new PrintStream(client.getOutputStream());
+        this.client = clientSocket;
+        this.reqParser = new RequestParser(client);
+        this.output = new PrintStream(client.getOutputStream());
     }
 
     public void run() {
