@@ -16,6 +16,10 @@ public class FileIO {
         this.directory = directory;
     }
 
+    public FileIO() {
+        directory = null;
+    }
+
     public File[] getDirectoryFiles() {
         return directory.listFiles();
     }

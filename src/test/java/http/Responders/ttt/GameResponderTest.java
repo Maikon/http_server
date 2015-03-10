@@ -1,11 +1,10 @@
 package http.responders.ttt;
 
 import http.Request;
+import http.filesystem.FileIO;
 import http.responders.ServerResponse;
 import org.junit.Before;
 import org.junit.Test;
-import ttt.Display;
-import ttt.Game;
 
 import static http.responders.StatusCodes.OK;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -19,9 +18,7 @@ public class GameResponderTest {
 
     @Before
     public void setUp() {
-        Display display = new WebDisplay();
-        Game game = new Game(display);
-        responder = new GameResponder(game);
+        responder = new GameResponder(new FileIO());
         request = buildRequest("GET", "/game");
     }
 
@@ -34,10 +31,10 @@ public class GameResponderTest {
     @Test
     public void responseContainsGameOptions() {
         ServerResponse response = responder.response(request);
-        assertThat(response.getBody(), allOf(containsString("Human Vs Human"),
-                                             containsString("Human Vs Computer"),
-                                             containsString("Computer Vs Human"),
-                                             containsString("Computer Vs Computer")));
+        assertThat(response.getBody(), allOf(containsString("Human vs Human"),
+                                             containsString("Human vs Computer"),
+                                             containsString("Computer vs Human"),
+                                             containsString("Computer vs Computer")));
     }
 
     @Test
@@ -48,7 +45,7 @@ public class GameResponderTest {
 
     private Request buildRequest(String method, String uri) {
         return Request.withMethod(method)
-          .addURI(uri)
-          .build();
+                      .addURI(uri)
+                      .build();
     }
 }
