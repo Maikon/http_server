@@ -6,6 +6,9 @@ import http.responders.ServerResponse;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static http.responders.StatusCodes.OK;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,13 +16,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class GameResponderTest {
     private GameResponder responder;
     private Request request;
-    private RetrieveTemplate template;
 
     @Before
     public void setUp() {
-        template = new RetrieveTemplate("/index.html");
-        responder = new GameResponder(template);
-        request = buildRequest("GET", "/game");
+        Map<Integer, String> templates = new HashMap<>();
+        templates.put(1, "/index.html");
+        templates.put(3, "/three_by_three.html");
+        responder = new GameResponder(templates);
+        request = buildRequest("GET", "/game/menu", "", "");
     }
 
     @Test
@@ -29,7 +33,8 @@ public class GameResponderTest {
     }
 
     @Test
-    public void responseContainsTemplateContents() {
+    public void initialResponseContainsMenuTemplate() {
+        RetrieveTemplate template = new RetrieveTemplate("/index.html");
         ServerResponse response = responder.response(request);
         assertThat(response.getBody().getBytes(), is(template.inBytes()));
     }
@@ -41,9 +46,11 @@ public class GameResponderTest {
     }
 
 
-    private Request buildRequest(String method, String uri) {
+    private Request buildRequest(String method, String uri, String params, String body) {
         return Request.withMethod(method)
                       .addURI(uri)
+                      .addParams(params)
+                      .addBody(body)
                       .build();
     }
 }
